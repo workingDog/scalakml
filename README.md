@@ -58,8 +58,8 @@ all other fields are the same as before. See the examples.
 
 # Usage
 
-object WriteExample1 {
-  def main(args: Array[String]): Unit = {
+    object WriteExample1 {
+    def main(args: Array[String]): Unit = {
     // create a Point at a location
     val point = Point(coordinates = Some(Seq.empty :+ new Location(151.21037, -33.8526)))
     // create a Placemark with the point, a name and open
@@ -68,8 +68,8 @@ object WriteExample1 {
     val kml = Kml(feature = Some(placemark))
     // write the kml to the output file
     new KmlPrintWriter("../kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
-  }
-}
+    }
+    }
 
 see also WriteExample2 for a variation of WriteExample1.
 
