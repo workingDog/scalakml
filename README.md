@@ -36,7 +36,7 @@ The documentation is from reference 1 and 2.
 I've copied and pasted some documentation from the references into the classes, 
 but there is still more to be done. 
 
-All kml elements described in the references have been implemented (I think) with the same or similar class name. 
+Most kml elements described in the references have been implemented (I think) with the same or similar class name. 
 There is one major exception, and that is the FeaturePart. 
 This class represents the abstract Feature (AbstractFeatureGroup) described in the references.
 Here it is a concrete class called FeaturePart and holds the elements of the abstract Feature.
