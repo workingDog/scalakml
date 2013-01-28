@@ -36,7 +36,7 @@ import scala.xml.XML._
 import scala.xml.{NodeSeq, XML}
 import java.io.{ InputStream, Reader, StringReader, File, FileDescriptor, FileInputStream }
 import scala.xml.Source._
-
+import scala.language.postfixOps
 /**
  * @author Ringo Wathelet
  * Date: 12/12/12

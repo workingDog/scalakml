@@ -36,6 +36,8 @@ import xml.{Null, Attribute, NodeSeq, Text}
 import scala.None
 import com.scalakml.gx._
 import com.scalakml.atom.Author
+import scala.language.implicitConversions
+import scala.language.postfixOps
 
 /**
  * @author Ringo Wathelet

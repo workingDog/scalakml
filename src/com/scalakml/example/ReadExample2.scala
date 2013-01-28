@@ -14,7 +14,7 @@ object ReadExample2 {
   def main(args: Array[String]): Unit = {
     println("....ReadExample2 start...\n")
     // read a kml file into a kml root object
-    val kml = new KmlFileReader().getKmlFromFile("../kml-files/London.kml")
+    val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-oz.kml")
     // get the placemark
     val placemark = kml.get.feature.get.asInstanceOf[Placemark]
     // get the placemark point

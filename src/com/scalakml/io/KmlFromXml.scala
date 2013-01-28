@@ -35,6 +35,8 @@ import com.scalakml.kml._
 import scala.xml._
 import com.scalakml.xAL.AddressDetails
 import scala.reflect.runtime.universe._
+import scala.language.reflectiveCalls
+import scala.language.postfixOps
 
 /**
  * @author Ringo Wathelet
