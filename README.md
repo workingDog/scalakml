@@ -15,7 +15,7 @@ by using the excellent scalaxb, the XML data-binding tool for Scala, see http://
 
 However after looking at the generated class names and the way they would have to be used,
 I decided to make a number of changes to the generated code.
-I renamed a lot of the classes to be more like the references. 
+I renamed a lot of the classes to be more like reference 2. 
 As a result of the changes I broke the generated reading and writing of kml. 
 
 To pursue the original idea of coding something to learn scala, I started coding the reading and writing of the kml objects.
