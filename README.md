@@ -1,9 +1,9 @@
-
 # scalakml is a KML Version 2.2 library written in scala.
 
 ## References
  
 1) OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at http://www.opengeospatial.org/standards/kml
+
 2) Google developers KML Reference, at https://developers.google.com/kml/documentation/kmlreference
 
 ## History
