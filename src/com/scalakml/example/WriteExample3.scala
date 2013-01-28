@@ -15,7 +15,7 @@ import xml.PrettyPrinter
  */
 
 object WriteExample3 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String])  {
     println("....WriteExample3 start...\n")
 
     // create a writer to write to default System.out

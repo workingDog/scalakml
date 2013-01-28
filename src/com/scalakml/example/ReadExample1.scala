@@ -12,7 +12,7 @@ import com.scalakml.kml.{Point, Placemark}
  */
 
 object ReadExample1 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]) {
     println("....ReadExample1 start...\n")
     // read a kml file into a kml root object.
     // Note the default extractor (as shown) can be replaced by your own KmlExtractor

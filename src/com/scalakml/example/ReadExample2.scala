@@ -11,7 +11,7 @@ import com.scalakml.kml.{Point, Placemark}
  */
 
 object ReadExample2 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]) {
     println("....ReadExample2 start...\n")
     // read a kml file into a kml root object
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-oz.kml")

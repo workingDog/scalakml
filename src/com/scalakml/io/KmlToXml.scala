@@ -938,7 +938,7 @@ object KmlToXml extends XmlExtractor {
     def toXml(featurePart: Option[FeaturePart]): Seq[NodeSeq] = {
       if (!featurePart.isDefined || (featurePart.get == null)) Seq.empty
       else {
-        val list = MutableList[NodeSeq]()
+        val list = new MutableList[NodeSeq]()
 
         list += getNodeFromFieldName("name", featurePart)
         list += getNodeFromFieldName("visibility", featurePart)

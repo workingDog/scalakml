@@ -10,7 +10,7 @@ import xml.PrettyPrinter
  */
 
 object ReadWriteExample1 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]) {
     println("....ReadWriteExample1 start...\n")
     // read a kml file into a kml root object
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/KML_Samples.kml")

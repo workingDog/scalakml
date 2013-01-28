@@ -15,7 +15,7 @@ import xml.PrettyPrinter
  */
 
 object WriteExample2 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String])  {
     println("....WriteExample2 start...\n")
     // create a Point at a location
     val point = Point() withAddedCoordinate new Location(151.21037, -33.8526)

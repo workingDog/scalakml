@@ -7,7 +7,7 @@ package com.scalakml.example
  */
 
 object ReadKmzExample1 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String])  {
     println("....ReadKmzExample1 start...\n")
 
 

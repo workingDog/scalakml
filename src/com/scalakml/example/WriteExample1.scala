@@ -15,7 +15,7 @@ import scala.Some
  */
 
 object WriteExample1 {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]) {
     println("....WriteExample1 start...\n")
     // create a Point at a location
     val point = Point(coordinates = Some(Seq.empty :+ new Location(151.21037, -33.8526)))
