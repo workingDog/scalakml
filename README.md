@@ -71,7 +71,7 @@ object WriteExample1 {
   }
 }
 
-see also WriteExample2 for a simple variation of WriteExample1.
+see also WriteExample2 for a variation of WriteExample1.
 
 ## Status
 
