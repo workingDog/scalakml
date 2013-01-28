@@ -77,7 +77,7 @@ see also WriteExample2 for a variation of WriteExample1.
 This scalakml library needs some more work, in particular testing and more documentation.  
 The xAl classes are there but not integrated yet. Hence the AddressDetails is not functional yet.
 
-The gx: extension set only has what is in the official kml22gx.xsd schema,
+The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google in reference 2.
 
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
