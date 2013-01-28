@@ -68,8 +68,7 @@ all other fields are the same as before. See the examples.
     val kml = Kml(feature = Some(placemark))
     // write the kml to the output file
     new KmlPrintWriter("../kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
-    }
-    }
+    } }
 
 see also WriteExample2 for a variation of WriteExample1.
 
