@@ -34,6 +34,7 @@ import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
 import com.scalakml.xAL.AddressDetails
+import com.scalakml.io.KmlXalToXml._
 import scala.reflect.runtime.universe._
 import scala.language.reflectiveCalls
 import scala.language.postfixOps
@@ -378,11 +379,6 @@ object KmlFromXml extends KmlExtractor {
 
   def makeAtomAuthor(nodeSeq: NodeSeq): Option[com.scalakml.atom.Author] = {
     if (nodeSeq.isEmpty) None else (getFromNode[String](nodeSeq \ "name")).map(x => new com.scalakml.atom.Author(name = x))
-  }
-
-  // TODO
-  def makeAddressDetails(nodeSeq: NodeSeq): Option[AddressDetails] = {
-    if (nodeSeq.isEmpty) None else Some(new AddressDetails())
   }
 
   def makeFeaturePart(nodeSeq: NodeSeq): FeaturePart =

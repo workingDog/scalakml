@@ -3,6 +3,13 @@
 //
 package com.scalakml.xAL
 
+import javax.xml.namespace.QName
+
+/**
+ *
+ * reference: https://www.oasis-open.org/committees/ciq/ciq.html#6
+ *
+ */
 
 /** xAL: eXtensible Address Language 
 This is an XML document type definition (DTD) for
@@ -17,138 +24,90 @@ Previous Version: 1.3
 */
 
 
-case class XAL(AddressDetails: Seq[AddressDetails] = Nil,
+case class XAL(addressDetails: Seq[AddressDetails] = Nil,
   any: Seq[Any] = Nil,
   version: Option[String] = None,
-  attributes: Map[String, Any]) {
+  attributes: Map[String, QName]) {
 
   def this() = this(Nil,Nil,None,Map() )
 }
 
+case class ContentType(content: Option[String] = None,
+      objectType: Option[String] = None,
+      code: Option[String] = None,
+      attributes: Map[String, QName])
 
-case class AddressIdentifier(mixed: Seq[Any] = Nil,
+case class AddressIdentifier(content: Option[String] = None,
   identifierType: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
-
-case class EndorsementLineCode(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class KeyLineCode(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class Barcode(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class SortingCode(Type: Option[String] = None,
+case class SortingCode(objectType: Option[String] = None,
   code: Option[String] = None)
 
 
-case class AddressLatitude(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-/** Specific to postal service
-*/
-case class AddressLatitudeDirection(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class AddressLongitude(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class AddressLongitudeDirection(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class SupplementaryPostalServiceData(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostalServiceElements(AddressIdentifier: Seq[AddressIdentifier] = Nil,
-  EndorsementLineCode: Option[EndorsementLineCode] = None,
-  KeyLineCode: Option[KeyLineCode] = None,
-  Barcode: Option[Barcode] = None,
-  SortingCode: Option[SortingCode] = None,
-  AddressLatitude: Option[AddressLatitude] = None,
-  AddressLatitudeDirection: Option[AddressLatitudeDirection] = None,
-  AddressLongitude: Option[AddressLongitude] = None,
-  AddressLongitudeDirection: Option[AddressLongitudeDirection] = None,
-  SupplementaryPostalServiceData: Seq[SupplementaryPostalServiceData] = Nil,
+case class PostalServiceElements(addressIdentifier: Seq[AddressIdentifier] = Nil,
+  endorsementLineCode: Option[ContentType] = None,
+  keyLineCode: Option[ContentType] = None,
+  barcode: Option[ContentType] = None,
+  sortingCode: Option[SortingCode] = None,
+  addressLatitude: Option[ContentType] = None,
+  addressLatitudeDirection: Option[ContentType] = None,
+  addressLongitude: Option[ContentType] = None,
+  addressLongitudeDirection: Option[ContentType] = None,
+  supplementaryPostalServiceData: Seq[ContentType] = Nil,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class Address(mixed: Seq[Any] = Nil,
+case class Address(content: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any]) extends AddressDetailsOption {
+  attributes: Map[String, QName]) extends AddressDetailsOption {
 
-  def this() = this(Nil,None,None, Map() )
+  def this() = this(None,None,None, Map() )
 }
 
-
-case class CountryNameCode(mixed: Seq[Any] = Nil,
-  Scheme: Option[String] = None,
+case class CountryNameCode(content: Option[String] = None,
+  scheme: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class Country(AddressLine: Seq[AddressLine] = Nil,
-  CountryNameCode: Seq[CountryNameCode] = Nil,
-  CountryName: Seq[CountryName] = Nil,
+case class Country(addressLine: Seq[AddressLine] = Nil,
+  countryNameCode: Seq[CountryNameCode] = Nil,
+  countryName: Seq[ContentType] = Nil,
   countryOption: Option[CountryOption] = None,
   any: Seq[Any] = Nil,
-  attributes: Map[String, Any]) extends AddressDetailsOption {
+  attributes: Map[String, QName]) extends AddressDetailsOption {
 
   def this() = this(Nil,Nil, Nil, None, Nil, Map() )
 }
 
 trait CountryOption
 
-case class AddressDetails(PostalServiceElements: Option[PostalServiceElements] = None,
+case class AddressDetails(postalServiceElements: Option[PostalServiceElements] = None,
   addressDetailsOption: Option[AddressDetailsOption] = None,
-  any: Seq[Any] = Nil,
-  AddressType: Option[String] = None,
-  CurrentStatus: Option[String] = None,
-  ValidFromDate: Option[String] = None,
-  ValidToDate: Option[String] = None,
-  Usage: Option[String] = None,
+  addressType: Option[String] = None,
+  currentStatus: Option[String] = None,
+  validFromDate: Option[String] = None,
+  validToDate: Option[String] = None,
+  usage: Option[String] = None,
   code: Option[String] = None,
-  AddressDetailsKey: Option[String] = None,
-  attributes: Map[String, Any] = Map()) {
+  addressDetailsKey: Option[String] = None,
+  attributes: Map[String, QName] = Map(),
+  any: Seq[Any] = Nil) {
 
-  def this() = this(None,None, Nil,None,None,None,None,None,None,None, Map() )
+  def this() = this(None,None, None,None,None,None,None,None,None, Map(), Nil)
 }
   
 trait AddressDetailsOption
 
-case class AddressLinesType(AddressLine: Seq[AddressLine] = Nil,
+case class AddressLines(addressLine: Seq[AddressLine] = Nil,
   any: Seq[Any] = Nil,
-  attributes: Map[String, Any]) extends AddressDetailsOption {
+  attributes: Map[String, QName]) extends AddressDetailsOption {
 
   def this() = this(Nil,Nil, Map() )
 }
@@ -167,281 +126,157 @@ case object Before extends TypeOccurrence { override def toString = "Before" }
 case object After extends TypeOccurrence { override def toString = "After" }
 
 
-case class BuildingNameType(mixed: Seq[Any] = Nil,
+case class BuildingName(content: Option[String] = None,
   objectType: Option[String] = None,
-  TypeOccurrence: Option[TypeOccurrence] = None,
+  typeOccurrence: Option[TypeOccurrence] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class DependentLocalityName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
+case class DependentLocalityNumber(content: Option[String] = None,
+  nameNumberOccurrence: Option[TypeOccurrence] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
-
-trait NameNumberOccurrence
-
-object NameNumberOccurrence {
-  def fromString(value: String): NameNumberOccurrence = value match {
-    case "Before" => BeforeValue
-    case "After" => AfterValue
-
-  }
-}
-
-case object BeforeValue extends NameNumberOccurrence { override def toString = "Before" }
-case object AfterValue extends NameNumberOccurrence { override def toString = "After" }
+  attributes: Map[String, QName])
 
 
-case class DependentLocalityNumber(mixed: Seq[Any] = Nil,
-  NameNumberOccurrence: Option[NameNumberOccurrence] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class DependentLocalityType(AddressLine: Seq[AddressLine] = Nil,
-  DependentLocalityName: Seq[DependentLocalityName] = Nil,
-  DependentLocalityNumber: Option[DependentLocalityNumber] = None,
-  dependentlocalitytypeoption: Option[DependentLocalityTypeOption] = None,
-  Thoroughfare: Option[Thoroughfare] = None,
-  Premise: Option[Premise] = None,
-  DependentLocality: Option[DependentLocalityType] = None,
-  PostalCode: Option[PostalCode] = None,
+case class DependentLocality(addressLine: Seq[AddressLine] = Nil,
+  dependentLocalityName: Seq[ContentType] = Nil,
+  dependentLocalityNumber: Option[DependentLocalityNumber] = None,
+  dependentLocalityTypeOption: Option[DependentLocalityOption] = None,
+  thoroughfare: Option[Thoroughfare] = None,
+  premise: Option[Premise] = None,
+  dependentLocality: Option[DependentLocality] = None,
+  postalCode: Option[PostalCode] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  UsageType: Option[String] = None,
-  Connector: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption2
+  usageType: Option[String] = None,
+  connector: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName]) extends ThoroughfareOption
 
-trait DependentLocalityTypeOption
+trait DependentLocalityOption
 
-case class FirmName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class FirmType(AddressLine: Seq[AddressLine] = Nil,
-  FirmName: Seq[FirmName] = Nil,
-  Department: Seq[Department] = Nil,
-  MailStop: Option[MailStopType] = None,
-  PostalCode: Option[PostalCode] = None,
+case class FirmType(addressLine: Seq[AddressLine] = Nil,
+  firmName: Seq[ContentType] = Nil,
+  department: Seq[Department] = Nil,
+  mailStop: Option[MailStopType] = None,
+  postalCode: Option[PostalCode] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption2 with PremiseOption3
+  attributes: Map[String, QName]) extends ThoroughfareOption with PremiseOption
 
-
-case class LargeMailUserName(mixed: Seq[Any] = Nil,
+case class LargeMailUserIdentifier(content: Option[String] = None,
   objectType: Option[String] = None,
+  indicator: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class LargeMailUserIdentifier(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  Indicator: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class LargeMailUserType(AddressLine: Seq[AddressLine] = Nil,
-  LargeMailUserName: Seq[LargeMailUserName] = Nil,
-  LargeMailUserIdentifier: Option[LargeMailUserIdentifier] = None,
-  BuildingName: Seq[BuildingNameType] = Nil,
-  Department: Option[Department] = None,
-  PostBox: Option[PostBox] = None,
-  Thoroughfare: Option[Thoroughfare] = None,
-  PostalCode: Option[PostalCode] = None,
+case class LargeMailUserType(addressLine: Seq[AddressLine] = Nil,
+  largeMailUserName: Seq[ContentType] = Nil,
+  largeMailUserIdentifier: Option[LargeMailUserIdentifier] = None,
+  buildingName: Seq[BuildingName] = Nil,
+  department: Option[Department] = None,
+  postBox: Option[PostBox] = None,
+  thoroughfare: Option[Thoroughfare] = None,
+  postalCode: Option[PostalCode] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any]) extends DependentLocalityTypeOption with LocalityOption
+  attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
 
 
-case class MailStopName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
+case class MailStopNumber(content: Option[String] = None,
+  nameNumberSeparator: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class MailStopNumber(mixed: Seq[Any] = Nil,
-  NameNumberSeparator: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class MailStopType(AddressLine: Seq[AddressLine] = Nil,
-  MailStopName: Option[MailStopName] = None,
-  MailStopNumber: Option[MailStopNumber] = None,
+case class MailStopType(addressLine: Seq[AddressLine] = Nil,
+  mailStopName: Option[ContentType] = None,
+  mailStopNumber: Option[MailStopNumber] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class PostalRouteName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PostalRouteTypeOption
-
-
-case class PostalRouteNumber(mixed: Seq[Any] = Nil,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PostalRouteTypeOption
-
-
-case class PostalRouteType(AddressLine: Seq[AddressLine] = Nil,
-  postalroutetypeoption: Seq[PostalRouteTypeOption] = Nil,
-  PostBox: Option[PostBox] = None,
+case class PostalRouteType(addressLine: Seq[AddressLine] = Nil,
+  postalRouteTypeOption: Seq[PostalRouteTypeOption] = Nil,
+  postBox: Option[PostBox] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any]) extends DependentLocalityTypeOption with LocalityOption
+  attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
 
 trait PostalRouteTypeOption
-trait TypeOccurrenceType
-
-object TypeOccurrenceType {
-  def fromString(value: String): TypeOccurrenceType = value match {
-    case "Before" => BeforeValue2
-    case "After" => AfterValue2
-
-  }
-}
-
-case object BeforeValue2 extends TypeOccurrenceType { override def toString = "Before" }
-case object AfterValue2 extends TypeOccurrenceType { override def toString = "After" }
 
 
-case class SubPremiseName(mixed: Seq[Any] = Nil,
+case class SubPremiseName(content: Option[String] = None,
   objectType: Option[String] = None,
-  TypeOccurrence: Option[TypeOccurrenceType] = None,
+  typeOccurrence: Option[TypeOccurrence] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class SubPremiseLocation(mixed: Seq[Any] = Nil,
+case class SubPremiseLocation(content: Option[String] = None,
   code: Option[String] = None) extends SubPremiseTypeOption
 
-trait IndicatorOccurrence
-
-object IndicatorOccurrence {
-  def fromString(value: String): IndicatorOccurrence = value match {
-    case "Before" => BeforeValue3
-    case "After" => AfterValue3
-
-  }
-}
-
-case object BeforeValue3 extends IndicatorOccurrence { override def toString = "Before" }
-case object AfterValue3 extends IndicatorOccurrence { override def toString = "After" }
-
-trait NumberTypeOccurrence
-
-object NumberTypeOccurrence {
-  def fromString(value: String): NumberTypeOccurrence = value match {
-    case "Before" => BeforeValue4
-    case "After" => AfterValue4
-
-  }
-}
-
-case object BeforeValue4 extends NumberTypeOccurrence { override def toString = "Before" }
-case object AfterValue4 extends NumberTypeOccurrence { override def toString = "After" }
-
-
-case class SubPremiseNumber(mixed: Seq[Any] = Nil,
-  Indicator: Option[String] = None,
-  IndicatorOccurrence: Option[IndicatorOccurrence] = None,
-  NumberTypeOccurrence: Option[NumberTypeOccurrence] = None,
-  PremiseNumberSeparator: Option[String] = None,
+case class SubPremiseNumber(content: Option[String] = None,
+  indicator: Option[String] = None,
+  indicatorOccurrence: Option[TypeOccurrence] = None,
+  numberTypeOccurrence: Option[TypeOccurrence] = None,
+  premiseNumberSeparator: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any]) extends SubPremiseTypeOption
+  attributes: Map[String, QName]) extends SubPremiseTypeOption
 
 
-case class SubPremiseNumberPrefix(mixed: Seq[Any] = Nil,
-  NumberPrefixSeparator: Option[String] = None,
+case class SubPremiseNumberPrefix(content: Option[String] = None,
+  numberPrefixSeparator: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class SubPremiseNumberSuffix(mixed: Seq[Any] = Nil,
-  NumberSuffixSeparator: Option[String] = None,
+case class SubPremiseNumberSuffix(content: Option[String] = None,
+  numberSuffixSeparator: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class SubPremiseType(AddressLine: Seq[AddressLine] = Nil,
-  SubPremiseName: Seq[SubPremiseName] = Nil,
-  subpremisetypeoption: Seq[SubPremiseTypeOption] = Nil,
-  SubPremiseNumberPrefix: Seq[SubPremiseNumberPrefix] = Nil,
-  SubPremiseNumberSuffix: Seq[SubPremiseNumberSuffix] = Nil,
-  BuildingName: Seq[BuildingNameType] = Nil,
-  Firm: Option[FirmType] = None,
-  MailStop: Option[MailStopType] = None,
-  PostalCode: Option[PostalCode] = None,
-  SubPremise: Option[SubPremiseType] = None,
+case class SubPremiseType(addressLine: Seq[AddressLine] = Nil,
+  subPremiseName: Seq[SubPremiseName] = Nil,
+  subPremiseTypeOption: Seq[SubPremiseTypeOption] = Nil,
+  subPremiseNumberPrefix: Seq[SubPremiseNumberPrefix] = Nil,
+  subPremiseNumberSuffix: Seq[SubPremiseNumberSuffix] = Nil,
+  buildingName: Seq[BuildingName] = Nil,
+  firm: Option[FirmType] = None,
+  mailStop: Option[MailStopType] = None,
+  postalCode: Option[PostalCode] = None,
+  subPremise: Option[SubPremiseType] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  attributes: Map[String, Any]) extends PremiseOption3
+  attributes: Map[String, QName]) extends PremiseOption
 
 trait SubPremiseTypeOption
 
-case class ThoroughfareLeadingTypeType(mixed: Seq[Any] = Nil,
+
+case class AddressLine(content: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
-
-case class ThoroughfareNameType(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class ThoroughfarePostDirectionType(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class ThoroughfarePreDirectionType(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class ThoroughfareTrailingTypeType(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class AddressLine(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class LocalityName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class Locality(AddressLine: Seq[AddressLine] = Nil,
-  LocalityName: Seq[LocalityName] = Nil,
-  localityoption: Option[LocalityOption] = None,
-  Thoroughfare: Option[Thoroughfare] = None,
-  Premise: Option[Premise] = None,
-  DependentLocality: Option[DependentLocalityType] = None,
-  PostalCode: Option[PostalCode] = None,
+case class Locality(addressLine: Seq[AddressLine] = Nil,
+  localityName: Seq[ContentType] = Nil,
+  localityOption: Option[LocalityOption] = None,
+  thoroughfare: Option[Thoroughfare] = None,
+  premise: Option[Premise] = None,
+  dependentLocality: Option[DependentLocality] = None,
+  postalCode: Option[PostalCode] = None,
   any: Seq[Any] = Nil,
   objectType: Option[String] = None,
-  UsageType: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any]) extends CountryOption with AddressDetailsOption with SubAdministrativeAreaOption with AdministrativeAreaOption {
+  usageType: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption with SubAdministrativeAreaOption with AdministrativeAreaOption {
 
   def this() = this(Nil,Nil, None, None, None, None, None, Nil, None, None, None, Map() )
 }
@@ -473,23 +308,255 @@ object RangeType {
 case object Odd extends RangeType { override def toString = "Odd" }
 case object Even extends RangeType { override def toString = "Even" }
 
-trait IndicatorOccurrenceType
 
-object IndicatorOccurrenceType {
-  def fromString(value: String): IndicatorOccurrenceType = value match {
-    case "Before" => BeforeValue5
-    case "After" => AfterValue5
+case class ThoroughfareNumberRange(addressLine: Seq[AddressLine] = Nil,
+  thoroughfareNumberFrom: ContentType,
+  thoroughfareNumberTo: ContentType,
+  rangeType: Option[RangeType] = None,
+  indicator: Option[String] = None,
+  separator: Option[String] = None,
+  indicatorOccurrence: Option[TypeOccurrence] = None,
+  numberRangeOccurrence: Option[NumberOccurrence] = None,
+  objectType: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName]) extends ThoroughfareOption
+
+
+case class DependentThoroughfare(addressLine: Seq[AddressLine] = Nil,
+  thoroughfarePreDirection: Option[ContentType] = None,
+  thoroughfareLeadingType: Option[ContentType] = None,
+  thoroughfareName: Seq[ContentType] = Nil,
+  thoroughfareTrailingType: Option[ContentType] = None,
+  thoroughfarePostDirection: Option[ContentType] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class Thoroughfare(addressLine: Seq[AddressLine] = Nil,
+  thoroughfareOptionSeq: Seq[ThoroughfareOption] = Nil,
+  thoroughfareNumberPrefix: Seq[ThoroughfareNumberPrefix] = Nil,
+  thoroughfareNumberSuffix: Seq[ThoroughfareNumberSuffix] = Nil,
+  thoroughfarePreDirection: Option[ContentType] = None,
+  thoroughfareLeadingType: Option[ContentType] = None,
+  thoroughfareName: Seq[ContentType] = Nil,
+  thoroughfareTrailingType: Option[ContentType] = None,
+  thoroughfarePostDirection: Option[ContentType] = None,
+  dependentThoroughfare: Option[DependentThoroughfare] = None,
+  thoroughfareOption: Option[ThoroughfareOption] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  dependentThoroughfares: Option[DependentThoroughfares] = None,
+  dependentThoroughfaresIndicator: Option[String] = None,
+  dependentThoroughfaresConnector: Option[String] = None,
+  dependentThoroughfaresType: Option[String] = None,
+  attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption {
+
+  def this() = this(Nil,Nil,Nil,Nil,None,None,Nil,None,None,None,None,Nil,None,None,None,None,None, Map() )
+}
+
+trait ThoroughfareOption
+
+
+case class SubAdministrativeArea(addressLine: Seq[AddressLine] = Nil,
+  subAdministrativeAreaName: Seq[ContentType] = Nil,
+  subAdministrativeAreaOption: Option[SubAdministrativeAreaOption] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  usageType: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName])
+
+trait SubAdministrativeAreaOption
+
+case class AdministrativeArea(addressLine: Seq[AddressLine] = Nil,
+  administrativeAreaName: Seq[ContentType] = Nil,
+  subAdministrativeArea: Option[SubAdministrativeArea] = None,
+  administrativeAreaOption: Option[AdministrativeAreaOption] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  usageType: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption {
+
+  def this() = this(Nil,Nil,None,None,Nil,None,None,None, Map() )
+}
+
+trait AdministrativeAreaOption
+
+case class PostOfficeNumber(content: Option[String] = None,
+  indicator: Option[String] = None,
+  indicatorOccurrence: Option[TypeOccurrence] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName]) extends PostOfficeOption
+
+
+case class PostOffice(addressLine: Seq[AddressLine] = Nil,
+  postOfficeOption: Seq[PostOfficeOption] = Nil,
+  postalRoute: Option[PostalRouteType] = None,
+  postBox: Option[PostBox] = None,
+  postalCode: Option[PostalCode] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption with SubAdministrativeAreaOption with AdministrativeAreaOption
+
+trait PostOfficeOption
+
+case class PostalCodeNumberExtension(content: Option[String] = None,
+  objectType: Option[String] = None,
+  numberExtensionSeparator: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+case class PostTownSuffix(content: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostTown(addressLine: Seq[AddressLine] = Nil,
+  postTownName: Seq[ContentType] = Nil,
+  postTownSuffix: Option[PostTownSuffix] = None,
+  objectType: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostalCode(addressLine: Seq[AddressLine] = Nil,
+  postalCodeNumber: Seq[ContentType] = Nil,
+  postalCodeNumberExtension: Seq[PostalCodeNumberExtension] = Nil,
+  postTown: Option[PostTown] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  attributes: Map[String, QName]) extends ThoroughfareOption with SubAdministrativeAreaOption with AdministrativeAreaOption
+
+
+case class PostBoxNumber(content: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostBoxNumberPrefix(content: Option[String] = None,
+  numberPrefixSeparator: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostBoxNumberSuffix(content: Option[String] = None,
+  numberSuffixSeparator: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostBoxNumberExtension(content: Option[String] = None,
+  numberExtensionSeparator: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PostBox(addressLine: Seq[AddressLine] = Nil,
+  postBoxNumber: PostBoxNumber,
+  postBoxNumberPrefix: Option[PostBoxNumberPrefix] = None,
+  postBoxNumberSuffix: Option[PostBoxNumberSuffix] = None,
+  postBoxNumberExtension: Option[PostBoxNumberExtension] = None,
+  firm: Option[FirmType] = None,
+  postalCode: Option[PostalCode] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  indicator: Option[String] = None,
+  attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
+
+
+case class Department(addressLine: Seq[AddressLine] = Nil,
+  departmentName: Seq[ContentType] = Nil,
+  mailStop: Option[MailStopType] = None,
+  postalCode: Option[PostalCode] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  attributes: Map[String, QName])
+
+case class PremiseName(content: Option[String] = None,
+  objectType: Option[String] = None,
+  typeOccurrence: Option[TypeOccurrence] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class PremiseLocation(content: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName]) extends PremiseOption
+
+case class PremiseNumberRangeFrom(addressLine: Seq[AddressLine] = Nil,
+  premiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
+  premiseNumber: Seq[PremiseNumber] = Nil,
+  premiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil)
+
+
+case class PremiseNumberRangeTo(addressLine: Seq[AddressLine] = Nil,
+  premiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
+  premiseNumber: Seq[PremiseNumber] = Nil,
+  premiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil)
+
+
+case class PremiseNumberRange(premiseNumberRangeFrom: PremiseNumberRangeFrom,
+  premiseNumberRangeTo: PremiseNumberRangeTo,
+  rangeType: Option[String] = None,
+  indicator: Option[String] = None,
+  separator: Option[String] = None,
+  objectType: Option[String] = None,
+  indicatorOccurence: Option[TypeOccurrence] = None,
+  numberRangeOccurence: Option[NumberOccurrence] = None) extends PremiseOption
+
+
+case class Premise(addressLine: Seq[AddressLine] = Nil,
+  premiseName: Seq[PremiseName] = Nil,
+  premiseOption: Seq[PremiseOption] = Nil,
+  premiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
+  premiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil,
+  buildingName: Seq[BuildingName] = Nil,
+  premiseOption3: Seq[PremiseOption] = Nil,
+  mailStop: Option[MailStopType] = None,
+  postalCode: Option[PostalCode] = None,
+  premise: Option[Premise] = None,
+  any: Seq[Any] = Nil,
+  objectType: Option[String] = None,
+  premiseDependency: Option[String] = None,
+  premiseDependencyType: Option[String] = None,
+  premiseThoroughfareConnector: Option[String] = None,
+  attributes: Map[String, QName]) extends ThoroughfareOption
+
+trait PremiseOption
+
+/** A-12 where 12 is number and A is prefix and "-" is the separator
+*/
+case class ThoroughfareNumberPrefix(content: Option[String] = None,
+  numberPrefixSeparator: Option[String] = None,
+  objectType: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+
+case class ThoroughfareNumberSuffix(content: Option[String] = None,
+  numberSuffixSeparator: Option[String] = None,
+  objectType: Option[String] = None,
+  code: Option[String] = None,
+  attributes: Map[String, QName])
+
+trait NumberType
+
+object NumberType {
+  def fromString(value: String): NumberType = value match {
+    case "Single" => Single
+    case "Range" => Range
 
   }
 }
 
-case object BeforeValue5 extends IndicatorOccurrenceType { override def toString = "Before" }
-case object AfterValue5 extends IndicatorOccurrenceType { override def toString = "After" }
+case object Single extends NumberType { override def toString = "Single" }
+case object Range extends NumberType { override def toString = "Range" }
 
-trait NumberRangeOccurrence
+trait NumberOccurrence
 
-object NumberRangeOccurrence {
-  def fromString(value: String): NumberRangeOccurrence = value match {
+object NumberOccurrence {
+  def fromString(value: String): NumberOccurrence = value match {
     case "BeforeName" => BeforeName
     case "AfterName" => AfterName
     case "BeforeType" => BeforeType
@@ -498,472 +565,44 @@ object NumberRangeOccurrence {
   }
 }
 
-case object BeforeName extends NumberRangeOccurrence { override def toString = "BeforeName" }
-case object AfterName extends NumberRangeOccurrence { override def toString = "AfterName" }
-case object BeforeType extends NumberRangeOccurrence { override def toString = "BeforeType" }
-case object AfterType extends NumberRangeOccurrence { override def toString = "AfterType" }
+case object BeforeName extends NumberOccurrence { override def toString = "BeforeName" }
+case object AfterName extends NumberOccurrence { override def toString = "AfterName" }
+case object BeforeType extends NumberOccurrence { override def toString = "BeforeType" }
+case object AfterType extends NumberOccurrence { override def toString = "AfterType" }
 
 
-case class ThoroughfareNumberFrom(mixed: Seq[Any] = Nil,
+case class ThoroughfareNumber(content: Option[String] = None,
+  numberType: Option[NumberType] = None,
+  objectType: Option[String] = None,
+  indicator: Option[String] = None,
+  indicatorOccurrence: Option[TypeOccurrence] = None,
+  numberOccurrence: Option[NumberOccurrence] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName]) extends ThoroughfareOption
 
-
-case class ThoroughfareNumberTo(mixed: Seq[Any] = Nil,
+case class PremiseNumber(content: Option[String] = None,
+  numberType: Option[NumberType] = None,
+  objectType: Option[String] = None,
+  indicator: Option[String] = None,
+  indicatorOccurrence: Option[TypeOccurrence] = None,
+  numberTypeOccurrence: Option[TypeOccurrence] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class ThoroughfareNumberRange(AddressLine: Seq[AddressLine] = Nil,
-  ThoroughfareNumberFrom: ThoroughfareNumberFrom,
-  ThoroughfareNumberTo: ThoroughfareNumberTo,
-  RangeType: Option[RangeType] = None,
-  Indicator: Option[String] = None,
-  Separator: Option[String] = None,
-  IndicatorOccurrence: Option[IndicatorOccurrenceType] = None,
-  NumberRangeOccurrence: Option[NumberRangeOccurrence] = None,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption
-
-
-case class DependentThoroughfare(AddressLine: Seq[AddressLine] = Nil,
-  ThoroughfarePreDirection: Option[ThoroughfarePreDirectionType] = None,
-  ThoroughfareLeadingType: Option[ThoroughfareLeadingTypeType] = None,
-  ThoroughfareName: Seq[ThoroughfareNameType] = Nil,
-  ThoroughfareTrailingType: Option[ThoroughfareTrailingTypeType] = None,
-  ThoroughfarePostDirection: Option[ThoroughfarePostDirectionType] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class Thoroughfare(AddressLine: Seq[AddressLine] = Nil,
-  thoroughfareoption: Seq[ThoroughfareOption] = Nil,
-  ThoroughfareNumberPrefix: Seq[ThoroughfareNumberPrefix] = Nil,
-  ThoroughfareNumberSuffix: Seq[ThoroughfareNumberSuffix] = Nil,
-  ThoroughfarePreDirection: Option[ThoroughfarePreDirectionType] = None,
-  ThoroughfareLeadingType: Option[ThoroughfareLeadingTypeType] = None,
-  ThoroughfareName: Seq[ThoroughfareNameType] = Nil,
-  ThoroughfareTrailingType: Option[ThoroughfareTrailingTypeType] = None,
-  ThoroughfarePostDirection: Option[ThoroughfarePostDirectionType] = None,
-  DependentThoroughfare: Option[DependentThoroughfare] = None,
-  thoroughfareoption2: Option[ThoroughfareOption2] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  DependentThoroughfares: Option[DependentThoroughfares] = None,
-  DependentThoroughfaresIndicator: Option[String] = None,
-  DependentThoroughfaresConnector: Option[String] = None,
-  DependentThoroughfaresType: Option[String] = None,
-  attributes: Map[String, Any]) extends CountryOption with AddressDetailsOption {
-
-  def this() = this(Nil,Nil,Nil,Nil,None,None,Nil,None,None,None,None,Nil,None,None,None,None,None, Map() )
-}
-
-trait ThoroughfareOption
-trait ThoroughfareOption2
-
-case class AdministrativeAreaName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class SubAdministrativeAreaName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class SubAdministrativeArea(AddressLine: Seq[AddressLine] = Nil,
-  SubAdministrativeAreaName: Seq[SubAdministrativeAreaName] = Nil,
-  subadministrativeareaoption: Option[SubAdministrativeAreaOption] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  UsageType: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any])
-
-trait SubAdministrativeAreaOption
-
-case class AdministrativeArea(AddressLine: Seq[AddressLine] = Nil,
-  AdministrativeAreaName: Seq[AdministrativeAreaName] = Nil,
-  SubAdministrativeArea: Option[SubAdministrativeArea] = None,
-  administrativeareaoption: Option[AdministrativeAreaOption] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  UsageType: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any]) extends CountryOption with AddressDetailsOption {
-
-  def this() = this(Nil,Nil,None,None,Nil,None,None,None, Map() )
-}
-
-trait AdministrativeAreaOption
-
-case class PostOfficeName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PostOfficeOption
-
-trait IndicatorOccurrenceType2
-
-object IndicatorOccurrenceType2 {
-  def fromString(value: String): IndicatorOccurrenceType2 = value match {
-    case "Before" => BeforeValue6
-    case "After" => AfterValue6
-
-  }
-}
-
-case object BeforeValue6 extends IndicatorOccurrenceType2 { override def toString = "Before" }
-case object AfterValue6 extends IndicatorOccurrenceType2 { override def toString = "After" }
-
-
-case class PostOfficeNumber(mixed: Seq[Any] = Nil,
-  Indicator: Option[String] = None,
-  IndicatorOccurrence: Option[IndicatorOccurrenceType2] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PostOfficeOption
-
-
-case class PostOffice(AddressLine: Seq[AddressLine] = Nil,
-  postofficeoption: Seq[PostOfficeOption] = Nil,
-  PostalRoute: Option[PostalRouteType] = None,
-  PostBox: Option[PostBox] = None,
-  PostalCode: Option[PostalCode] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any]) extends DependentLocalityTypeOption with LocalityOption with SubAdministrativeAreaOption with AdministrativeAreaOption
-
-trait PostOfficeOption
-
-case class PostalCodeNumber(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostalCodeNumberExtension(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  NumberExtensionSeparator: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostTownName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostTownSuffix(mixed: Seq[Any] = Nil,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostTown(AddressLine: Seq[AddressLine] = Nil,
-  PostTownName: Seq[PostTownName] = Nil,
-  PostTownSuffix: Option[PostTownSuffix] = None,
-  objectType: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostalCode(AddressLine: Seq[AddressLine] = Nil,
-  PostalCodeNumber: Seq[PostalCodeNumber] = Nil,
-  PostalCodeNumberExtension: Seq[PostalCodeNumberExtension] = Nil,
-  PostTown: Option[PostTown] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption2 with SubAdministrativeAreaOption with AdministrativeAreaOption
-
-
-case class PostBoxNumber(mixed: Seq[Any] = Nil,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostBoxNumberPrefix(mixed: Seq[Any] = Nil,
-  NumberPrefixSeparator: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostBoxNumberSuffix(mixed: Seq[Any] = Nil,
-  NumberSuffixSeparator: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostBoxNumberExtension(mixed: Seq[Any] = Nil,
-  NumberExtensionSeparator: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PostBox(AddressLine: Seq[AddressLine] = Nil,
-  PostBoxNumber: PostBoxNumber,
-  PostBoxNumberPrefix: Option[PostBoxNumberPrefix] = None,
-  PostBoxNumberSuffix: Option[PostBoxNumberSuffix] = None,
-  PostBoxNumberExtension: Option[PostBoxNumberExtension] = None,
-  Firm: Option[FirmType] = None,
-  PostalCode: Option[PostalCode] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  Indicator: Option[String] = None,
-  attributes: Map[String, Any]) extends DependentLocalityTypeOption with LocalityOption
-
-
-case class DepartmentName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class Department(AddressLine: Seq[AddressLine] = Nil,
-  DepartmentName: Seq[DepartmentName] = Nil,
-  MailStop: Option[MailStopType] = None,
-  PostalCode: Option[PostalCode] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  attributes: Map[String, Any])
-
-trait TypeOccurrenceType2
-
-object TypeOccurrenceType2 {
-  def fromString(value: String): TypeOccurrenceType2 = value match {
-    case "Before" => BeforeValue7
-    case "After" => AfterValue7
-
-  }
-}
-
-case object BeforeValue7 extends TypeOccurrenceType2 { override def toString = "Before" }
-case object AfterValue7 extends TypeOccurrenceType2 { override def toString = "After" }
-
-
-case class PremiseName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  TypeOccurrence: Option[TypeOccurrenceType2] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class PremiseLocation(mixed: Seq[Any] = Nil,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PremiseOption
-
-trait IndicatorOccurence
-
-object IndicatorOccurence {
-  def fromString(value: String): IndicatorOccurence = value match {
-    case "Before" => BeforeValue8
-    case "After" => AfterValue8
-
-  }
-}
-
-case object BeforeValue8 extends IndicatorOccurence { override def toString = "Before" }
-case object AfterValue8 extends IndicatorOccurence { override def toString = "After" }
-
-trait NumberRangeOccurence
-
-object NumberRangeOccurence {
-  def fromString(value: String): NumberRangeOccurence = value match {
-    case "BeforeName" => BeforeNameValue
-    case "AfterName" => AfterNameValue
-    case "BeforeType" => BeforeTypeValue
-    case "AfterType" => AfterTypeValue
-
-  }
-}
-
-case object BeforeNameValue extends NumberRangeOccurence { override def toString = "BeforeName" }
-case object AfterNameValue extends NumberRangeOccurence { override def toString = "AfterName" }
-case object BeforeTypeValue extends NumberRangeOccurence { override def toString = "BeforeType" }
-case object AfterTypeValue extends NumberRangeOccurence { override def toString = "AfterType" }
-
-
-case class PremiseNumberRangeFrom(AddressLine: Seq[AddressLine] = Nil,
-  PremiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
-  PremiseNumber: Seq[PremiseNumber] = Nil,
-  PremiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil)
-
-
-case class PremiseNumberRangeTo(AddressLine: Seq[AddressLine] = Nil,
-  PremiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
-  PremiseNumber: Seq[PremiseNumber] = Nil,
-  PremiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil)
-
-
-case class PremiseNumberRange(PremiseNumberRangeFrom: PremiseNumberRangeFrom,
-  PremiseNumberRangeTo: PremiseNumberRangeTo,
-  RangeType: Option[String] = None,
-  Indicator: Option[String] = None,
-  Separator: Option[String] = None,
-  objectType: Option[String] = None,
-  IndicatorOccurence: Option[IndicatorOccurence] = None,
-  NumberRangeOccurence: Option[NumberRangeOccurence] = None) extends PremiseOption2
-
-
-case class Premise(AddressLine: Seq[AddressLine] = Nil,
-  PremiseName: Seq[PremiseName] = Nil,
-  premiseoption: Seq[PremiseOption] = Nil,
-  PremiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
-  PremiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil,
-  BuildingName: Seq[BuildingNameType] = Nil,
-  premiseoption3: Seq[PremiseOption3] = Nil,
-  MailStop: Option[MailStopType] = None,
-  PostalCode: Option[PostalCode] = None,
-  Premise: Option[Premise] = None,
-  any: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  PremiseDependency: Option[String] = None,
-  PremiseDependencyType: Option[String] = None,
-  PremiseThoroughfareConnector: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption2
-
-trait PremiseOption
-trait PremiseOption2 extends PremiseOption
-trait PremiseOption3
-
-/** A-12 where 12 is number and A is prefix and "-" is the separator
-*/
-case class ThoroughfareNumberPrefix(mixed: Seq[Any] = Nil,
-  NumberPrefixSeparator: Option[String] = None,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class ThoroughfareNumberSuffix(mixed: Seq[Any] = Nil,
-  NumberSuffixSeparator: Option[String] = None,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-trait NumberType
-
-object NumberType {
-  def fromString(value: String): NumberType = value match {
-    case "Single" => Single
-    case "Range" => RangeTypeValue
-
-  }
-}
-
-case object Single extends NumberType { override def toString = "Single" }
-case object RangeTypeValue extends NumberType { override def toString = "Range" }
-
-trait IndicatorOccurrenceType3
-
-object IndicatorOccurrenceType3 {
-  def fromString(value: String): IndicatorOccurrenceType3 = value match {
-    case "Before" => BeforeValue9
-    case "After" => AfterValue9
-
-  }
-}
-
-case object BeforeValue9 extends IndicatorOccurrenceType3 { override def toString = "Before" }
-case object AfterValue9 extends IndicatorOccurrenceType3 { override def toString = "After" }
-
-trait NumberOccurrence
-
-object NumberOccurrence {
-  def fromString(value: String): NumberOccurrence = value match {
-    case "BeforeName" => BeforeNameValue2
-    case "AfterName" => AfterNameValue2
-    case "BeforeType" => BeforeTypeValue2
-    case "AfterType" => AfterTypeValue2
-
-  }
-}
-
-case object BeforeNameValue2 extends NumberOccurrence { override def toString = "BeforeName" }
-case object AfterNameValue2 extends NumberOccurrence { override def toString = "AfterName" }
-case object BeforeTypeValue2 extends NumberOccurrence { override def toString = "BeforeType" }
-case object AfterTypeValue2 extends NumberOccurrence { override def toString = "AfterType" }
-
-
-case class ThoroughfareNumber(mixed: Seq[Any] = Nil,
-  NumberType: Option[NumberType] = None,
-  objectType: Option[String] = None,
-  Indicator: Option[String] = None,
-  IndicatorOccurrence: Option[IndicatorOccurrenceType3] = None,
-  NumberOccurrence: Option[NumberOccurrence] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends ThoroughfareOption
-
-trait NumberTypeType
-
-object NumberTypeType {
-  def fromString(value: String): NumberTypeType = value match {
-    case "Single" => SingleValue
-    case "Range" => RangeTypeValue2
-
-  }
-}
-
-case object SingleValue extends NumberTypeType { override def toString = "Single" }
-case object RangeTypeValue2 extends NumberTypeType { override def toString = "Range" }
-
-trait IndicatorOccurrenceType4
-
-object IndicatorOccurrenceType4 {
-  def fromString(value: String): IndicatorOccurrenceType4 = value match {
-    case "Before" => BeforeValue10
-    case "After" => AfterValue10
-
-  }
-}
-
-case object BeforeValue10 extends IndicatorOccurrenceType4 { override def toString = "Before" }
-case object AfterValue10 extends IndicatorOccurrenceType4 { override def toString = "After" }
-
-trait NumberTypeOccurrenceType
-
-object NumberTypeOccurrenceType {
-  def fromString(value: String): NumberTypeOccurrenceType = value match {
-    case "Before" => BeforeValue11
-    case "After" => AfterValue11
-
-  }
-}
-
-case object BeforeValue11 extends NumberTypeOccurrenceType { override def toString = "Before" }
-case object AfterValue11 extends NumberTypeOccurrenceType { override def toString = "After" }
-
-
-case class PremiseNumber(mixed: Seq[Any] = Nil,
-  NumberType: Option[NumberTypeType] = None,
-  objectType: Option[String] = None,
-  Indicator: Option[String] = None,
-  IndicatorOccurrence: Option[IndicatorOccurrenceType4] = None,
-  NumberTypeOccurrence: Option[NumberTypeOccurrenceType] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any]) extends PremiseOption2
+  attributes: Map[String, QName]) extends PremiseOption
 
 
 case class PremiseNumberPrefix(value: String,
-  NumberPrefixSeparator: Option[String] = None,
+  numberPrefixSeparator: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class PremiseNumberSuffix(mixed: Seq[Any] = Nil,
-  NumberSuffixSeparator: Option[String] = None,
+case class PremiseNumberSuffix(content: Option[String] = None,
+  numberSuffixSeparator: Option[String] = None,
   objectType: Option[String] = None,
   code: Option[String] = None,
-  attributes: Map[String, Any])
+  attributes: Map[String, QName])
 
 
-case class CountryName(mixed: Seq[Any] = Nil,
-  objectType: Option[String] = None,
-  code: Option[String] = None,
-  attributes: Map[String, Any])
-
-
-case class GrPostal(Code: Option[String] = None)
+case class GrPostal(code: Option[String] = None)
 
