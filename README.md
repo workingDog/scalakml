@@ -15,7 +15,7 @@ by using the excellent scalaxb, the XML data-binding tool for Scala, see http://
 
 However after looking at the generated class names and the way they would have to be used,
 I decided to make a number of changes to the generated code.
-I renamed a lot of the classes to be more like the references. 
+I renamed a lot of the classes to be more like reference 2. 
 As a result of the changes I broke the generated reading and writing of kml. 
 
 To pursue the original idea of coding something to learn scala, I started coding the reading and writing of the kml objects.
@@ -59,7 +59,7 @@ all other fields are the same as before. See the examples.
 # Usage
 
     object WriteExample1 {
-    def main(args: Array[String]): Unit = {
+    def main(args: Array[String]) {
     // create a Point at a location
     val point = Point(coordinates = Some(Seq.empty :+ new Location(151.21037, -33.8526)))
     // create a Placemark with the point, a name and open
@@ -67,7 +67,7 @@ all other fields are the same as before. See the examples.
     // create a kml root object with the placemark
     val kml = Kml(feature = Some(placemark))
     // write the kml to the output file
-    new KmlPrintWriter("../kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
+    new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }
 
 see also WriteExample2 for a variation of WriteExample1.
@@ -75,9 +75,9 @@ see also WriteExample2 for a variation of WriteExample1.
 ## Status
 
 This scalakml library needs some more work, in particular testing and more documentation.  
-The xAl classes are there but not integrated yet. Hence the AddressDetails is not functional yet.
+The xAl classes are under construction hence should not be used.
 
-The gx: extension set only has what is in the official kml22gx.xsd schema,
+The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google in reference 2.
 
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
