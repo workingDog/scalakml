@@ -53,6 +53,21 @@ Last Update: 24 July 2002
 Previous Version: 1.3
   */
 
+object AddressDetailsTypeSet extends Enumeration {
+  type AddressDetailsTypeSet = Value
+  val Address, AddressLines, Country, AdministrativeArea, Locality, Thoroughfare = Value
+}
+
+object CountryTypeSet extends Enumeration {
+  type CountryTypeSet = Value
+  val Country, AdministrativeArea, Locality, Thoroughfare = Value
+}
+
+object DependentLocalityTypeSet extends Enumeration {
+  type DependentLocalityTypeSet = Value
+  val LargeMailUserType, PostalRouteType, PostOffice, PostBox = Value
+}
+
 
 case class XAL(addressDetails: Seq[AddressDetails] = Nil,
                any: Seq[Any] = Nil,
@@ -63,9 +78,9 @@ case class XAL(addressDetails: Seq[AddressDetails] = Nil,
 }
 
 case class ContentType(content: Option[String] = None,
-                       objectType: Option[String] = None,
-                       code: Option[String] = None,
-                       attributes: Map[String, QName])
+                       objectType: Option[String] = None,  // attribute
+                       code: Option[String] = None,        // attribute
+                       attributes: Map[String, QName])     // attribute
 
 case class AddressIdentifier(content: Option[String] = None,
                              identifierType: Option[String] = None,
@@ -95,7 +110,7 @@ case class PostalServiceElements(addressIdentifier: Seq[AddressIdentifier] = Nil
 case class Address(content: Option[String] = None,
                    objectType: Option[String] = None,
                    code: Option[String] = None,
-                   attributes: Map[String, QName]) extends AddressDetailsOption {
+                   attributes: Map[String, QName]) extends AddressDetailsType {
 
   def this() = this(None, None, None, Map())
 }
@@ -109,17 +124,17 @@ case class CountryNameCode(content: Option[String] = None,
 case class Country(addressLine: Seq[AddressLine] = Nil,
                    countryNameCode: Seq[CountryNameCode] = Nil,
                    countryName: Seq[ContentType] = Nil,
-                   countryOption: Option[CountryOption] = None,
+                   countryOption: Option[CountryType] = None,
                    any: Seq[Any] = Nil,
-                   attributes: Map[String, QName]) extends AddressDetailsOption {
+                   attributes: Map[String, QName]) extends AddressDetailsType {
 
   def this() = this(Nil, Nil, Nil, None, Nil, Map())
 }
 
-trait CountryOption
+trait CountryType
 
 case class AddressDetails(postalServiceElements: Option[PostalServiceElements] = None,
-                          addressDetailsOption: Option[AddressDetailsOption] = None,
+                          addressDetailsOption: Option[AddressDetailsType] = None,
                           addressType: Option[String] = None,
                           currentStatus: Option[String] = None,
                           validFromDate: Option[String] = None,
@@ -133,11 +148,11 @@ case class AddressDetails(postalServiceElements: Option[PostalServiceElements] =
   def this() = this(None, None, None, None, None, None, None, None, None, Map(), Nil)
 }
 
-trait AddressDetailsOption
+trait AddressDetailsType
 
-case class AddressLines(addressLine: Seq[AddressLine] = Nil,
+case class AddressLines(addressLines: Seq[AddressLine] = Nil,
                         any: Seq[Any] = Nil,
-                        attributes: Map[String, QName]) extends AddressDetailsOption {
+                        attributes: Map[String, QName]) extends AddressDetailsType {
 
   def this() = this(Nil, Nil, Map())
 }
@@ -177,7 +192,7 @@ case class DependentLocalityNumber(content: Option[String] = None,
 case class DependentLocality(addressLine: Seq[AddressLine] = Nil,
                              dependentLocalityName: Seq[ContentType] = Nil,
                              dependentLocalityNumber: Option[DependentLocalityNumber] = None,
-                             dependentLocalityTypeOption: Option[DependentLocalityOption] = None,
+                             dependentLocalityType: Option[DependentLocalityType] = None,
                              thoroughfare: Option[Thoroughfare] = None,
                              premise: Option[Premise] = None,
                              dependentLocality: Option[DependentLocality] = None,
@@ -187,18 +202,18 @@ case class DependentLocality(addressLine: Seq[AddressLine] = Nil,
                              usageType: Option[String] = None,
                              connector: Option[String] = None,
                              indicator: Option[String] = None,
-                             attributes: Map[String, QName]) extends ThoroughfareOption
+                             attributes: Map[String, QName]) extends ThoroughfareType
 
-trait DependentLocalityOption
+trait DependentLocalityType
 
-case class FirmType(addressLine: Seq[AddressLine] = Nil,
+case class Firm(addressLine: Seq[AddressLine] = Nil,
                     firmName: Seq[ContentType] = Nil,
                     department: Seq[Department] = Nil,
-                    mailStop: Option[MailStopType] = None,
+                    mailStop: Option[MailStop] = None,
                     postalCode: Option[PostalCode] = None,
                     any: Seq[Any] = Nil,
                     objectType: Option[String] = None,
-                    attributes: Map[String, QName]) extends ThoroughfareOption with PremiseOption
+                    attributes: Map[String, QName]) extends ThoroughfareType with PremiseType
 
 case class LargeMailUserIdentifier(content: Option[String] = None,
                                    objectType: Option[String] = None,
@@ -207,7 +222,7 @@ case class LargeMailUserIdentifier(content: Option[String] = None,
                                    attributes: Map[String, QName])
 
 
-case class LargeMailUserType(addressLine: Seq[AddressLine] = Nil,
+case class LargeMailUser(addressLine: Seq[AddressLine] = Nil,
                              largeMailUserName: Seq[ContentType] = Nil,
                              largeMailUserIdentifier: Option[LargeMailUserIdentifier] = None,
                              buildingName: Seq[BuildingName] = Nil,
@@ -217,7 +232,7 @@ case class LargeMailUserType(addressLine: Seq[AddressLine] = Nil,
                              postalCode: Option[PostalCode] = None,
                              any: Seq[Any] = Nil,
                              objectType: Option[String] = None,
-                             attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
+                             attributes: Map[String, QName]) extends DependentLocalityType with LocalityType
 
 
 case class MailStopNumber(content: Option[String] = None,
@@ -226,7 +241,7 @@ case class MailStopNumber(content: Option[String] = None,
                           attributes: Map[String, QName])
 
 
-case class MailStopType(addressLine: Seq[AddressLine] = Nil,
+case class MailStop(addressLine: Seq[AddressLine] = Nil,
                         mailStopName: Option[ContentType] = None,
                         mailStopNumber: Option[MailStopNumber] = None,
                         any: Seq[Any] = Nil,
@@ -234,14 +249,14 @@ case class MailStopType(addressLine: Seq[AddressLine] = Nil,
                         attributes: Map[String, QName])
 
 
-case class PostalRouteType(addressLine: Seq[AddressLine] = Nil,
-                           postalRouteTypeOption: Seq[PostalRouteTypeOption] = Nil,
+case class PostalRoute(addressLine: Seq[AddressLine] = Nil,
+                           postalRouteTypeOption: Seq[PostalRouteType] = Nil,
                            postBox: Option[PostBox] = None,
                            any: Seq[Any] = Nil,
                            objectType: Option[String] = None,
-                           attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
+                           attributes: Map[String, QName]) extends DependentLocalityType with LocalityType
 
-trait PostalRouteTypeOption
+trait PostalRouteType
 
 
 case class SubPremiseName(content: Option[String] = None,
@@ -252,7 +267,7 @@ case class SubPremiseName(content: Option[String] = None,
 
 
 case class SubPremiseLocation(content: Option[String] = None,
-                              code: Option[String] = None) extends SubPremiseTypeOption
+                              code: Option[String] = None) extends SubPremiseType
 
 case class SubPremiseNumber(content: Option[String] = None,
                             indicator: Option[String] = None,
@@ -261,7 +276,7 @@ case class SubPremiseNumber(content: Option[String] = None,
                             premiseNumberSeparator: Option[String] = None,
                             objectType: Option[String] = None,
                             code: Option[String] = None,
-                            attributes: Map[String, QName]) extends SubPremiseTypeOption
+                            attributes: Map[String, QName]) extends SubPremiseType
 
 
 case class SubPremiseNumberPrefix(content: Option[String] = None,
@@ -278,21 +293,21 @@ case class SubPremiseNumberSuffix(content: Option[String] = None,
                                   attributes: Map[String, QName])
 
 
-case class SubPremiseType(addressLine: Seq[AddressLine] = Nil,
+case class SubPremise(addressLine: Seq[AddressLine] = Nil,
                           subPremiseName: Seq[SubPremiseName] = Nil,
-                          subPremiseTypeOption: Seq[SubPremiseTypeOption] = Nil,
+                          subPremiseTypeOption: Seq[SubPremiseType] = Nil,
                           subPremiseNumberPrefix: Seq[SubPremiseNumberPrefix] = Nil,
                           subPremiseNumberSuffix: Seq[SubPremiseNumberSuffix] = Nil,
                           buildingName: Seq[BuildingName] = Nil,
-                          firm: Option[FirmType] = None,
-                          mailStop: Option[MailStopType] = None,
+                          firm: Option[Firm] = None,
+                          mailStop: Option[MailStop] = None,
                           postalCode: Option[PostalCode] = None,
-                          subPremise: Option[SubPremiseType] = None,
+                          subPremise: Option[SubPremise] = None,
                           any: Seq[Any] = Nil,
                           objectType: Option[String] = None,
-                          attributes: Map[String, QName]) extends PremiseOption
+                          attributes: Map[String, QName]) extends PremiseType
 
-trait SubPremiseTypeOption
+trait SubPremiseType
 
 
 case class AddressLine(content: Option[String] = None,
@@ -302,7 +317,7 @@ case class AddressLine(content: Option[String] = None,
 
 case class Locality(addressLine: Seq[AddressLine] = Nil,
                     localityName: Seq[ContentType] = Nil,
-                    localityOption: Option[LocalityOption] = None,
+                    localityOption: Option[LocalityType] = None,
                     thoroughfare: Option[Thoroughfare] = None,
                     premise: Option[Premise] = None,
                     dependentLocality: Option[DependentLocality] = None,
@@ -311,12 +326,12 @@ case class Locality(addressLine: Seq[AddressLine] = Nil,
                     objectType: Option[String] = None,
                     usageType: Option[String] = None,
                     indicator: Option[String] = None,
-                    attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption with SubAdministrativeAreaOption with AdministrativeAreaOption {
+                    attributes: Map[String, QName]) extends CountryType with AddressDetailsType with SubAdministrativeAreaType with AdministrativeAreaType {
 
   def this() = this(Nil, Nil, None, None, None, None, None, Nil, None, None, None, Map())
 }
 
-trait LocalityOption
+trait LocalityType
 
 trait DependentThoroughfares
 
@@ -365,7 +380,7 @@ case class ThoroughfareNumberRange(addressLine: Seq[AddressLine] = Nil,
                                    numberRangeOccurrence: Option[NumberOccurrence] = None,
                                    objectType: Option[String] = None,
                                    code: Option[String] = None,
-                                   attributes: Map[String, QName]) extends ThoroughfareOption
+                                   attributes: Map[String, QName]) extends ThoroughfareType
 
 
 case class DependentThoroughfare(addressLine: Seq[AddressLine] = Nil,
@@ -380,7 +395,7 @@ case class DependentThoroughfare(addressLine: Seq[AddressLine] = Nil,
 
 
 case class Thoroughfare(addressLine: Seq[AddressLine] = Nil,
-                        thoroughfareOptionSeq: Seq[ThoroughfareOption] = Nil,
+                        thoroughfareOptionSeq: Seq[ThoroughfareType] = Nil,
                         thoroughfareNumberPrefix: Seq[ThoroughfareNumberPrefix] = Nil,
                         thoroughfareNumberSuffix: Seq[ThoroughfareNumberSuffix] = Nil,
                         thoroughfarePreDirection: Option[ContentType] = None,
@@ -389,46 +404,46 @@ case class Thoroughfare(addressLine: Seq[AddressLine] = Nil,
                         thoroughfareTrailingType: Option[ContentType] = None,
                         thoroughfarePostDirection: Option[ContentType] = None,
                         dependentThoroughfare: Option[DependentThoroughfare] = None,
-                        thoroughfareOption: Option[ThoroughfareOption] = None,
+                        thoroughfareOption: Option[ThoroughfareType] = None,
                         any: Seq[Any] = Nil,
                         objectType: Option[String] = None,
                         dependentThoroughfares: Option[DependentThoroughfares] = None,
                         dependentThoroughfaresIndicator: Option[String] = None,
                         dependentThoroughfaresConnector: Option[String] = None,
                         dependentThoroughfaresType: Option[String] = None,
-                        attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption {
+                        attributes: Map[String, QName]) extends CountryType with AddressDetailsType {
 
   def this() = this(Nil, Nil, Nil, Nil, None, None, Nil, None, None, None, None, Nil, None, None, None, None, None, Map())
 }
 
-trait ThoroughfareOption
+trait ThoroughfareType
 
 
 case class SubAdministrativeArea(addressLine: Seq[AddressLine] = Nil,
                                  subAdministrativeAreaName: Seq[ContentType] = Nil,
-                                 subAdministrativeAreaOption: Option[SubAdministrativeAreaOption] = None,
+                                 subAdministrativeAreaOption: Option[SubAdministrativeAreaType] = None,
                                  any: Seq[Any] = Nil,
                                  objectType: Option[String] = None,
                                  usageType: Option[String] = None,
                                  indicator: Option[String] = None,
                                  attributes: Map[String, QName])
 
-trait SubAdministrativeAreaOption
+trait SubAdministrativeAreaType
 
 case class AdministrativeArea(addressLine: Seq[AddressLine] = Nil,
                               administrativeAreaName: Seq[ContentType] = Nil,
                               subAdministrativeArea: Option[SubAdministrativeArea] = None,
-                              administrativeAreaOption: Option[AdministrativeAreaOption] = None,
+                              administrativeAreaOption: Option[AdministrativeAreaType] = None,
                               any: Seq[Any] = Nil,
                               objectType: Option[String] = None,
                               usageType: Option[String] = None,
                               indicator: Option[String] = None,
-                              attributes: Map[String, QName]) extends CountryOption with AddressDetailsOption {
+                              attributes: Map[String, QName]) extends CountryType with AddressDetailsType {
 
   def this() = this(Nil, Nil, None, None, Nil, None, None, None, Map())
 }
 
-trait AdministrativeAreaOption
+trait AdministrativeAreaType
 
 case class PostOfficeNumber(content: Option[String] = None,
                             indicator: Option[String] = None,
@@ -439,13 +454,13 @@ case class PostOfficeNumber(content: Option[String] = None,
 
 case class PostOffice(addressLine: Seq[AddressLine] = Nil,
                       postOfficeOption: Seq[PostOfficeOption] = Nil,
-                      postalRoute: Option[PostalRouteType] = None,
+                      postalRoute: Option[PostalRoute] = None,
                       postBox: Option[PostBox] = None,
                       postalCode: Option[PostalCode] = None,
                       any: Seq[Any] = Nil,
                       objectType: Option[String] = None,
                       indicator: Option[String] = None,
-                      attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption with SubAdministrativeAreaOption with AdministrativeAreaOption
+                      attributes: Map[String, QName]) extends DependentLocalityType with LocalityType with SubAdministrativeAreaType with AdministrativeAreaType
 
 trait PostOfficeOption
 
@@ -473,7 +488,7 @@ case class PostalCode(addressLine: Seq[AddressLine] = Nil,
                       postTown: Option[PostTown] = None,
                       any: Seq[Any] = Nil,
                       objectType: Option[String] = None,
-                      attributes: Map[String, QName]) extends ThoroughfareOption with SubAdministrativeAreaOption with AdministrativeAreaOption
+                      attributes: Map[String, QName]) extends ThoroughfareType with SubAdministrativeAreaType with AdministrativeAreaType
 
 
 case class PostBoxNumber(content: Option[String] = None,
@@ -503,17 +518,17 @@ case class PostBox(addressLine: Seq[AddressLine] = Nil,
                    postBoxNumberPrefix: Option[PostBoxNumberPrefix] = None,
                    postBoxNumberSuffix: Option[PostBoxNumberSuffix] = None,
                    postBoxNumberExtension: Option[PostBoxNumberExtension] = None,
-                   firm: Option[FirmType] = None,
+                   firm: Option[Firm] = None,
                    postalCode: Option[PostalCode] = None,
                    any: Seq[Any] = Nil,
                    objectType: Option[String] = None,
                    indicator: Option[String] = None,
-                   attributes: Map[String, QName]) extends DependentLocalityOption with LocalityOption
+                   attributes: Map[String, QName]) extends DependentLocalityType with LocalityType
 
 
 case class Department(addressLine: Seq[AddressLine] = Nil,
                       departmentName: Seq[ContentType] = Nil,
-                      mailStop: Option[MailStopType] = None,
+                      mailStop: Option[MailStop] = None,
                       postalCode: Option[PostalCode] = None,
                       any: Seq[Any] = Nil,
                       objectType: Option[String] = None,
@@ -528,7 +543,7 @@ case class PremiseName(content: Option[String] = None,
 
 case class PremiseLocation(content: Option[String] = None,
                            code: Option[String] = None,
-                           attributes: Map[String, QName]) extends PremiseOption
+                           attributes: Map[String, QName]) extends PremiseType
 
 case class PremiseNumberRangeFrom(addressLine: Seq[AddressLine] = Nil,
                                   premiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
@@ -549,17 +564,17 @@ case class PremiseNumberRange(premiseNumberRangeFrom: PremiseNumberRangeFrom,
                               separator: Option[String] = None,
                               objectType: Option[String] = None,
                               indicatorOccurence: Option[TypeOccurrence] = None,
-                              numberRangeOccurence: Option[NumberOccurrence] = None) extends PremiseOption
+                              numberRangeOccurence: Option[NumberOccurrence] = None) extends PremiseType
 
 
 case class Premise(addressLine: Seq[AddressLine] = Nil,
                    premiseName: Seq[PremiseName] = Nil,
-                   premiseOption: Seq[PremiseOption] = Nil,
+                   premiseOption: Seq[PremiseType] = Nil,
                    premiseNumberPrefix: Seq[PremiseNumberPrefix] = Nil,
                    premiseNumberSuffix: Seq[PremiseNumberSuffix] = Nil,
                    buildingName: Seq[BuildingName] = Nil,
-                   premiseOption3: Seq[PremiseOption] = Nil,
-                   mailStop: Option[MailStopType] = None,
+                   premiseOption3: Seq[PremiseType] = Nil,
+                   mailStop: Option[MailStop] = None,
                    postalCode: Option[PostalCode] = None,
                    premise: Option[Premise] = None,
                    any: Seq[Any] = Nil,
@@ -567,9 +582,9 @@ case class Premise(addressLine: Seq[AddressLine] = Nil,
                    premiseDependency: Option[String] = None,
                    premiseDependencyType: Option[String] = None,
                    premiseThoroughfareConnector: Option[String] = None,
-                   attributes: Map[String, QName]) extends ThoroughfareOption
+                   attributes: Map[String, QName]) extends ThoroughfareType
 
-trait PremiseOption
+trait PremiseType
 
 /** A-12 where 12 is number and A is prefix and "-" is the separator
   */
@@ -640,7 +655,7 @@ case class ThoroughfareNumber(content: Option[String] = None,
                               indicatorOccurrence: Option[TypeOccurrence] = None,
                               numberOccurrence: Option[NumberOccurrence] = None,
                               code: Option[String] = None,
-                              attributes: Map[String, QName]) extends ThoroughfareOption
+                              attributes: Map[String, QName]) extends ThoroughfareType
 
 case class PremiseNumber(content: Option[String] = None,
                          numberType: Option[NumberType] = None,
@@ -649,7 +664,7 @@ case class PremiseNumber(content: Option[String] = None,
                          indicatorOccurrence: Option[TypeOccurrence] = None,
                          numberTypeOccurrence: Option[TypeOccurrence] = None,
                          code: Option[String] = None,
-                         attributes: Map[String, QName]) extends PremiseOption
+                         attributes: Map[String, QName]) extends PremiseType
 
 
 case class PremiseNumberPrefix(value: String,

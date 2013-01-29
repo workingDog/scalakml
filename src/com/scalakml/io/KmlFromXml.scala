@@ -34,10 +34,11 @@ import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
 import com.scalakml.xAL.AddressDetails
-import com.scalakml.io.KmlXalToXml._
+import com.scalakml.io.XalFromXml._
+//import scala.language.reflectiveCalls
+//import scala.language.postfixOps
 import scala.reflect.runtime.universe._
-import scala.language.reflectiveCalls
-import scala.language.postfixOps
+
 
 /**
  * @author Ringo Wathelet
