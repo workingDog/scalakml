@@ -31,11 +31,10 @@
 package com.scalakml.io
 
 import com.scalakml.io.KmlFromXml._
+import com.scalakml.kml._
 import scala.xml._
 import com.scalakml.xAL._
-import scala.xml
 import com.scalakml.kml.Kml
-
 
 /**
  * @author Ringo Wathelet
