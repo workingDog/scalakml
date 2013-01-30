@@ -85,7 +85,7 @@ More will be added later.
 
 I've used scala 2.10.0 and java 1.7.0_11 SDK, with IntelliJ IDEA 12.
 
-----> TESTING IS YET TO BE DONE.
+----> NO TESTING HAS BEEN DONE, THE LIBRARY IS NOT YET READY.
 
 
 Ringo Wathelet
