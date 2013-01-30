@@ -934,6 +934,7 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  //TODO AddressDetails from the scalaxal library
   implicit object FeaturePartToXml extends KmlToXmlSeq[Option[FeaturePart]] {
     def toXml(featurePart: Option[FeaturePart]): Seq[NodeSeq] = {
       if (!featurePart.isDefined || (featurePart.get == null)) Seq.empty
@@ -946,7 +947,7 @@ object KmlToXml extends XmlExtractor {
         list += getXmlFrom(featurePart.get.atomAuthor)
         list += getXmlFrom(featurePart.get.atomLink)
         list += getNodeFromFieldName("address", featurePart)
-        list += getNodeFromFieldName("addressDetails", featurePart)
+//        list += getNodeFromFieldName("addressDetails", featurePart)
         list += getNodeFromFieldName("phoneNumber", featurePart)
         list += getNodeFromFieldName("extendedData", featurePart)
         list += getNodeFromFieldName("description", featurePart)

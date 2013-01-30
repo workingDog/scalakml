@@ -30,7 +30,6 @@
 
 package com.scalakml.kml
 
-import com.scalakml.xAL.AddressDetails
 import com.scalakml.atom._
 
 /**
@@ -48,6 +47,17 @@ import com.scalakml.atom._
  *
  * The documentations are taken from these two references.
  */
+
+
+/**
+ * temporary class until the xAL library is finished
+ * @param temp
+ */
+case class AddressDetails(temp: Option[String] = None) {
+  def this() = this(Some(""))
+}
+
+
 
 
 /**

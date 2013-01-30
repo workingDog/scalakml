@@ -49,7 +49,6 @@ package com.scalakml.gx
  */
 
 
-import com.scalakml.xAL.AddressDetails
 import com.scalakml.kml._
 
 /**
