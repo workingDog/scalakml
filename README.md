@@ -74,8 +74,9 @@ see also WriteExample2 for a variation of WriteExample1.
 ## Status
 
 This scalakml library needs some more work, in particular testing and more documentation.  
+
 The xAl classes are under construction in another library called scalaxal, hence should not be used 
-until that library is finished.
+until that library is finished. A temporary xAL:AddressDetails is provided.
 
 The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google in reference 2.
