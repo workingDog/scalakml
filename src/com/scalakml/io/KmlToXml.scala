@@ -1016,7 +1016,7 @@ object KmlToXml extends XmlExtractor {
 //----------------------------------gx-----------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
 
-// Note: the AlitudeMode currently does not have the gx: namespace
+// Note: the AlitudeMode currently does not carry the gx: namespace
 
   implicit object PlaylistToXml extends KmlToXml[Option[Playlist]] {
     def toXml(playlistOption: Option[Playlist]): NodeSeq = {

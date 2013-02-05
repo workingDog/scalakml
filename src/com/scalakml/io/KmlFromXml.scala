@@ -36,6 +36,7 @@ import scala.xml._
 import scala.reflect.runtime.universe._
 import com.scalaxal.xAL.AddressDetails
 import com.scalaxal.io.XalFromXml._
+
 /**
  * @author Ringo Wathelet
  * Date: 12/12/12
