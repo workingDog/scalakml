@@ -34,8 +34,8 @@ import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
 import scala.reflect.runtime.universe._
-
-
+import com.scalaxal.xAL.AddressDetails
+import com.scalaxal.io.XalFromXml._
 /**
  * @author Ringo Wathelet
  * Date: 12/12/12
@@ -378,11 +378,6 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None else (getFromNode[String](nodeSeq \ "name")).map(x => new com.scalakml.atom.Author(name = x))
   }
 
-  // TODO must replace this temporary method with the one in the scalaxal library
-  def makeAddressDetails(nodeSeq: NodeSeq): Option[AddressDetails] = {
-    if (nodeSeq.isEmpty) None else Some(new AddressDetails())
-  }
-
   def makeFeaturePart(nodeSeq: NodeSeq): FeaturePart =
     if (nodeSeq.isEmpty) new FeaturePart() else new FeaturePart(
       name = getFromNode[String](nodeSeq \ "name"),
@@ -391,7 +386,7 @@ object KmlFromXml extends KmlExtractor {
       atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
       atomLink = makeAtomLink(nodeSeq \ "link"),
       address = getFromNode[String](nodeSeq \ "address"),
-      addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"),
+      addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
       phoneNumber = getFromNode[String](nodeSeq \ "phoneNumber"),
       extendedData = makeExtendedData(nodeSeq \ "ExtendedData"),
       description = getFromNode[String](nodeSeq \ "description"),

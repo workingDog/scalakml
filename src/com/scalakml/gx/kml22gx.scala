@@ -50,6 +50,7 @@ package com.scalakml.gx
 
 
 import com.scalakml.kml._
+import com.scalaxal.xAL.AddressDetails
 
 /**
  * Enumeration of all TourPrimitive types.

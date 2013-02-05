@@ -31,6 +31,7 @@
 package com.scalakml.kml
 
 import com.scalakml.atom._
+import com.scalaxal.xAL.AddressDetails
 
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
@@ -47,17 +48,6 @@ import com.scalakml.atom._
  *
  * The documentations are taken from these two references.
  */
-
-
-/**
- * temporary class until the xAL library is finished
- * @param temp
- */
-case class AddressDetails(temp: Option[String] = None) {
-  def this() = this(Some(""))
-}
-
-
 
 
 /**
@@ -989,7 +979,7 @@ case class FeaturePart(
   atomAuthor: Option[com.scalakml.atom.Author] = None,
   atomLink: Option[com.scalakml.atom.Link] = None,
   address: Option[String] = None,
-  addressDetails: Option[AddressDetails] = None,
+  addressDetails: Option[AddressDetails] = None, // <---- from com.scalaxal.xAL.xAL
   phoneNumber: Option[String] = None,
   extendedData: Option[ExtendedData] = None,
   description: Option[String] = None,

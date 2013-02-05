@@ -36,8 +36,8 @@ import xml.{Null, Attribute, NodeSeq, Text}
 import scala.None
 import com.scalakml.gx._
 import com.scalakml.atom.Author
-import scala.language.implicitConversions
-import scala.language.postfixOps
+import com.scalaxal.xAL.AddressDetails
+import com.scalaxal.io.XalToXml
 
 /**
  * @author Ringo Wathelet
@@ -70,7 +70,7 @@ object KmlToXml extends XmlExtractor {
   implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
     def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
       addressDetailsOption match {
-        case Some(addressDetails) => <AddressDetails> </AddressDetails>
+        case Some(addressDetails) => XalToXml.toXml(addressDetails)
         case None => NodeSeq.Empty
       }
     }
