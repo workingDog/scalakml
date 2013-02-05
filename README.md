@@ -42,7 +42,7 @@ but there is still more to be done.
 
 Most kml elements described in the references have been implemented (I think) with the same or similar class name. 
 There is one major exception, and that is the FeaturePart. 
-This class represents the abstract Feature (AbstractFeatureGroup) described in the references.
+This class represents the abstract Feature part (AbstractFeatureGroup) described in the references.
 Here it is a concrete class called FeaturePart and holds the elements of the abstract Feature.
 Such that, for example, Placemark has a featurePart, so to get the name of the placemark 
 you would write:   
