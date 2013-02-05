@@ -18,7 +18,7 @@ I decided to make a number of changes to the generated code.
 I renamed a lot of the classes to be more like reference 2. 
 As a result of the changes I broke the generated reading and writing of kml. 
 
-To pursue the original idea of coding something to learn scala, I started coding the reading and writing of the kml objects.
+To pursue the original idea of coding something to learn scala, I started coding (longhand) the reading and writing of the kml objects.
 From this I learned a lot about scala (and cutting and pasting of code).
 
 ## Packages
@@ -84,9 +84,11 @@ it does not include many of the gx: elements from Google in reference 2.
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
 More will be added later.
 
-I've used scala 2.10.0 and java 1.7.0_11 SDK, with IntelliJ IDEA 12.
+I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
 
 ----> NO TESTING HAS BEEN DONE.
+
+working on a more generic way to IO
 
 
 Ringo Wathelet
