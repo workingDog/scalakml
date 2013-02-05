@@ -29,6 +29,11 @@ The scalakml library is in 4 major parts:
 - 3) package com.scalakml.io, the simple reading and writing of kml from/to xml
 - 4) package com.scalakml.atom, the Atom classes
 
+## Dependencies
+
+scalakml depends on the xAl classes that are under construction in another library called scalaxal.
+scalaxal.jar is included in lib
+
 ## Documentation
 
 The documentation is from reference 1 and 2.
@@ -74,9 +79,6 @@ see also WriteExample2 for a variation of WriteExample1.
 ## Status
 
 This scalakml library needs some more work, in particular testing and more documentation.  
-
-The xAl classes are under construction in another library called scalaxal, hence should not be used 
-until that library is finished. A temporary xAL:AddressDetails is provided.
 
 The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google in reference 2.
