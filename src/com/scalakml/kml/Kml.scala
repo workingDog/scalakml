@@ -844,7 +844,7 @@ object KmlObjectTypes extends Enumeration {
  * @see Object Units and <hotSpot> in <IconStyle>, <ScreenOverlay>
  */
 case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Units) {
-  def this() = this(0.0, 0.0, Pixels, Pixels)
+  def this() = this(0.0, 0.0, Fraction, Fraction)
 }
 
 

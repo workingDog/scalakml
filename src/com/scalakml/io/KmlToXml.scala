@@ -67,6 +67,15 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
+    def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
+      addressDetailsOption match {
+        case Some(addressDetails) => <AddressDetails> </AddressDetails>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
   implicit object UpdateToXml extends KmlToXml[Option[Update]] {
     def toXml(updateOption: Option[Update]): NodeSeq = {
       updateOption match {
@@ -947,9 +956,8 @@ object KmlToXml extends XmlExtractor {
         list += getXmlFrom(featurePart.get.atomAuthor)
         list += getXmlFrom(featurePart.get.atomLink)
         list += getNodeFromFieldName("address", featurePart)
-//        list += getNodeFromFieldName("addressDetails", featurePart)
+        list += getXmlFrom(featurePart.get.addressDetails)
         list += getNodeFromFieldName("phoneNumber", featurePart)
-        list += getNodeFromFieldName("extendedData", featurePart)
         list += getNodeFromFieldName("description", featurePart)
         list += getXmlFrom(featurePart.get.extendedData)
         list += getXmlFrom(featurePart.get.snippet)
