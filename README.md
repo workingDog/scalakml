@@ -77,6 +77,11 @@ all other fields are the same as before. See the examples.
 
 see also WriteExample2 for a variation of WriteExample1.
 
+## Issues:
+  One current major issue is scala does not preserve CDATA, 
+  such that angle brackets are corrupted to &lt; and &gt;
+  Google Earth does not like that.
+
 ## Status
 
 This scalakml library needs some more work, in particular testing and more documentation.  
