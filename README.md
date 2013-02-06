@@ -31,9 +31,9 @@ The scalakml library is in 4 major parts:
 
 ## Dependencies
 
-scalakml depends on the xAL classes (for the AddressDetails). These are under construction in 
-another library called scalaxal.
-The scalaxal.jar is included in the lib directory.
+scalakml depends on another library called scalaxal. This library has the xAL classes 
+needed for the AddressDetails. scalaxal is under developemnt in 
+another repository, see workingDog/scalaxal. The scalaxal.jar is included in the lib directory.
 
 ## Documentation
 
