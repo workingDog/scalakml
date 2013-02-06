@@ -84,13 +84,10 @@ The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google in reference 2.
 
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
-More will be added later.
 
 I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
 
-----> NO TESTING HAS BEEN DONE.
-
-working on a more generic way to IO
+Very little testing has been done to date.
 
 
 Ringo Wathelet
