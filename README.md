@@ -54,7 +54,7 @@ Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOve
 Note a FeaturePart is not a Feature, but it is part of the Feature trait. A FeaturePart can be created and is typically added to a 
 Feature element, such as Document, Folder, Placemark, etc...
 
-In addition to the base classes is a bunch of helper methods of the type withXXX(). 
+In addition to the base classes is a bunch of experimental helper methods of the type withXXX(). 
 These methods return a new object with the XXX changed. For example:
 - placemark withName("someName")
 
@@ -83,7 +83,7 @@ see also WriteExample2 for a variation of WriteExample1.
 
 ## Status
 
-This scalakml library needs some more work, in particular testing and more documentation.  
+This scalakml library needs a bit more work, in particular testing and more documentation.  
 
 The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google listed in reference 2.
