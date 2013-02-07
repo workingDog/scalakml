@@ -79,7 +79,7 @@ see also WriteExample2 for a variation of WriteExample1.
 
 ## Issues:
   One current major issue is scala does not preserve CDATA, 
-  such that angle brackets and ampersands are corrupted, Google Earth (and lots of others) cannot process that.
+  such that angle brackets and ampersands are corrupted, Google Earth for example cannot process that.
 
 ## Status
 
