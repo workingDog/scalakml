@@ -84,7 +84,7 @@ see also WriteExample2 for a variation of WriteExample1.
 
 ## Status
 
-This scalakml library needs a bit more work, in particular testing and more documentation.  
+This scalakml library needs more testing and more documentation.  
 
 The gx: extension has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google listed in reference 2.
