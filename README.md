@@ -25,7 +25,7 @@ From this I learned a lot about scala (and cutting and pasting of code).
 
 The scalakml library is in 4 major parts:
 - 1) package com.scalakml.kml, the set of KML classes
-- 2) package com.scalakml.gx, the Google's GX extensions from the official kml22gx.xsd 
+- 2) package com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd 
 - 3) package com.scalakml.io, the simple reading and writing of kml from/to xml
 - 4) package com.scalakml.atom, the Atom classes
 
