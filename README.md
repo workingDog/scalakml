@@ -59,7 +59,7 @@ In addition to the base classes are the helper methods: With(..), addTo(..) and 
 These methods return a new object with the specified field name changed. For example:
 - kml With("feature", Some(placemark))
 
-returns a new copy of the kml object with a new placemark as a feature,
+returns a new copy of the kml object with a new placemark as the feature,
 all other fields are the same as before. See the examples.
 
 # Usage
