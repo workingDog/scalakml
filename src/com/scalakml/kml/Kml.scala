@@ -835,6 +835,22 @@ object KmlObjectTypes extends Enumeration {
  */
 case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Units) {
   def this() = this(0.0, 0.0, Fraction, Fraction)
+
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
 }
 
 
@@ -1004,112 +1020,39 @@ case class FeaturePart(
       styleSelector, Some(region), Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the name changed to the newValue
-   * @param newValue a new value for name
-   * @return a new copy of the original object with a new name
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withName(newValue: String) = { this.copy(name = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the visibility changed to the newValue
-   * @param newValue a new value for visibility
-   * @return a new copy of the original object with a new visibility
-   */
-  def withVisibility(newValue: Boolean) = { this.copy(visibility = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the open changed to the newValue
-   * @param newValue a new value for open
-   * @return a new copy of the original object with a new open
-   */
-  def withOpen(newValue: Boolean) = { this.copy(open = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the atomAuthor changed to the newValue
-   * @param newValue a new value for atomAuthor
-   * @return a new copy of the original object with a new atomAuthor
-   */
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(atomAuthor = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the atomLink changed to the newValue
-   * @param newValue a new value for atomLink
-   * @return a new copy of the original object with a new atomLink
-   */
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(atomLink = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the address changed to the newValue
-   * @param newValue a new value for address
-   * @return a new copy of the original object with a new address
-   */
-  def withAddress(newValue: String) = { this.copy(address = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the addressDetails changed to the newValue
-   * @param newValue a new value for addressDetails
-   * @return a new copy of the original object with a new addressDetails
-   */
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(addressDetails = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the phoneNumber changed to the newValue
-   * @param newValue a new value for phoneNumber
-   * @return a new copy of the original object with a new phoneNumber
-   */
-  def withPhoneNumber(newValue: String) = { this.copy(phoneNumber = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the extendedData changed to the newValue
-   * @param newValue a new value for extendedData
-   * @return a new copy of the original object with a new extendedData
-   */
-  def withExtendedData(newValue: ExtendedData) = { this.copy(extendedData = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the description changed to the newValue
-   * @param newValue a new value for description
-   * @return a new copy of the original object with a new description
-   */
-  def withDescription(newValue: String) = { this.copy(description = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the snippet changed to the newValue
-   * @param newValue a new value for snippet
-   * @return a new copy of the original object with a new snippet
-   */
-  def withSnippet(newValue: Snippet) = { this.copy(snippet = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the abstractView changed to the newValue
-   * @param newValue a new value for abstractView
-   * @return a new copy of the original object with a new abstractView
-   */
-  def withAbstractView(newValue: AbstractView) = { this.copy(abstractView = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the timePrimitive changed to the newValue
-   * @param newValue a new value for timePrimitive
-   * @return a new copy of the original object with a new timePrimitive
-   */
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(timePrimitive = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the styleUrl changed to the newValue
-   * @param newValue a new value for styleUrl
-   * @return a new copy of the original object with a new styleUrl
-   */
-  def withStyleUrl(newValue: String) = { this.copy(styleUrl = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the styleSelector changed to the newValue
-   * @param newValue a new value for styleSelector
-   * @return a new copy of the original object with a new styleSelector
-   */
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(styleSelector = newValue) }
-  /**
-   * Creates a copy of this object but with an added StyleSelector to the set of StyleSelectors
-   * @param newStyleSelector the added StyleSelector
-   * @return a new copy of the original object with an added StyleSelector
-   */
-  def withAddedStyleSelector(newStyleSelector: StyleSelector) = {
-    val newStyleSelectorSet = if (this.styleSelector == Nil) (Seq.empty :+ newStyleSelector) else (this.styleSelector :+ newStyleSelector)
-    this.copy(styleSelector = newStyleSelectorSet)
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
-  /**
-   * Creates a copy of this object but with the region changed to the newValue
-   * @param newValue a new value for region
-   * @return a new copy of the original object with a new region
-   */
-  def withRegion(newValue: Region) = { this.copy(region = Some(newValue)) }
-}
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
+}
 /**
  * This is an abstract element and cannot be used directly in a KML file.
  * This trait is extended by: Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay, Tour
@@ -1164,132 +1107,38 @@ case class Placemark(
     this(Some(geometry), featureElement, Some(id), None, Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the geometry changed to the newValue
-   * @param newValue a new value for geometry
-   * @return a new copy of the original object with a new geometry
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withGeometry(newValue: Geometry) = { this.copy(geometry = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
-   */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the featurePart changed to the newValue
-   * @param newValue a new value for featurePart
-   * @return a new copy of the original object with a new featurePart
-   */
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  /**
-   * Creates a copy of this object but with the name of its featurePart changed to the newValue
-   * @param newValue a new value for name
-   * @return a new copy of the original object with a new name of its featurePart
-   */
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  /**
-   * Creates a copy of this object but with the visibility of its featurePart changed to the newValue
-   * @param newValue a new value for visibility
-   * @return a new copy of the original object with a new visibility of its featurePart
-   */
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  /**
-   * Creates a copy of this object but with the open of its featurePart changed to the newValue
-   * @param newValue a new value for open
-   * @return a new copy of the original object with a new open of its featurePart
-   */
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  /**
-   * Creates a copy of this object but with the atomAuthor of its featurePart changed to the newValue
-   * @param newValue a new value for atomAuthor
-   * @return a new copy of the original object with a new atomAuthor of its featurePart
-   */
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  /**
-   * Creates a copy of this object but with the atomLink of its featurePart changed to the newValue
-   * @param newValue a new value for atomLink
-   * @return a new copy of the original object with a new atomLink of its featurePart
-   */
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  /**
-   * Creates a copy of this object but with the address of its featurePart changed to the newValue
-   * @param newValue a new value for address
-   * @return a new copy of the original object with a new address of its featurePart
-   */
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  /**
-   * Creates a copy of this object but with the addressDetails of its featurePart changed to the newValue
-   * @param newValue a new value for addressDetails
-   * @return a new copy of the original object with a new addressDetails of its featurePart
-   */
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  /**
-   * Creates a copy of this object but with the phoneNumber of its featurePart changed to the newValue
-   * @param newValue a new value for phoneNumber
-   * @return a new copy of the original object with a new phoneNumber of its featurePart
-   */
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  /**
-   * Creates a copy of this object but with the extendedData of its featurePart changed to the newValue
-   * @param newValue a new value for extendedData
-   * @return a new copy of the original object with a new extendedData of its featurePart
-   */
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  /**
-   * Creates a copy of this object but with the description of its featurePart changed to the newValue
-   * @param newValue a new value for description
-   * @return a new copy of the original object with a new description of its featurePart
-   */
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  /**
-   * Creates a copy of this object but with the snippet of its featurePart changed to the newValue
-   * @param newValue a new value for snippet
-   * @return a new copy of the original object with a new snippet of its featurePart
-   */
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  /**
-   * Creates a copy of this object but with the abstractView of its featurePart changed to the newValue
-   * @param newValue a new value for abstractView
-   * @return a new copy of the original object with a new abstractView of its featurePart
-   */
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  /**
-   * Creates a copy of this object but with the timePrimitive of its featurePart changed to the newValue
-   * @param newValue a new value for timePrimitive
-   * @return a new copy of the original object with a new timePrimitive of its featurePart
-   */
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  /**
-   * Creates a copy of this object but with the styleUrl of its featurePart changed to the newValue
-   * @param newValue a new value for styleUrl
-   * @return a new copy of the original object with a new styleUrl of its featurePart
-   */
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  /**
-   * Creates a copy of this object but with the styleSelector of its featurePart changed to the newValue
-   * @param newValue a new value for styleSelector
-   * @return a new copy of the original object with a new styleSelector of its featurePart
-   */
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  /**
-   * Creates a copy of this object but with an added StyleSelector of its featurePart to the set of StyleSelectors
-   * @param newValue the added StyleSelector
-   * @return a new copy of the original object with an added StyleSelector of its featurePart
-   */
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  /**
-   * Creates a copy of this object but with the region of its featurePart changed to the newValue
-   * @param newValue a new value for region
-   * @return a new copy of the original object with a new region of its featurePart
-   */
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1305,18 +1154,22 @@ case class Placemark(
  */
 case class Snippet(value: String = "", maxLines: Int = 0) {
   def this() = this("", 0)
+
   /**
-   * Creates a copy of this object but with the value changed to the newValue
-   * @param newValue a new value for value
-   * @return a new copy of the original object with a new value
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withValue(newValue: String) = { this.copy(value = newValue) }
-  /**
-   * Creates a copy of this object but with the maxLines changed to the newValue
-   * @param newValue a new value for maxLines
-   * @return a new copy of the original object with a new maxLines
-   */
-  def withMaxLines(newValue: Int) = { this.copy(maxLines = newValue) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
 }
 
 /**
@@ -1391,61 +1244,38 @@ case class LookAt(
       Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
   /**
-   * Creates a copy of this object but with the range changed to the newValue
-   * @param newValue a new value for range
-   * @return a new copy of the original object with a new range
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
    */
-  def withRange(newValue: Double) = { this.copy(range = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the longitude changed to the newValue
-   * @param newValue a new value for longitude
-   * @return a new copy of the original object with a new longitude
-   */
-  def withLongitude(newValue: Double) = { this.copy(longitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the latitude changed to the newValue
-   * @param newValue a new value for latitude
-   * @return a new copy of the original object with a new latitude
-   */
-  def withLatitude(newValue: Double) = { this.copy(latitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the altitude changed to the newValue
-   * @param newValue a new value for altitude
-   * @return a new copy of the original object with a new altitude
-   */
-  def withAltitude(newValue: Double) = { this.copy(altitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the heading changed to the newValue
-   * @param newValue a new value for heading
-   * @return a new copy of the original object with a new heading
-   */
-  def withHeading(newValue: Double) = { this.copy(heading = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the tilt changed to the newValue
-   * @param newValue a new value for tilt
-   * @return a new copy of the original object with a new tilt
-   */
-  def withTilt(newValue: Double) = { this.copy(tilt = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the altitudeMode changed to the newValue
-   * @param newValue a new value for altitudeMode
-   * @return a new copy of the original object with a new altitudeMode
-   */
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1513,61 +1343,38 @@ case class Camera(
       Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
   /**
-   * Creates a copy of this object but with the roll changed to the newValue
-   * @param newValue a new value for roll
-   * @return a new copy of the original object with a new roll
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
    */
-  def withRoll(newValue: Double) = { this.copy(roll = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the longitude changed to the newValue
-   * @param newValue a new value for longitude
-   * @return a new copy of the original object with a new longitude
-   */
-  def withLongitude(newValue: Double) = { this.copy(longitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the latitude changed to the newValue
-   * @param newValue a new value for latitude
-   * @return a new copy of the original object with a new latitude
-   */
-  def withLatitude(newValue: Double) = { this.copy(latitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the altitude changed to the newValue
-   * @param newValue a new value for altitude
-   * @return a new copy of the original object with a new altitude
-   */
-  def withAltitude(newValue: Double) = { this.copy(altitude = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the heading changed to the newValue
-   * @param newValue a new value for heading
-   * @return a new copy of the original object with a new heading
-   */
-  def withHeading(newValue: Double) = { this.copy(heading = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the tilt changed to the newValue
-   * @param newValue a new value for tilt
-   * @return a new copy of the original object with a new tilt
-   */
-  def withTilt(newValue: Double) = { this.copy(tilt = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the altitudeMode changed to the newValue
-   * @param newValue a new value for altitudeMode
-   * @return a new copy of the original object with a new altitudeMode
-   */
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1589,30 +1396,37 @@ case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil
   def this() = this(Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the data changed to the newValue
-   * @param newValue a new value for data
-   * @return a new copy of the original object with a new data
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withData(newValue: Seq[Data]) = { this.copy(data = newValue) }
-  /**
-   * Creates a copy of this object but with the SchemaData changed to the newValue
-   * @param newValue a new value for SchemaData
-   * @return a new copy of the original object with a new SchemaData
-   */
-  def withSchemaData(newValue: Seq[SchemaData]) = { this.copy(schemaData = newValue) }
-  def withOther(newValue: Seq[Any]) = { this.copy(other = newValue) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withAddedData(newData: Data) = {
-    val newDataSet = if (this.data == Nil) (Seq.empty :+ newData) else (this.data :+ newData)
-    this.copy(data = newDataSet)
-  }
-  def withAddedSchemaData(newSchemaData: SchemaData) = {
-    val newSchemaDataSet = if (this.schemaData == Nil) (Seq.empty :+ newSchemaData) else (this.schemaData :+ newSchemaData)
-    this.copy(schemaData = newSchemaDataSet)
-  }
-  def withAddedOther(newAny: Any) = {
-    val newOtherSet = if (this.other == Nil) (Seq.empty :+ newAny) else (this.other :+ newAny)
-    this.copy(other = newOtherSet)
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -1646,42 +1460,37 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
   def this() = this(Nil, None, None, None, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the SimpleData changed to the newValue
-   * @param newValue a new value for SimpleData
-   * @return a new copy of the original object with a new SimpleData
-   */
-  def withSimpleData(newValue: Seq[SimpleData]) = { this.copy(simpleData = newValue) }
-  def withAddedSimpleData(newSimpleData: SimpleData) = {
-    val newSimpleDataSet = if (this.simpleData == Nil) (Seq.empty :+ newSimpleData) else (this.simpleData :+ newSimpleData)
-    this.copy(simpleData = newSimpleDataSet)
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
+
   /**
-   * Creates a copy of this object but with the schemaUrl changed to the newValue
-   * @param newValue a new value for schemaUrl
-   * @return a new copy of the original object with a new schemaUrl
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
    */
-  def withSchemaUrl(newValue: String) = { this.copy(schemaUrl = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the schemaDataExtension changed to the newValue
-   * @param newValue a new value for schemaDataExtension
-   * @return a new copy of the original object with a new schemaDataExtension
-   */
-  def withSchemaDataExtension(newValue: Seq[Any]) = { this.copy(schemaDataExtension = newValue) }
-  def withAddedSchemaDataExtension(newAny: Any) = {
-    val newSchemaDataExtensionSet = if (this.schemaDataExtension == Nil) (Seq.empty :+ newAny) else (this.schemaDataExtension :+ newAny)
-    this.copy(schemaDataExtension = newSchemaDataExtensionSet)
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -1698,9 +1507,21 @@ case class SimpleData(value: Option[String] = None, name: Option[String] = None)
   def this() = this(None, None)
 
   def this(value: String, name: String) = this(Some(value), Some(name))
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withName(newValue: String) = { this.copy(name = Some(newValue)) }
-  def withValue(newValue: String) = { this.copy(value = Some(newValue)) }
 }
 
 /**
@@ -1732,24 +1553,39 @@ case class Data(displayName: Option[String] = None,
 
   def this(displayName: String, value: String, name: String) =
     this(Some(displayName), Some(value), Some(name), Nil, None, None, Nil)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withDisplayName(newValue: String) = { this.copy(displayName = Some(newValue)) }
-  def withValue(newValue: String) = { this.copy(value = Some(newValue)) }
-  def withName(newValue: String) = { this.copy(name = Some(newValue)) }
-  def withDataExtension(newValue: Seq[Any]) = { this.copy(dataExtension = newValue) }
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 trait Container extends Feature {
@@ -1818,10 +1654,39 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
   def this(networkLinkControl: NetworkLinkControl, feature: Feature) =
     this(Some(networkLinkControl), Some(feature), None, Nil, Nil)
 
-  def withFeature(newValue: Feature) = { this.copy(feature = Some(newValue)) }
-  def withNetworkLinkControl(newValue: NetworkLinkControl) = { this.copy(networkLinkControl = Some(newValue)) }
-  def withHint(newValue: String) = { this.copy(hint = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1855,16 +1720,39 @@ case class NetworkLinkControl(minRefreshPeriod: Option[Double] = None,
 
   def this() = this(None, None, None, None, None, None, None, None, None, None, Nil, Nil)
 
-  def withMinRefreshPeriod(newValue: Double) = { this.copy(minRefreshPeriod = Some(newValue)) }
-  def withMaxSessionLength(newValue: Double) = { this.copy(maxSessionLength = Some(newValue)) }
-  def withCookie(newValue: String) = { this.copy(cookie = Some(newValue)) }
-  def withMessage(newValue: String) = { this.copy(message = Some(newValue)) }
-  def withLinkName(newValue: String) = { this.copy(linkName = Some(newValue)) }
-  def withLinkDescription(newValue: String) = { this.copy(linkDescription = Some(newValue)) }
-  def withLinkSnippet(newValue: Snippet) = { this.copy(linkSnippet = Some(newValue)) }
-  def withExpires(newValue: String) = { this.copy(expires = Some(newValue)) }
-  def withUpdate(newValue: Update) = { this.copy(update = Some(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(abstractView = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1902,48 +1790,38 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
   def this() = this(new FeaturePart(), Nil, Nil, None, None, Nil, Nil, Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
   /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
    */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withSchemas(newValue: Seq[Schema]) = { this.copy(schemas = newValue) }
-  def withAddedSchema(newSchema: Schema) = {
-    val newSchemaSet = if (this.schemas == Nil) (Seq.empty :+ newSchema) else (this.schemas :+ newSchema)
-    this.copy(schemas = newSchemaSet)
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
-  def withFeatures(newValue: Seq[Feature]) = { this.copy(features = newValue) }
-  def withAddedFeature(newFeature: Feature) = {
-    val newFeatureSet = if (this.features == Nil) (Seq.empty :+ newFeature) else (this.features :+ newFeature)
-    this.copy(features = newFeatureSet)
-  }
-
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
 }
 
 /**
@@ -1962,19 +1840,39 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
 
   def this() = this(Nil, None, None, Nil)
 
-  def withSimpleField(newValue: Seq[SimpleField]) = { this.copy(simpleField = newValue) }
-  def withAddedSimpleField(newSimpleField: SimpleField) = {
-    val newSimpleFieldSet = if (this.simpleField == Nil) (Seq.empty :+ newSimpleField) else (this.simpleField :+ newSimpleField)
-    this.copy(simpleField = newSimpleFieldSet)
-  }
-  def withName(newValue: String) = { this.copy(name = Some(newValue)) }
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -1999,9 +1897,39 @@ case class SimpleField(displayName: Option[String] = None,
   def this(displayName: String, typeValue: String, name: String) =
     this(Some(displayName), Some(typeValue), Some(name), Nil)
 
-  def withDisplayName(newValue: String) = { this.copy(displayName = Some(newValue)) }
-  def withTypeValue(newValue: String) = { this.copy(typeValue = Some(newValue)) }
-  def withName(newValue: String) = { this.copy(name = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -2031,43 +1959,38 @@ case class Folder(features: Seq[Feature] = Nil,
   def this() = this(Nil, new FeaturePart(), None, None, Nil, Nil, Nil, Nil, Nil)
 
   /**
-   * Creates a copy of this object but with the id of its featurePart changed to the newValue
-   * @param newValue a new value for id
-   * @return a new copy of the original object with a new id of its featurePart
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
    */
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  /**
-   * Creates a copy of this object but with the targetId of its featurePart changed to the newValue
-   * @param newValue a new value for targetId
-   * @return a new copy of the original object with a new targetId of its featurePart
-   */
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withFeatures(newValue: Seq[Feature]) = { this.copy(features = newValue) }
-  def withAddedFeature(newFeature: Feature) = {
-    val newFeatureSet = if (this.features == Nil) (Seq.empty :+ newFeature) else (this.features :+ newFeature)
-    this.copy(features = newFeatureSet)
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
 
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 
@@ -2096,11 +2019,39 @@ case class Region(latLonAltBox: Option[LatLonAltBox] = None,
   def this(latLonAltBox: LatLonAltBox, lod: Lod, id: String) =
     this(Some(latLonAltBox), Some(lod), Some(id), None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withLatLonAltBox(newValue: LatLonAltBox) = { this.copy(latLonAltBox = Some(newValue)) }
-  def withLod(newValue: Lod) = { this.copy(lod = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2146,14 +2097,39 @@ case class LatLonBox(rotation: Option[Double] = None,
   def this(rotation: Double, north: Double, south: Double, east: Double, west: Double, id:String) =
     this(Some(rotation), Some(north), Some(south), Some(east), Some(west), Some(id), None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withRotation(newValue: Double) = { this.copy(rotation = Some(newValue)) }
-  def withNorth(newValue: Double) = { this.copy(north = Some(newValue)) }
-  def withSouth(newValue: Double) = { this.copy(south = Some(newValue)) }
-  def withEast(newValue: Double) = { this.copy(east = Some(newValue)) }
-  def withWest(newValue: Double) = { this.copy(west = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2197,17 +2173,39 @@ case class LatLonAltBox(minAltitude: Option[Double] = None,
     this(Some(minAltitude), Some(maxAltitude), Some(altitudeMode),
       Some(north), Some(south), Some(east), Some(west), Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withMinAltitude(newValue: Double) = { this.copy(minAltitude = Some(newValue)) }
-  def withMaxAltitude(newValue: Double) = { this.copy(maxAltitude = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-
-  def withNorth(newValue: Double) = { this.copy(north = Some(newValue)) }
-  def withSouth(newValue: Double) = { this.copy(south = Some(newValue)) }
-  def withEast(newValue: Double) = { this.copy(east = Some(newValue)) }
-  def withWest(newValue: Double) = { this.copy(west = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2244,13 +2242,39 @@ case class Lod(minLodPixels: Option[Double] = None,
   def this(minLodPixels: Double, maxLodPixels: Double, minFadeExtent: Double, maxFadeExtent: Double, id: String) =
     this(Some(minLodPixels), Some(maxLodPixels), Some(minFadeExtent), Some(maxFadeExtent), Some(id), None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withMinLodPixels(newValue: Double) = { this.copy(minLodPixels = Some(newValue)) }
-  def withMaxLodPixels(newValue: Double) = { this.copy(maxLodPixels = Some(newValue)) }
-  def withMinFadeExtent(newValue: Double) = { this.copy(minFadeExtent = Some(newValue)) }
-  def withMaxFadeExtent(newValue: Double) = { this.copy(maxFadeExtent = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2283,52 +2307,39 @@ case class NetworkLink(
   def this(featureElement: FeaturePart, refreshVisibility: Boolean, flyToView: Boolean, link: Link, id: String) =
     this(featureElement, Some(refreshVisibility), Some(flyToView), Some(link), Some(id), None, Nil, Nil, Nil)
 
-  lazy val name = featurePart.name
-  lazy val visibility = featurePart.visibility
-  lazy val open = featurePart.open
-  lazy val atomAuthor = featurePart.atomAuthor
-  lazy val atomLink = featurePart.atomLink
-  lazy val address = featurePart.address
-  lazy val addressDetails = featurePart.addressDetails
-  lazy val phoneNumber = featurePart.phoneNumber
-  lazy val extendedData = featurePart.extendedData
-  lazy val description = featurePart.description
-  lazy val snippet = featurePart.snippet
-  lazy val abstractView = featurePart.abstractView
-  lazy val timePrimitive = featurePart.timePrimitive
-  lazy val styleUrl = featurePart.styleUrl
-  lazy val styleSelector = featurePart.styleSelector
-  lazy val region = featurePart.region
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  lazy val featureSimpleExtensionGroup = featurePart.featureSimpleExtensionGroup
-  lazy val featureObjectExtensionGroup = featurePart.featureObjectExtensionGroup
-
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withRefreshVisibility(newValue: Boolean) = { this.copy(refreshVisibility = Some(newValue)) }
-  def withFlyToView(newValue: Boolean) = { this.copy(flyToView = Some(newValue)) }
-  def withLink(newValue: Link) = { this.copy(link = Some(newValue)) }
-
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -2416,17 +2427,39 @@ case class Icon(href: Option[String] = None,
       Some(viewBoundScale), Some(viewFormat), Some(httpQuery), Some(id),
       None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withRefreshMode(newValue: RefreshMode) = { this.copy(refreshMode = Some(newValue)) }
-  def withRefreshInterval(newValue: Double) = { this.copy(refreshInterval = Some(newValue)) }
-  def withViewRefreshMode(newValue: ViewRefreshMode) = { this.copy(viewRefreshMode = Some(newValue)) }
-  def withViewRefreshTime(newValue: Double) = { this.copy(viewRefreshTime = Some(newValue)) }
-  def withViewBoundScale(newValue: Double) = { this.copy(viewBoundScale = Some(newValue)) }
-  def withViewFormat(newValue: String) = { this.copy(viewFormat = Some(newValue)) }
-  def withHttpQuery(newValue: String) = { this.copy(httpQuery = Some(newValue)) }
-  def withHref(newValue: String) = { this.copy(href = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2515,17 +2548,39 @@ case class Link(href: Option[String] = None,
       Some(viewBoundScale), Some(viewFormat), Some(httpQuery), Some(id),
       None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withRefreshMode(newValue: RefreshMode) = { this.copy(refreshMode = Some(newValue)) }
-  def withRefreshInterval(newValue: Double) = { this.copy(refreshInterval = Some(newValue)) }
-  def withViewRefreshMode(newValue: ViewRefreshMode) = { this.copy(viewRefreshMode = Some(newValue)) }
-  def withViewRefreshTime(newValue: Double) = { this.copy(viewRefreshTime = Some(newValue)) }
-  def withViewBoundScale(newValue: Double) = { this.copy(viewBoundScale = Some(newValue)) }
-  def withViewFormat(newValue: String) = { this.copy(viewFormat = Some(newValue)) }
-  def withHttpQuery(newValue: String) = { this.copy(httpQuery = Some(newValue)) }
-  def withHref(newValue: String) = { this.copy(href = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -2552,15 +2607,39 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
 
   def this() = this(Nil, None, None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withGeometries(newValue: Seq[Geometry]) = { this.copy(geometries = newValue) }
-  def withAddedGeometry(newGeometry: Geometry) = {
-    val newGeometrySet = if (this.geometries == Nil) (Seq.empty :+ newGeometry) else (this.geometries :+ newGeometry)
-    this.copy(geometries = newGeometrySet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -2600,18 +2679,63 @@ case class Point(extrude: Option[Boolean] = None,
   def this(extrude: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
     this(Some(extrude), Some(altitudeMode), Some(coordinates), Some(id),
     None, Nil, Nil, Nil, Nil, Nil)
-
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withExtrude(newValue: Boolean) = { this.copy(extrude = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-
-  def withCoordinates(newValue: Seq[Location]) = { this.copy(coordinates = Some(newValue)) }
-  def withAddedCoordinate(newLocation: Location) = {
-    val newCoordinateSet = if (this.coordinates == None) (Seq.empty :+ newLocation) else (this.coordinates.get :+ newLocation)
-    this.copy(coordinates = Some(newCoordinateSet))
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Option Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the Seq element type
+   * @return a new object with the newValue added to the designated Option Seq of fieldName
+   */
+  def addToOption[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+      case Some(theSeq) => {
+        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+      }
+      case _ => None
+    }
+    field.set(theCopy, newSeqOption)
+    theCopy
+  }
+
 }
 
 /**
@@ -2650,17 +2774,61 @@ case class LineString(extrude: Option[Boolean] = None,
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
       Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withExtrude(newValue: Boolean) = { this.copy(extrude = Some(newValue)) }
-  def withTessellate(newValue: Boolean) = { this.copy(tessellate = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
-  def withCoordinates(newValue: Seq[Location]) = { this.copy(coordinates = Some(newValue)) }
-  def withAddedCoordinate(newLocation: Location) = {
-    val newCoordinateSet = if (this.coordinates == None) (Seq.empty :+ newLocation) else (this.coordinates.get :+ newLocation)
-    this.copy(coordinates = Some(newCoordinateSet))
+  /**
+   * returns a new object with the newValue added to the designated Option Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the Seq element type
+   * @return a new object with the newValue added to the designated Option Seq of fieldName
+   */
+  def addToOption[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+      case Some(theSeq) => {
+        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+      }
+      case _ => None
+    }
+    field.set(theCopy, newSeqOption)
+    theCopy
   }
 
 }
@@ -2701,17 +2869,61 @@ case class LinearRing(extrude: Option[Boolean] = None,
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
        Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withExtrude(newValue: Boolean) = { this.copy(extrude = Some(newValue)) }
-  def withTessellate(newValue: Boolean) = { this.copy(tessellate = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
-  def withCoordinates(newValue: Seq[Location]) = { this.copy(coordinates = Some(newValue)) }
-  def withAddedCoordinate(newLocation: Location) = {
-    val newCoordinateSet = if (this.coordinates == None) (Seq.empty :+ newLocation) else (this.coordinates.get :+ newLocation)
-    this.copy(coordinates = Some(newCoordinateSet))
+  /**
+   * returns a new object with the newValue added to the designated Option Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the Seq element type
+   * @return a new object with the newValue added to the designated Option Seq of fieldName
+   */
+  def addToOption[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+      case Some(theSeq) => {
+        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+      }
+      case _ => None
+    }
+    field.set(theCopy, newSeqOption)
+    theCopy
   }
 
 }
@@ -2757,18 +2969,38 @@ case class Polygon(extrude: Option[Boolean] = None,
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(outerBoundaryIs),
       innerBoundaryIs, Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withExtrude(newValue: Boolean) = { this.copy(extrude = Some(newValue)) }
-  def withTessellate(newValue: Boolean) = { this.copy(tessellate = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-  def withOuterBoundaryIs(newValue: Boundary) = { this.copy(outerBoundaryIs = Some(newValue)) }
-
-  def withInnerBoundaryIs(newValue: Seq[Boundary]) = { this.copy(innerBoundaryIs = newValue) }
-  def withAddedInnerBoundaryIs(newBoundary: Boundary) = {
-    val newBoundarySet = if (this.innerBoundaryIs == Nil) (Seq.empty :+ newBoundary) else (this.innerBoundaryIs :+ newBoundary)
-    this.copy(innerBoundaryIs = newBoundarySet)
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 
 }
@@ -2788,7 +3020,39 @@ case class Boundary(linearRing: Option[LinearRing] = None,
 
   def this(linearRing: LinearRing) = this(Some(linearRing), Nil, Nil)
 
-  def withLinearRing(newValue: LinearRing) = { this.copy(linearRing = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -2838,16 +3102,39 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
     this(Some(altitudeMode), Some(location), Some(orientation), Some(scale), Some(link),
       Some(resourceMap), Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withLocation(newValue: Location) = { this.copy(location = Some(newValue)) }
-  def withOrientation(newValue: Orientation) = { this.copy(orientation = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-  def withScale(newValue: Scale) = { this.copy(scale = Some(newValue)) }
-  def withLink(newValue: Link) = { this.copy(link = Some(newValue)) }
-  def withResourceMap(newValue: ResourceMap) = { this.copy(resourceMap = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 /**
@@ -2945,12 +3232,39 @@ case class Location(longitude: Option[Double] = None,
   def this(longitude: Double, latitude: Double) =
     this(Some(longitude), Some(latitude), None, None, None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withLongitude(newValue: Double) = { this.copy(longitude = Some(newValue)) }
-  def withLatitude(newValue: Double) = { this.copy(latitude = Some(newValue)) }
-  def withAltitude(newValue: Double) = { this.copy(altitude = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
   def llaToString() = this.longitude.getOrElse("") + "," + this.latitude.getOrElse("") + "," + this.altitude.getOrElse("")
 
@@ -2982,12 +3296,39 @@ case class Orientation(heading: Option[Double] = None,
   def this(heading: Double, tilt: Double, roll: Double) =
     this(Some(heading), Some(tilt), Some(roll), None, None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withHeading(newValue: Double) = { this.copy(heading = Some(newValue)) }
-  def withTilt(newValue: Double) = { this.copy(tilt = Some(newValue)) }
-  def withRoll(newValue: Double) = { this.copy(roll = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -3016,12 +3357,39 @@ case class Scale(x: Option[Double] = None,
 
   def this(x: Double, y: Double, z: Double) = this(Some(x), Some(y), Some(z), None, None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withX(newValue: Double) = { this.copy(x = Some(newValue)) }
-  def withY(newValue: Double) = { this.copy(y = Some(newValue)) }
-  def withZ(newValue: Double) = { this.copy(z = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 
 }
 
@@ -3044,13 +3412,38 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
 
   def this() = this(Nil, None, None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withAlias(newValue: Seq[Alias]) = { this.copy(alias = newValue) }
-  def withAddedAlias(newAlias: Alias) = {
-    val newAliasSet = if (this.alias == Nil) (Seq.empty :+ newAlias) else (this.alias :+ newAlias)
-    this.copy(alias = newAliasSet)
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -3081,11 +3474,39 @@ case class Alias(targetHref: Option[String] = None,
 
   def this(tgtHref: String, srcHref: String) = this(Some(tgtHref), Some(srcHref), None, None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withTargetHref(newValue: String) = { this.copy(targetHref = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 
@@ -3162,36 +3583,39 @@ case class GroundOverlay(altitude: Option[Double] = None,
 //
 //  lazy val featureSimpleExtensionGroup = featurePart.featureSimpleExtensionGroup
 //  lazy val featureObjectExtensionGroup = featurePart.featureObjectExtensionGroup
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withAltitude(newValue: Double) = { this.copy(altitude = Some(newValue)) }
-  def withAltitudeMode(newValue: AltitudeMode) = { this.copy(altitudeMode = Some(newValue)) }
-  def withLatLonBox(newValue: LatLonBox) = { this.copy(latLonBox = Some(newValue)) }
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withDrawOrder(newValue: Int) = { this.copy(drawOrder = Some(newValue)) }
-  def withIcon(newValue: Icon) = { this.copy(icon = Some(newValue)) }
-
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class ScreenOverlay(overlayXY: Option[Vec2] = None,
@@ -3213,38 +3637,39 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
 
   def this() = this(None,None,None, None, None, new FeaturePart(), None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withOverlayXY(newValue: Vec2) = { this.copy(overlayXY = Some(newValue)) }
-  def withScreenXY(newValue: Vec2) = { this.copy(screenXY = Some(newValue)) }
-  def withRotationXY(newValue: Vec2) = { this.copy(rotationXY = Some(newValue)) }
-  def withSize(newValue: Vec2) = { this.copy(size = Some(newValue)) }
-  def withRotation(newValue: Double) = { this.copy(rotation = Some(newValue)) }
-
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withDrawOrder(newValue: Int) = { this.copy(drawOrder = Some(newValue)) }
-  def withIcon(newValue: Icon) = { this.copy(icon = Some(newValue)) }
-
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class PhotoOverlay(rotation: Option[Double] = None,
@@ -3266,37 +3691,39 @@ case class PhotoOverlay(rotation: Option[Double] = None,
 
   def this() = this(None,None,None, None, None, new FeaturePart(), None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withViewVolume(newValue: ViewVolume) = { this.copy(viewVolume = Some(newValue)) }
-  def withImagePyramid(newValue: ImagePyramid) = { this.copy(imagePyramid = Some(newValue)) }
-  def withPoint(newValue: Point) = { this.copy(point = Some(newValue)) }
-  def withShape(newValue: Shape) = { this.copy(shape = Some(newValue)) }
-  def withRotation(newValue: Double) = { this.copy(rotation = Some(newValue)) }
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withDrawOrder(newValue: Int) = { this.copy(drawOrder = Some(newValue)) }
-  def withIcon(newValue: Icon) = { this.copy(icon = Some(newValue)) }
-
-  def withFeaturePart(newValue: FeaturePart) = { this.copy(featurePart = newValue) }
-  def withName(newValue: String) = { this.copy(featurePart = featurePart.withName(newValue)) }
-  def withVisibility(newValue: Boolean) = { this.copy(featurePart = featurePart.withVisibility(newValue)) }
-  def withOpen(newValue: Boolean) = { this.copy(featurePart = featurePart.withOpen(newValue)) }
-  def withAtomAuthor(newValue: com.scalakml.atom.Author) = { this.copy(featurePart = featurePart.withAtomAuthor(newValue)) }
-  def withAtomLink(newValue: com.scalakml.atom.Link) = { this.copy(featurePart = featurePart.withAtomLink(newValue)) }
-  def withAddress(newValue: String) = { this.copy(featurePart = featurePart.withAddress(newValue)) }
-  def withAddressDetails(newValue: AddressDetails) = { this.copy(featurePart = featurePart.withAddressDetails(newValue)) }
-  def withPhoneNumber(newValue: String) = { this.copy(featurePart = featurePart.withPhoneNumber(newValue)) }
-  def withExtendedData(newValue: ExtendedData) = { this.copy(featurePart = featurePart.withExtendedData(newValue)) }
-  def withDescription(newValue: String) = { this.copy(featurePart = featurePart.withDescription(newValue)) }
-  def withSnippet(newValue: Snippet) = { this.copy(featurePart = featurePart.withSnippet(newValue)) }
-  def withAbstractView(newValue: AbstractView) = { this.copy(featurePart = featurePart.withAbstractView(newValue)) }
-  def withTimePrimitive(newValue: TimePrimitive) = { this.copy(featurePart = featurePart.withTimePrimitive(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(featurePart = featurePart.withStyleUrl(newValue)) }
-  def withStyleSelector(newValue: Seq[StyleSelector]) = { this.copy(featurePart = featurePart.withStyleSelector(newValue)) }
-  def withAddedStyleSelector(newValue: StyleSelector) = { this.copy(featurePart = featurePart.withAddedStyleSelector(newValue)) }
-  def withRegion(newValue: Region) = { this.copy(featurePart = featurePart.withRegion(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class ViewVolume(leftFov: Option[Double] = None,
@@ -3312,15 +3739,39 @@ case class ViewVolume(leftFov: Option[Double] = None,
 
   def this() = this(None,None,None,None,None,None,None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withLeftFov(newValue: Double) = { this.copy(leftFov = Some(newValue)) }
-  def withRightFov(newValue: Double) = { this.copy(rightFov = Some(newValue)) }
-  def withBottomFov(newValue: Double) = { this.copy(bottomFov = Some(newValue)) }
-  def withTopFov(newValue: Double) = { this.copy(topFov = Some(newValue)) }
-  def withNear(newValue: Double) = { this.copy(near = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class ImagePyramid(tileSize: Option[Int] = None,
@@ -3335,14 +3786,39 @@ case class ImagePyramid(tileSize: Option[Int] = None,
 
   def this() = this(None,None,None, None, None,None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withTileSize(newValue: Int) = { this.copy(tileSize = Some(newValue)) }
-  def withMaxWidth(newValue: Int) = { this.copy(maxWidth = Some(newValue)) }
-  def withMaxHeight(newValue: Int) = { this.copy(maxHeight = Some(newValue)) }
-  def withGridOrigin(newValue: GridOrigin) = { this.copy(gridOrigin = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class Style(iconStyle: Option[IconStyle] = None,
@@ -3361,17 +3837,39 @@ case class Style(iconStyle: Option[IconStyle] = None,
 
   def this() = this(None,None,None, None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withIconStyle(newValue: IconStyle) = { this.copy(iconStyle = Some(newValue)) }
-  def withLabelStyle(newValue: LabelStyle) = { this.copy(labelStyle = Some(newValue)) }
-
-  def withLineStyle(newValue: LineStyle) = { this.copy(lineStyle = Some(newValue)) }
-  def withPolyStyle(newValue: PolyStyle) = { this.copy(polyStyle = Some(newValue)) }
-  def withBalloonStyle(newValue: BalloonStyle) = { this.copy(balloonStyle = Some(newValue)) }
-  def withListStyle(newValue: ListStyle) = { this.copy(listStyle = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class StyleMap(pair: Seq[Pair] = Nil,
@@ -3385,13 +3883,38 @@ case class StyleMap(pair: Seq[Pair] = Nil,
 
   def this() = this(Nil,None,None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withPair(newValue: Seq[Pair]) = { this.copy(pair = newValue) }
-  def withAddedPair(newPair: Pair) = {
-    val newPairSet = if (this.pair == Nil) (Seq.empty :+ newPair) else (this.pair :+ newPair)
-    this.copy(pair = newPairSet)
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -3410,13 +3933,39 @@ case class Pair(key: Option[StyleState] = None,
   def this(key: StyleState, styleUrl: String, styleSelector: StyleSelector, id: String) =
     this(Some(key), Some(styleUrl), Some(styleSelector), Some(id), None, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withKey(newValue: StyleState) = { this.copy(key = Some(newValue)) }
-  def withStyleUrl(newValue: String) = { this.copy(styleUrl = Some(newValue)) }
-  def withStyleSelector(newValue: StyleSelector) = { this.copy(styleSelector = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 trait SubStyle extends KmlObject {
@@ -3449,14 +3998,39 @@ case class IconStyle(scale: Option[Double] = None,
 
   def this() = this(None,None,None, None, None,None,None,None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withScale(newValue: Double) = { this.copy(scale = Some(newValue)) }
-  def withHeading(newValue: Double) = { this.copy(heading = Some(newValue)) }
-  def withIcon(newValue: Icon) = { this.copy(icon = Some(newValue)) }
-  def withHotSpot(newValue: Vec2) = { this.copy(hotSpot = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 trait BasicLinkType extends KmlObject {
@@ -3483,13 +4057,39 @@ case class LabelStyle(scale: Option[Double] = None,
 
   def this() = this(None,None,None, None, None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withScale(newValue: Double) = { this.copy(scale = Some(newValue)) }
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withColorMode(newValue: ColorMode) = { this.copy(colorMode = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class LineStyle(width: Option[Double] = None,
@@ -3507,13 +4107,39 @@ case class LineStyle(width: Option[Double] = None,
 
   def this() = this(None,None,None, None, None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withWidth(newValue: Double) = { this.copy(width = Some(newValue)) }
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withColorMode(newValue: ColorMode) = { this.copy(colorMode = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class PolyStyle(fill: Option[Boolean] = None,
@@ -3532,14 +4158,39 @@ case class PolyStyle(fill: Option[Boolean] = None,
 
   def this() = this(None,None,None, None, None,  None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withFill(newValue: Boolean) = { this.copy(fill = Some(newValue)) }
-  def withOutline(newValue: Boolean) = { this.copy(outline = Some(newValue)) }
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withColorMode(newValue: ColorMode) = { this.copy(colorMode = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class BalloonStyle(color: Option[HexColor] = None,
@@ -3557,16 +4208,39 @@ case class BalloonStyle(color: Option[HexColor] = None,
 
   def this() = this(None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withColor(newValue: HexColor) = { this.copy(color = Some(newValue)) }
-  def withBgColor(newValue: HexColor) = { this.copy(bgColor = Some(newValue)) }
-  def withTextColor(newValue: HexColor) = { this.copy(textColor = Some(newValue)) }
-  def withText(newValue: String) = { this.copy(text = Some(newValue)) }
-
-  def withDisplayMode(newValue: DisplayMode) = { this.copy(displayMode = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class ListStyle(listItemType: Option[ListItemType] = None,
@@ -3583,18 +4257,39 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
 
   def this() = this(None,None,Nil, None, None, None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withListItemType(newValue: ListItemType) = { this.copy(listItemType = Some(newValue)) }
-  def withBgColor(newValue: HexColor) = { this.copy(bgColor = Some(newValue)) }
-  def withItemIcon(newValue: Seq[ItemIcon]) = { this.copy(itemIcon = newValue) }
-  def withAddedItemIcon(newItemIcon: ItemIcon) = {
-    val newItemIconSet = if (this.itemIcon == Nil) (Seq.empty :+ newItemIcon) else (this.itemIcon :+ newItemIcon)
-    this.copy(itemIcon = newItemIconSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
-  def withMaxSnippetLines(newValue: Int) = { this.copy(maxSnippetLines = Some(newValue)) }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
@@ -3607,16 +4302,39 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
 
   def this() = this(Nil,Nil,None, None, Nil, Nil, None)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
-
-  def withState(newValue: Seq[ItemIconState]) = { this.copy(state = newValue) }
-  def withAddedState(newState: ItemIconState) = {
-    val newStateSet = if (this.state == Nil) (Seq.empty :+ newState) else (this.state :+ newState)
-    this.copy(state = newStateSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
   }
-  def withHref(newValue: String) = { this.copy(href = Some(newValue)) }
 
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class TimeStamp(when: Option[String] = None,
@@ -3630,11 +4348,39 @@ case class TimeStamp(when: Option[String] = None,
 
   def this() = this(None,None,None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withWhen(newValue: String) = { this.copy(when = Some(newValue)) }
-
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class TimeSpan(begin: Option[String] = None,
@@ -3649,11 +4395,39 @@ case class TimeSpan(begin: Option[String] = None,
 
   def this() = this(None,None,None, None, Nil, Nil, Nil, Nil, Nil)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
-  def withBegin(newValue: String) = { this.copy(begin = Some(newValue)) }
-  def withEnd(newValue: String) = { this.copy(end = Some(newValue)) }
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
+  }
 }
 
 case class Update(targetHref: String,
@@ -3663,11 +4437,38 @@ case class Update(targetHref: String,
 
   def this() = this("", Nil, Nil, Nil)
 
-  def withTargetHref(newValue: String) = { this.copy(targetHref = newValue) }
-  def withUpdateOption(newValue: Seq[UpdateOption]) = { this.copy(updateOption = newValue) }
-  def withAddedUpdateOption(newUpdateOption: UpdateOption) = {
-    val newUpdateOptionSet = if (this.updateOption == Nil) (Seq.empty :+ newUpdateOption) else (this.updateOption :+ newUpdateOption)
-    this.copy(updateOption = newUpdateOptionSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -3677,10 +4478,38 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
   def this() = this(Seq.empty)
 
-  def withContainerSet(newValue: Seq[Container]) = { this.copy(containerSet = newValue) }
-  def withAddedContainer(newContainer: Container) = {
-    val newContainerSet = if (this.containerSet == Nil) (Seq.empty :+ newContainer) else (this.containerSet :+ newContainer)
-    this.copy(containerSet = newContainerSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -3688,10 +4517,38 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
   def this() = this(Seq.empty)
 
-  def withFeatureSet(newValue: Seq[Feature]) = { this.copy(featureSet = newValue) }
-  def withAddedFeature(newFeature: Feature) = {
-    val newContainerSet = if (this.featureSet == Nil) (Seq.empty :+ newFeature) else (this.featureSet :+ newFeature)
-    this.copy(featureSet = newContainerSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
@@ -3699,18 +4556,58 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 
   def this() = this(Seq.empty)
 
-  def withObjectChangeSet(newValue: Seq[Any]) = { this.copy(objectChangeSet = newValue) }
-  def withAddedObjectChange(newAny: Any) = {
-    val newObjectChangeSet = if (this.objectChangeSet == Nil) (Seq.empty :+ newAny) else (this.objectChangeSet :+ newAny)
-    this.copy(objectChangeSet = newObjectChangeSet)
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
+
+  /**
+   * returns a new object with the newValue added to the designated Seq of the fieldName field
+   * Note: no check is performed on the type compatibility
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the fieldName Seq
+   * @tparam A the type of the Seq element
+   * @return a new object with the newValue added to the designated Seq of fieldName
+   */
+  def addTo[A](fieldName: String, newValue: A) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+    field.set(theCopy, newSeq)
+    theCopy
   }
 }
 
 case class IdAttributes(id: Option[String] = None, targetId: Option[String] = None) {
   def this()=this(None, None)
 
-  def withId(newValue: String) = { this.copy(id = Some(newValue)) }
-  def withTargetId(newValue: String) = { this.copy(targetId = Some(newValue)) }
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def With(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
 }
 

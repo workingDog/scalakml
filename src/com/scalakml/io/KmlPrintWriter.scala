@@ -32,7 +32,7 @@ package com.scalakml.io
 
 import java.io.{ PrintWriter, File }
 import xml.{NodeSeq, dtd, XML, PrettyPrinter}
-import com.scalakml.kml.Kml
+
 
 /**
  * @author Ringo Wathelet
@@ -62,7 +62,7 @@ class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.o
                      doctype: dtd.DocType = null) {
 
 // TODO maybe default should be to null device or None
-  def this(fileName: Option[String]) = this(writer = Some(if (fileName.isDefined) new PrintWriter(new File(fileName.get)) else new PrintWriter(System.out)))
+  def this(fileName: Option[String]) = this(Some(if (fileName.isDefined) new PrintWriter(new File(fileName.get)) else new PrintWriter(System.out)))
 
   def this(fileName: String) = this(Option(fileName))
 
@@ -74,17 +74,17 @@ class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.o
    */
   def write[A: KmlToXml](value: A, pretty: PrettyPrinter = null) = {
     if (writer.isDefined) {
-     xmlExtractor match {
-       case Some(extractor) => {
-         if (pretty == null)
-           extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, x, encoding, xmlDecl, doctype))
-         else
-           extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, XML.loadString(pretty.format(x)), encoding, xmlDecl, doctype))
+      xmlExtractor match {
+        case Some(extractor) => {
+          if (pretty == null)
+            extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, x, encoding, xmlDecl, doctype))
+          else
+            extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, XML.loadString(pretty.format(x)), encoding, xmlDecl, doctype))
 
-         writer.get.flush()
-       }
-       case None => Unit
-     }
+          writer.get.flush()
+        }
+        case None => Unit
+      }
     }
   }
 

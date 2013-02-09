@@ -52,7 +52,7 @@ trait KmlExtractor {
 }
 
 /**
- * Reads a kml root element (Kml) from various file, string and NodeSeq input sources
+ * Reads into a kml root element (Kml) from various file, string and NodeSeq input sources
  *
  * @param kmlExtractor the KmlExtractor object used to extract kml from xml, default KmlFromXml
  * @param parser the SAX XML parser, default scala.xml.XML.parser

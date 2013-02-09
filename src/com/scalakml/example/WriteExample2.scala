@@ -18,11 +18,11 @@ object WriteExample2 {
   def main(args: Array[String])  {
     println("....WriteExample2 start...\n")
     // create a Point at a location
-    val point = Point() withAddedCoordinate new Location(151.21037, -33.8526)
-    // create a Placemark with the point, a name and open
-    val placemark = Placemark() withGeometry point withFeaturePart FeaturePart() withName("Sydney, OZ") withOpen(true)
-    // create a kml root object with the placemark
-    val kml = Kml() withFeature placemark
+    val point = Point() addToOption ("coordinates", Some(new Location(151.21037, -33.8526)))
+    // create a Placemark with the point as geometry, a name and open
+    val placemark = Placemark() With ("geometry", Some(point)) With ("featurePart", FeaturePart() With("name", Some("Sydney, OZ")) With("open", Some(true)))
+    // create a kml root object with the placemark as feature
+    val kml = Kml() With("feature", Some(placemark))
     // write the kml to the output file
     new KmlPrintWriter("./kml-files/Sydney-oz2.kml").write(Option(kml), new PrettyPrinter(80, 3))
     println("\n....WriteExample2 done...")

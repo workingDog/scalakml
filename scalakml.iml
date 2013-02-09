@@ -3,11 +3,8 @@
   <component name="FacetManager">
     <facet type="scala" name="Scala">
       <configuration>
-        <option name="compileOrder" value="ScalaThenJava" />
-        <option name="compilerLibraryLevel" value="Global" />
-        <option name="compilerLibraryName" value="scala-compiler" />
-        <option name="compilerOptions" value="-feature -Dscalac.patmat.analysisBudget=off" />
-        <option name="uncheckedWarnings" value="true" />
+        <option name="compilerLibraryLevel" value="Project" />
+        <option name="compilerLibraryName" value="lib" />
       </configuration>
     </facet>
   </component>
@@ -18,8 +15,17 @@
     </content>
     <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="scala-compiler" level="application" />
     <orderEntry type="library" name="scalaxal" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$USER_HOME$/scala/scala-latest/bin" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
 

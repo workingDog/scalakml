@@ -48,7 +48,6 @@ package com.scalakml.atom
 
 case class Author(name: String) {
   def this() = this("")
-  def withName(newValue: String) = { this.copy(name = newValue) }
 }
 
 case class Link(href: Option[String] = None,
@@ -59,11 +58,20 @@ case class Link(href: Option[String] = None,
                 length: Option[String] = None) {
 
   def this() = this(None, None, None, None, None, None)
-  def withHref(newValue: String) = { this.copy(href = Some(newValue)) }
-  def withRel(newValue: String) = { this.copy(rel = Some(newValue)) }
-  def withTypeValue(newValue: String) = { this.copy(typeValue = Some(newValue)) }
-  def withHrefLang(newValue: String) = { this.copy(hrefLang = Some(newValue)) }
-  def withTitle(newValue: String) = { this.copy(title = Some(newValue)) }
-  def withLength(newValue: String) = { this.copy(length = Some(newValue)) }
+
+  /**
+   * returns a copy of the original object with the designated fieldName changed to the newValue
+   *
+   * @param fieldName the name of the field to change
+   * @param newValue the new value to be in the filedName
+   * @return a new object with the designated fieldName changed to the newValue
+   */
+  def change(fieldName: String, newValue: Any) = {
+    val theCopy = this.copy()
+    val field = theCopy.getClass.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(theCopy, newValue)
+    theCopy
+  }
 
 }
