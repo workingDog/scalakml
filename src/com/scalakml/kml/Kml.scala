@@ -838,6 +838,7 @@ case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Uni
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -845,9 +846,11 @@ case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Uni
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
@@ -1021,6 +1024,7 @@ case class FeaturePart(
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1028,15 +1032,18 @@ case class FeaturePart(
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1045,11 +1052,13 @@ case class FeaturePart(
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1108,6 +1117,7 @@ case class Placemark(
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1115,15 +1125,18 @@ case class Placemark(
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1132,11 +1145,13 @@ case class Placemark(
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1157,6 +1172,7 @@ case class Snippet(value: String = "", maxLines: Int = 0) {
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1164,9 +1180,11 @@ case class Snippet(value: String = "", maxLines: Int = 0) {
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
@@ -1245,6 +1263,7 @@ case class LookAt(
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1252,15 +1271,18 @@ case class LookAt(
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1269,11 +1291,13 @@ case class LookAt(
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1344,6 +1368,7 @@ case class Camera(
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1351,15 +1376,18 @@ case class Camera(
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1368,11 +1396,13 @@ case class Camera(
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1397,6 +1427,7 @@ case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1404,15 +1435,18 @@ case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1421,11 +1455,13 @@ case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1461,6 +1497,7 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1468,15 +1505,18 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1485,11 +1525,13 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1507,8 +1549,10 @@ case class SimpleData(value: Option[String] = None, name: Option[String] = None)
   def this() = this(None, None)
 
   def this(value: String, name: String) = this(Some(value), Some(name))
+
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1516,9 +1560,11 @@ case class SimpleData(value: Option[String] = None, name: Option[String] = None)
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
@@ -1553,8 +1599,10 @@ case class Data(displayName: Option[String] = None,
 
   def this(displayName: String, value: String, name: String) =
     this(Some(displayName), Some(value), Some(name), Nil, None, None, Nil)
+
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1562,15 +1610,18 @@ case class Data(displayName: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1579,11 +1630,13 @@ case class Data(displayName: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1656,6 +1709,7 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1663,15 +1717,18 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1680,11 +1737,13 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1700,7 +1759,7 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
  * @param linkDescription You can control the description of the network link from the server, so that changes made to the description on the client side are overridden by the server.
  * @param linkSnippet You can control the snippet for the network link from the server, so that changes made to the snippet on the client side are overridden by the server. <linkSnippet> has a maxLines attribute, an integer that specifies the maximum number of lines to display.
  * @param expires You can specify a date/time at which the link should be refreshed. This specification takes effect only if the <refreshMode> in <Link> has a value of onExpire. See <refreshMode>
- * @param update With <Update>, you can specify any number of Change, Create, and Delete tags for a .kml file or .kmz archive that has previously been loaded with a network link. See <Update>.
+ * @param update with <Update>, you can specify any number of Change, Create, and Delete tags for a .kml file or .kmz archive that has previously been loaded with a network link. See <Update>.
  * @param abstractView a LookAt or a Camera
  * @param networkLinkControlSimpleExtensionGroup
  * @param networkLinkControlObjectExtensionGroup
@@ -1722,6 +1781,7 @@ case class NetworkLinkControl(minRefreshPeriod: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1729,15 +1789,18 @@ case class NetworkLinkControl(minRefreshPeriod: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1746,11 +1809,13 @@ case class NetworkLinkControl(minRefreshPeriod: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1791,6 +1856,7 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1798,15 +1864,18 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1815,11 +1884,13 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1842,6 +1913,7 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1849,15 +1921,18 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1866,11 +1941,13 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1899,6 +1976,7 @@ case class SimpleField(displayName: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1906,15 +1984,18 @@ case class SimpleField(displayName: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1923,11 +2004,13 @@ case class SimpleField(displayName: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -1960,6 +2043,7 @@ case class Folder(features: Seq[Feature] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -1967,15 +2051,18 @@ case class Folder(features: Seq[Feature] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -1984,11 +2071,13 @@ case class Folder(features: Seq[Feature] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -2021,6 +2110,7 @@ case class Region(latLonAltBox: Option[LatLonAltBox] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2028,15 +2118,18 @@ case class Region(latLonAltBox: Option[LatLonAltBox] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2045,11 +2138,13 @@ case class Region(latLonAltBox: Option[LatLonAltBox] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2099,6 +2194,7 @@ case class LatLonBox(rotation: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2106,15 +2202,18 @@ case class LatLonBox(rotation: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2123,11 +2222,13 @@ case class LatLonBox(rotation: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2191,6 +2292,7 @@ case class LatLonAltBox(minAltitude: Option[Double] = None,
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2199,11 +2301,13 @@ case class LatLonAltBox(minAltitude: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2244,6 +2348,7 @@ case class Lod(minLodPixels: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2251,15 +2356,18 @@ case class Lod(minLodPixels: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2268,11 +2376,13 @@ case class Lod(minLodPixels: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2309,6 +2419,7 @@ case class NetworkLink(
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2316,15 +2427,18 @@ case class NetworkLink(
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2333,11 +2447,13 @@ case class NetworkLink(
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -2429,6 +2545,7 @@ case class Icon(href: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2436,15 +2553,18 @@ case class Icon(href: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2453,11 +2573,13 @@ case class Icon(href: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2550,6 +2672,7 @@ case class Link(href: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2557,15 +2680,18 @@ case class Link(href: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2574,11 +2700,13 @@ case class Link(href: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -2609,6 +2737,7 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2616,15 +2745,18 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2633,11 +2765,13 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -2679,8 +2813,10 @@ case class Point(extrude: Option[Boolean] = None,
   def this(extrude: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
     this(Some(extrude), Some(altitudeMode), Some(coordinates), Some(id),
     None, Nil, Nil, Nil, Nil, Nil)
+
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2688,15 +2824,18 @@ case class Point(extrude: Option[Boolean] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+   }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2705,17 +2844,20 @@ case class Point(extrude: Option[Boolean] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Option Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2724,15 +2866,17 @@ case class Point(extrude: Option[Boolean] = None,
    */
   def addToOption[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
-      case Some(theSeq) => {
-        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+        case Some(theSeq) => {
+          if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+        }
+        case None => Some(Seq.empty :+ newValue)
       }
-      case None => Some(Seq.empty :+ newValue)
+      field.set(theCopy, newSeqOption)
     }
-    field.set(theCopy, newSeqOption)
     theCopy
   }
 
@@ -2776,6 +2920,7 @@ case class LineString(extrude: Option[Boolean] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2783,15 +2928,18 @@ case class LineString(extrude: Option[Boolean] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2800,17 +2948,20 @@ case class LineString(extrude: Option[Boolean] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Option Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2819,15 +2970,17 @@ case class LineString(extrude: Option[Boolean] = None,
    */
   def addToOption[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
-      case Some(theSeq) => {
-        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+        case Some(theSeq) => {
+          if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+        }
+        case None => Some(Seq.empty :+ newValue)
       }
-      case None => Some(Seq.empty :+ newValue)
+      field.set(theCopy, newSeqOption)
     }
-    field.set(theCopy, newSeqOption)
     theCopy
   }
 
@@ -2871,6 +3024,7 @@ case class LinearRing(extrude: Option[Boolean] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2878,15 +3032,18 @@ case class LinearRing(extrude: Option[Boolean] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2895,17 +3052,20 @@ case class LinearRing(extrude: Option[Boolean] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Option Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2914,15 +3074,17 @@ case class LinearRing(extrude: Option[Boolean] = None,
    */
   def addToOption[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
-      case Some(theSeq) => {
-        if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val newSeqOption = field.get(theCopy).asInstanceOf[Option[Seq[_]]] match {
+        case Some(theSeq) => {
+          if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
+        }
+        case None => Some(Seq.empty :+ newValue)
       }
-      case None => Some(Seq.empty :+ newValue)
+      field.set(theCopy, newSeqOption)
     }
-    field.set(theCopy, newSeqOption)
     theCopy
   }
 
@@ -2971,6 +3133,7 @@ case class Polygon(extrude: Option[Boolean] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -2978,15 +3141,18 @@ case class Polygon(extrude: Option[Boolean] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -2995,11 +3161,13 @@ case class Polygon(extrude: Option[Boolean] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -3022,6 +3190,7 @@ case class Boundary(linearRing: Option[LinearRing] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3029,15 +3198,18 @@ case class Boundary(linearRing: Option[LinearRing] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3046,11 +3218,13 @@ case class Boundary(linearRing: Option[LinearRing] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3104,6 +3278,7 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3111,15 +3286,18 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3128,11 +3306,13 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3234,6 +3414,7 @@ case class Location(longitude: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3241,15 +3422,18 @@ case class Location(longitude: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3258,11 +3442,13 @@ case class Location(longitude: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -3298,6 +3484,7 @@ case class Orientation(heading: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3305,15 +3492,18 @@ case class Orientation(heading: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3322,11 +3512,13 @@ case class Orientation(heading: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -3359,6 +3551,7 @@ case class Scale(x: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3366,15 +3559,18 @@ case class Scale(x: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3383,11 +3579,13 @@ case class Scale(x: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 
@@ -3414,6 +3612,7 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3421,15 +3620,18 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3438,11 +3640,13 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3476,6 +3680,7 @@ case class Alias(targetHref: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3483,15 +3688,18 @@ case class Alias(targetHref: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3500,11 +3708,13 @@ case class Alias(targetHref: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3585,6 +3795,7 @@ case class GroundOverlay(altitude: Option[Double] = None,
 //  lazy val featureObjectExtensionGroup = featurePart.featureObjectExtensionGroup
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3592,15 +3803,18 @@ case class GroundOverlay(altitude: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3609,11 +3823,13 @@ case class GroundOverlay(altitude: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3639,6 +3855,7 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3646,15 +3863,18 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3663,11 +3883,13 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3693,6 +3915,7 @@ case class PhotoOverlay(rotation: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3700,15 +3923,18 @@ case class PhotoOverlay(rotation: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3717,11 +3943,13 @@ case class PhotoOverlay(rotation: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3757,6 +3985,7 @@ case class ViewVolume(leftFov: Option[Double] = None,
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3765,11 +3994,13 @@ case class ViewVolume(leftFov: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3788,6 +4019,7 @@ case class ImagePyramid(tileSize: Option[Int] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3795,15 +4027,18 @@ case class ImagePyramid(tileSize: Option[Int] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3812,11 +4047,13 @@ case class ImagePyramid(tileSize: Option[Int] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3839,6 +4076,7 @@ case class Style(iconStyle: Option[IconStyle] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3846,15 +4084,18 @@ case class Style(iconStyle: Option[IconStyle] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3863,11 +4104,13 @@ case class Style(iconStyle: Option[IconStyle] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3885,6 +4128,7 @@ case class StyleMap(pair: Seq[Pair] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3892,15 +4136,18 @@ case class StyleMap(pair: Seq[Pair] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3909,11 +4156,13 @@ case class StyleMap(pair: Seq[Pair] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -3935,6 +4184,7 @@ case class Pair(key: Option[StyleState] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -3942,15 +4192,18 @@ case class Pair(key: Option[StyleState] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -3959,11 +4212,13 @@ case class Pair(key: Option[StyleState] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4000,6 +4255,7 @@ case class IconStyle(scale: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4007,15 +4263,18 @@ case class IconStyle(scale: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4024,11 +4283,13 @@ case class IconStyle(scale: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4056,9 +4317,9 @@ case class LabelStyle(scale: Option[Double] = None,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
   def this() = this(None,None,None, None, None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
-
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4066,15 +4327,18 @@ case class LabelStyle(scale: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4083,11 +4347,13 @@ case class LabelStyle(scale: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4109,6 +4375,7 @@ case class LineStyle(width: Option[Double] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4116,15 +4383,18 @@ case class LineStyle(width: Option[Double] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4133,11 +4403,13 @@ case class LineStyle(width: Option[Double] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4160,6 +4432,7 @@ case class PolyStyle(fill: Option[Boolean] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4167,15 +4440,18 @@ case class PolyStyle(fill: Option[Boolean] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4184,11 +4460,13 @@ case class PolyStyle(fill: Option[Boolean] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4210,6 +4488,7 @@ case class BalloonStyle(color: Option[HexColor] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4217,15 +4496,18 @@ case class BalloonStyle(color: Option[HexColor] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4234,11 +4516,13 @@ case class BalloonStyle(color: Option[HexColor] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4259,6 +4543,7 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4266,15 +4551,18 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4283,11 +4571,13 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4304,6 +4594,7 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4311,15 +4602,18 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4328,11 +4622,13 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4350,6 +4646,7 @@ case class TimeStamp(when: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4357,15 +4654,18 @@ case class TimeStamp(when: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4374,11 +4674,13 @@ case class TimeStamp(when: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4397,6 +4699,7 @@ case class TimeSpan(begin: Option[String] = None,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4404,15 +4707,18 @@ case class TimeSpan(begin: Option[String] = None,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4421,11 +4727,13 @@ case class TimeSpan(begin: Option[String] = None,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4439,6 +4747,7 @@ case class Update(targetHref: String,
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4446,15 +4755,18 @@ case class Update(targetHref: String,
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4463,11 +4775,13 @@ case class Update(targetHref: String,
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4480,6 +4794,7 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4487,15 +4802,18 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4504,11 +4822,13 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4519,6 +4839,7 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4526,15 +4847,18 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4543,11 +4867,13 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4558,6 +4884,7 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4565,15 +4892,18 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
   /**
    * returns a new object with the newValue added to the designated Seq of the fieldName field
    * Note: no check is performed on the type compatibility
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the fieldName Seq
@@ -4582,11 +4912,13 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
    */
   def addTo[A](fieldName: String, newValue: A) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
-    val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
-    field.set(theCopy, newSeq)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val theSeq = field.get(theCopy).asInstanceOf[Seq[A]] // assume ok
+      val newSeq = if (theSeq == Nil) (Seq.empty :+ newValue) else (theSeq :+ newValue)
+      field.set(theCopy, newSeq)
+    }
     theCopy
   }
 }
@@ -4596,6 +4928,7 @@ case class IdAttributes(id: Option[String] = None, targetId: Option[String] = No
 
   /**
    * returns a copy of the original object with the designated fieldName changed to the newValue
+   * Note: will silently ignore field names that do not exist
    *
    * @param fieldName the name of the field to change
    * @param newValue the new value to be in the filedName
@@ -4603,9 +4936,11 @@ case class IdAttributes(id: Option[String] = None, targetId: Option[String] = No
    */
   def With(fieldName: String, newValue: Any) = {
     val theCopy = this.copy()
-    val field = theCopy.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(theCopy, newValue)
+    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
+      val field = theCopy.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(theCopy, newValue)
+    }
     theCopy
   }
 
