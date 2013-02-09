@@ -55,9 +55,9 @@ Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOve
 Note a FeaturePart is not a Feature, but it is part of the Feature trait. A FeaturePart can be created and is typically added to a 
 Feature element, such as Document, Folder, Placemark, etc...
 
-In addition to the base classes is a bunch of experimental helper methods of the type withXXX(). 
-These methods return a new object with the XXX changed. For example:
-- placemark withName("someName")
+In addition to the base classes are the helper methods: With(..), addTo(..) and addToOption(..). 
+These methods return a new object with the specified field name changed. For example:
+- placemark With("someName")
 
 returns a new copy of the placemark object with the name changed to "someName",
 all other fields are the same as before. See the examples.
