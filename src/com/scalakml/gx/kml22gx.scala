@@ -250,7 +250,7 @@ case class Playlist(tourPrimitiveGroup: Option[Seq[TourPrimitive]] = None,
       case Some(theSeq) => {
         if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
       }
-      case _ => None
+      case None => Some(Seq.empty :+ newValue)
     }
     field.set(theCopy, newSeqOption)
     theCopy
@@ -494,7 +494,7 @@ case class LatLonQuad(coordinates: Option[Seq[Location]] = None,
       case Some(theSeq) => {
         if (theSeq == Nil) Some(Seq.empty :+ newValue) else Some(theSeq.asInstanceOf[Seq[_]] :+ newValue)
       }
-      case _ => None
+      case None => Some(Seq.empty :+ newValue)
     }
     field.set(theCopy, newSeqOption)
     theCopy
