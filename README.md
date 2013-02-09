@@ -59,7 +59,7 @@ In addition to the classes are the helper methods:
 
 - With (fieldName: String, newValue: Any)  for simple fields, e.g. With ("geometry", Some(point))
 - addTo \[A\](fieldName: String, newValue: A) for Seq[A] fields, e.g. addTo("styleSelector", newStyleSelector)
-- addToOption \[A\](fieldName: String, newValue: A) for Option\[Seq\[A\]\] fields, e.g. addToOption ("coordinates", Some(new Location(151.21037, -33.8526)))
+- addToOption \[A\](fieldName: String, newValue: A) for Option\[Seq\[A\]\] fields, e.g. addToOption ("coordinates", new Location(151.21037, -33.8526))
 
 These methods return a new object with the specified fieldName changed to newValue, all other fields are the same as before. 
 
