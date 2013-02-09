@@ -57,9 +57,9 @@ Feature element, such as Document, Folder, Placemark, etc...
 
 In addition to the base classes are the helper methods: With(..), addTo(..) and addToOption(..). 
 These methods return a new object with the specified field name changed. For example:
-- placemark With("someName")
+- kml With("feature", Some(placemark))
 
-returns a new copy of the placemark object with the name changed to "someName",
+returns a new copy of the kml object with a new placemark as a feature,
 all other fields are the same as before. See the examples.
 
 # Usage
