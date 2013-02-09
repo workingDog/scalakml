@@ -62,7 +62,6 @@ In addition to the classes are the helper methods:
 - addToOption \[A\](fieldName: String, newValue: A) for Option\[Seq\[A\]\] fields, e.g. addToOption ("coordinates", Some(new Location(151.21037, -33.8526)))
 
 These methods return a new object with the specified fieldName changed to newValue, all other fields are the same as before. 
-Note: "objectType" represents the "Type" attribute.
 
 For example:
 
