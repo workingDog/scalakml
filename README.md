@@ -55,12 +55,20 @@ Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOve
 Note a FeaturePart is not a Feature, but it is part of the Feature trait. A FeaturePart can be created and is typically added to a 
 Feature element, such as Document, Folder, Placemark, etc...
 
-In addition to the base classes are the helper methods: With(..), addTo(..) and addToOption(..). 
-These methods return a new object with the specified field name changed. For example:
+In addition to the classes are the helper methods:   
+
+- With (fieldName: String, newValue: Any)  for simple fields, e.g. With ("geometry", Some(point))
+- addTo \[A\](fieldName: String, newValue: A) for Seq[A] fields, e.g. addTo("styleSelector", newStyleSelector)
+- addToOption \[A\](fieldName: String, newValue: A) for Option\[Seq\[A\]\] fields, e.g. addToOption ("coordinates", Some(new Location(151.21037, -33.8526)))
+
+These methods return a new object with the specified fieldName changed to newValue, all other fields are the same as before. 
+Note: "objectType" represents the "Type" attribute.
+
+For example:
+
 - kml With("feature", Some(placemark))
 
-returns a new copy of the kml object with a new placemark as the feature,
-all other fields are the same as before. See the examples.
+returns a new copy of the kml object with a new placemark as the feature, all other fields are the same as before. See the examples.
 
 # Usage
 
