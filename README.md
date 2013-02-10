@@ -55,21 +55,7 @@ Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOve
 Note a FeaturePart is not a Feature, but it is part of the Feature trait. A FeaturePart can be created and is typically added to a 
 Feature element, such as Document, Folder, Placemark, etc...
 
-In addition to the classes are the helper methods:   
-
-- With (fieldName: String, newValue: Any)  for simple fields, e.g. With ("geometry", Some(point))
-- addTo \[A\](fieldName: String, newValue: A) for Seq[A] fields, e.g. addTo("styleSelector", newStyleSelector)
-- addToOption \[A\](fieldName: String, newValue: A) for Option\[Seq\[A\]\] fields, e.g. addToOption ("coordinates", new Location(151.21037, -33.8526))
-
-These methods return a new object with the specified fieldName changed to newValue, all other fields are the same as before. 
-
-For example:
-
-- kml With("feature", Some(placemark))
-
-returns a new copy of the kml object with a new placemark as the feature, all other fields are the same as before. See the examples.
-
-# Usage
+## Usage
 
     object WriteExample1 {
     def main(args: Array[String]) {
@@ -82,8 +68,6 @@ returns a new copy of the kml object with a new placemark as the feature, all ot
     // write the kml to the output file
     new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }
-
-see also WriteExample2 for a variation of WriteExample1.
 
 ## Issues:
   One current major issue is scala does not preserve CDATA, 
