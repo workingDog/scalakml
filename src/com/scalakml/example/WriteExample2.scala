@@ -15,6 +15,7 @@ import xml.PrettyPrinter
  * Version: 1
  */
 
+
 object WriteExample2 {
   def main(args: Array[String])  {
     println("....WriteExample2 start...\n")
