@@ -55,7 +55,7 @@ Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOve
 Note a FeaturePart is not a Feature, but it is part of the Feature trait. A FeaturePart can be created and is typically added to a 
 Feature element, such as Document, Folder, Placemark, etc...
 
-# Usage
+## Usage
 
     object WriteExample1 {
     def main(args: Array[String]) {
