@@ -22,12 +22,10 @@ object WriteExample2 {
     val point = Point() addToCoordinates (new Location(151.21037, -33.8526))
     // create a Placemark with the point as geometry, a name and open
     val placemark = Placemark().copy(geometry = Some(point))
-
     // create a kml root object with the placemark as feature
     val kml = Kml().copy(feature = Some(placemark))
-
-    // write the kml to the output file   "./kml-files/Sydney-oz2.kml"
-    new KmlPrintWriter().write(Option(kml), new PrettyPrinter(80, 3))
+    // write the kml to the output file
+    new KmlPrintWriter("./kml-files/Sydney-oz2.kml").write(Option(kml), new PrettyPrinter(80, 3))
     println("\n....WriteExample2 done...")
   }
 }
