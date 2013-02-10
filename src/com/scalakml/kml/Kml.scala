@@ -1004,6 +1004,15 @@ case class FeaturePart(
       Some(abstractView), Some(timePrimitive), Some(styleUrl),
       styleSelector, Some(region), Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToStyleSelector(value: StyleSelector) = {
+    this.copy(styleSelector = if (styleSelector == Nil) (Seq.empty :+ value) else (styleSelector :+ value))
+  }
+
 }
 /**
  * This is an abstract element and cannot be used directly in a KML file.
@@ -1262,6 +1271,15 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
 
   def this() = this(Nil, None, None, None, Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToSimpleData(value: SimpleData) = {
+    this.copy(simpleData = if (simpleData == Nil) (Seq.empty :+ value) else (simpleData :+ value))
+  }
+
 }
 
 /**
@@ -1445,7 +1463,23 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Container {
 
   def this() = this(new FeaturePart(), Nil, Nil, None, None, Nil, Nil, Nil, Nil, Nil)
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToSchemas(value: Schema) = {
+    this.copy(schemas = if (schemas == Nil) (Seq.empty :+ value) else (schemas :+ value))
+  }
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToFeatures(value: Feature) = {
+    this.copy(features = if (features == Nil) (Seq.empty :+ value) else (features :+ value))
+  }
 }
 
 /**
@@ -1464,6 +1498,14 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
 
   def this() = this(Nil, None, None, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToSimpleField(value: SimpleField) = {
+    this.copy(simpleField = if (simpleField == Nil) (Seq.empty :+ value) else (simpleField :+ value))
+  }
 }
 
 /**
@@ -1516,6 +1558,14 @@ case class Folder(features: Seq[Feature] = Nil,
 
   def this() = this(Nil, new FeaturePart(), None, None, Nil, Nil, Nil, Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToFeatures(value: Feature) = {
+    this.copy(features = if (features == Nil) (Seq.empty :+ value) else (features :+ value))
+  }
 }
 
 
@@ -1894,6 +1944,14 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
 
   def this() = this(Nil, None, None, Nil, Nil, Nil, Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToGeometries(value: Geometry) = {
+    this.copy(geometries = if (geometries == Nil) (Seq.empty :+ value) else (geometries :+ value))
+  }
 }
 
 /**
@@ -1934,6 +1992,19 @@ case class Point(extrude: Option[Boolean] = None,
     this(Some(extrude), Some(altitudeMode), Some(coordinates), Some(id),
     None, Nil, Nil, Nil, Nil, Nil)
 
+  /**
+   * returns a new object with a new Location added to the sequence of coordinates
+   * @param value the new Location to add
+   * @return a new object with a new Location added to the sequence of coordinates
+   */
+  def addToCoordinates(value: Location) = {
+    this.copy(coordinates =
+      coordinates match {
+        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
+        case None => Option(Seq.empty :+ value)
+      })
+  }
+
 }
 
 /**
@@ -1971,6 +2042,19 @@ case class LineString(extrude: Option[Boolean] = None,
   def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
       Some(id), None, Nil, Nil, Nil, Nil, Nil)
+
+  /**
+   * returns a new object with a new Location added to the sequence of coordinates
+   * @param value the new Location to add
+   * @return a new object with a new Location added to the sequence of coordinates
+   */
+  def addToCoordinates(value: Location) = {
+    this.copy(coordinates =
+      coordinates match {
+        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
+        case None => Option(Seq.empty :+ value)
+      })
+  }
 }
 
 /**
@@ -2008,7 +2092,18 @@ case class LinearRing(extrude: Option[Boolean] = None,
   def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
        Some(id), None, Nil, Nil, Nil, Nil, Nil)
-
+  /**
+   * returns a new object with a new Location added to the sequence of coordinates
+   * @param value the new Location to add
+   * @return a new object with a new Location added to the sequence of coordinates
+   */
+  def addToCoordinates(value: Location) = {
+    this.copy(coordinates =
+      coordinates match {
+        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
+        case None => Option(Seq.empty :+ value)
+      })
+  }
 }
 
 /**
@@ -2052,6 +2147,14 @@ case class Polygon(extrude: Option[Boolean] = None,
     this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(outerBoundaryIs),
       innerBoundaryIs, Some(id), None, Nil, Nil, Nil, Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToInnerBoundaryIs(value: Boundary) = {
+    this.copy(innerBoundaryIs = if (innerBoundaryIs == Nil) (Seq.empty :+ value) else (innerBoundaryIs :+ value))
+  }
 }
 
 /**
@@ -2293,7 +2396,14 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
   def this() = this(Nil, None, None, Nil, Nil, Nil)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToAlias(value: Alias) = {
+    this.copy(alias = if (alias == Nil) (Seq.empty :+ value) else (alias :+ value))
+  }
 }
 
 /**
@@ -2502,6 +2612,14 @@ case class StyleMap(pair: Seq[Pair] = Nil,
 
   def this() = this(Nil,None,None, Nil, Nil, Nil, Nil, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToPair(value: Pair) = {
+    this.copy(pair = if (pair == Nil) (Seq.empty :+ value) else (pair :+ value))
+  }
 }
 
 case class Pair(key: Option[StyleState] = None,
@@ -2644,7 +2762,14 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends SubStyle {
 
   def this() = this(None,None,Nil, None, None, None, Nil, Nil, Nil, Nil, Nil)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToItemIcon(value: ItemIcon) = {
+    this.copy(itemIcon = if (itemIcon == Nil) (Seq.empty :+ value) else (itemIcon :+ value))
+  }
 }
 
 case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
@@ -2656,7 +2781,14 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
   targetId: Option[String] = None) extends KmlObject {
 
   def this() = this(Nil,Nil,None, None, Nil, Nil, None)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToState(value: ItemIconState) = {
+    this.copy(state = if (state == Nil) (Seq.empty :+ value) else (state :+ value))
+  }
 }
 
 case class TimeStamp(when: Option[String] = None,
@@ -2692,7 +2824,14 @@ case class Update(targetHref: String,
   updateExtensionGroup: Seq[Any] = Nil) {
 
   def this() = this("", Nil, Nil, Nil)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToUpdateOption(value: UpdateOption) = {
+    this.copy(updateOption = if (updateOption == Nil) (Seq.empty :+ value) else (updateOption :+ value))
+  }
 }
 
 trait UpdateOption
@@ -2700,19 +2839,40 @@ trait UpdateOption
 case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
   def this() = this(Seq.empty)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToContainerSet(value: Container) = {
+    this.copy(containerSet = if (containerSet == Nil) (Seq.empty :+ value) else (containerSet :+ value))
+  }
 }
 
 case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
   def this() = this(Seq.empty)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToFeatureSet(value: Feature) = {
+    this.copy(featureSet = if (featureSet == Nil) (Seq.empty :+ value) else (featureSet :+ value))
+  }
 }
 
 case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 
   def this() = this(Seq.empty)
-
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToObjectChangeSet(value: Any) = {
+    this.copy(objectChangeSet = if (objectChangeSet == Nil) (Seq.empty :+ value) else (objectChangeSet :+ value))
+  }
 }
 
 case class IdAttributes(id: Option[String] = None, targetId: Option[String] = None) {

@@ -129,6 +129,18 @@ case class Playlist(tourPrimitiveGroup: Option[Seq[TourPrimitive]] = None,
 
   def this() = this(None,None,None, Nil)
 
+  /**
+   * returns a new object with value added to the sequence
+   * @param value to add
+   * @return a new object with value added to the sequence
+   */
+  def addToTourPrimitiveGroup(value: TourPrimitive) = {
+    this.copy(tourPrimitiveGroup =
+      tourPrimitiveGroup match {
+        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
+        case None => Option(Seq.empty :+ value)
+      })
+  }
 }
 
 
@@ -179,6 +191,18 @@ case class LatLonQuad(coordinates: Option[Seq[Location]] = None,
 
   def this() = this(None,None,None, Nil)
 
+  /**
+   * returns a new object with a new Location added to the sequence of coordinates
+   * @param value the new Location to add
+   * @return a new object with a new Location added to the sequence of coordinates
+   */
+  def addToCoordinates(value: Location) = {
+    this.copy(coordinates =
+      coordinates match {
+        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
+        case None => Option(Seq.empty :+ value)
+      })
+  }
 }
 
 /**
