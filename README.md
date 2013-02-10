@@ -69,8 +69,6 @@ Feature element, such as Document, Folder, Placemark, etc...
     new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }
 
-see also WriteExample2 for a variation of WriteExample1.
-
 ## Issues:
   One current major issue is scala does not preserve CDATA, 
   such that angle brackets and ampersands are corrupted, Google Earth for example cannot process that.
