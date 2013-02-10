@@ -15,17 +15,8 @@
     </content>
     <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="scalaxal" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$USER_HOME$/scala/scala-latest/bin" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="scalaxal" level="project" />
   </component>
 </module>
 

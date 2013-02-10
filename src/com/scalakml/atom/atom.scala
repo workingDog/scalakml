@@ -59,22 +59,4 @@ case class Link(href: Option[String] = None,
 
   def this() = this(None, None, None, None, None, None)
 
-  /**
-   * returns a copy of the original object with the designated fieldName changed to the newValue
-   * Note: will silently ignore field names that do not exist
-   *
-   * @param fieldName the name of the field to change
-   * @param newValue the new value to be in the filedName
-   * @return a new object with the designated fieldName changed to the newValue
-   */
-  def With(fieldName: String, newValue: Any) = {
-    val theCopy = this.copy()
-    if(theCopy.getClass.getDeclaredFields.exists(field => field.getName.equals(fieldName))) {
-      val field = theCopy.getClass.getDeclaredField(fieldName)
-      field.setAccessible(true)
-      field.set(theCopy, newValue)
-    }
-    theCopy
-  }
-
 }
