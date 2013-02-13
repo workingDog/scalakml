@@ -88,15 +88,16 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object UpdateOptionToXml extends KmlToXml[Option[UpdateOption]] {
-    def toXml(updateOption: Option[UpdateOption]): NodeSeq = {
-      if (!updateOption.isDefined) NodeSeq.Empty
-      else
-        updateOption.get match {
+    def toXml(updateOptionOption: Option[UpdateOption]): NodeSeq = {
+      updateOptionOption match {
+        case Some(updateOption) => updateOption match {
           case delete: Delete => getXmlFrom(Option(delete))
           case create: Create => getXmlFrom(Option(create))
           case change: Change => getXmlFrom(Option(change))
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
@@ -129,10 +130,9 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object KmlObjectToXml extends KmlToXml[Option[KmlObject]] {
-    def toXml(kmlObject: Option[KmlObject]): NodeSeq = {
-      if (!kmlObject.isDefined) NodeSeq.Empty
-      else
-        kmlObject.get match {
+    def toXml(kmlObjectOption: Option[KmlObject]): NodeSeq = {
+      kmlObjectOption match {
+        case Some(kmlObject) => kmlObject match {
           case feature: Feature => getXmlFrom(Option(feature))
           case resourceMap: ResourceMap => getXmlFrom(Option(resourceMap))
           case alias: Alias => getXmlFrom(Option(alias))
@@ -156,6 +156,8 @@ object KmlToXml extends XmlExtractor {
           case styleMap: StyleMap => getXmlFrom(Option(styleMap))
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
@@ -374,14 +376,15 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object StyleSelectorToXml extends KmlToXml[Option[StyleSelector]] {
-    def toXml(styleSelector: Option[StyleSelector]): NodeSeq = {
-      if (!styleSelector.isDefined) NodeSeq.Empty
-      else
-        styleSelector.get match {
+    def toXml(styleSelectorOption: Option[StyleSelector]): NodeSeq = {
+      styleSelectorOption match {
+        case Some(styleSelector) => styleSelector match {
           case style: Style => getXmlFrom(Option(style))
           case styleMap: StyleMap => getXmlFrom(Option(styleMap))
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
@@ -433,10 +436,9 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object AbstractViewToXml extends KmlToXml[Option[AbstractView]] {
-    def toXml(abstractView: Option[AbstractView]): NodeSeq = {
-      if (!abstractView.isDefined) NodeSeq.Empty
-      else
-        abstractView.get match {
+    def toXml(abstractViewOption: Option[AbstractView]): NodeSeq = {
+      abstractViewOption match {
+        case Some(abstractView) => abstractView match {
           case camera: Camera =>
             <Camera>
               {(camera.getClass.getDeclaredFields.map(x => getNodeFromFieldName(x.getName, Option(camera))) filter (_ != null) toSeq)}
@@ -445,15 +447,17 @@ object KmlToXml extends XmlExtractor {
             <LookAt>
               {(lookAt.getClass.getDeclaredFields.map(x => getNodeFromFieldName(x.getName, Option(lookAt))) filter (_ != null) toSeq)}
             </LookAt>
+          case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
   implicit object TimePrimitiveToXml extends KmlToXml[Option[TimePrimitive]] {
-    def toXml(timePrimitive: Option[TimePrimitive]): NodeSeq = {
-      if (!timePrimitive.isDefined) NodeSeq.Empty
-      else
-        timePrimitive.get match {
+    def toXml(timePrimitiveOption: Option[TimePrimitive]): NodeSeq = {
+      timePrimitiveOption match {
+        case Some(timePrimitive) => timePrimitive match {
           case timeStamp: TimeStamp =>
             <TimeStamp id={if (timeStamp.id.isDefined) timeStamp.id.get else null} targetId={if (timeStamp.targetId.isDefined) timeStamp.targetId.get else null}>
               {getNodeFromFieldName("when", Option(timeStamp))}
@@ -463,7 +467,10 @@ object KmlToXml extends XmlExtractor {
               {getNodeFromFieldName("begin", Option(timeSpan))}
               {getNodeFromFieldName("end", Option(timeSpan))}
             </TimeSpan>
+          case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
@@ -786,10 +793,9 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object GeometryToXml extends KmlToXml[Option[Geometry]] {
-    def toXml(geometry: Option[Geometry]): NodeSeq = {
-      if (!geometry.isDefined) NodeSeq.Empty
-      else
-        geometry.get match {
+    def toXml(geometryOption: Option[Geometry]): NodeSeq = {
+      geometryOption match {
+        case Some(geometry) => geometry match {
 
           case point: Point => {
             <Point id={if (point.id.isDefined) point.id.get else null} targetId={if (point.targetId.isDefined) point.targetId.get else null}>
@@ -847,15 +853,16 @@ object KmlToXml extends XmlExtractor {
 
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
   implicit object FeatureToXml extends KmlToXml[Option[Feature]] {
-    def toXml(feature: Option[Feature]): NodeSeq = {
-      import TourToXml._
-      if (!feature.isDefined) NodeSeq.Empty
-      else
-        feature.get match {
+    import TourToXml._
+    def toXml(featureOption: Option[Feature]): NodeSeq = {
+      featureOption match {
+        case Some(feature) => feature match {
           case placemark: Placemark => getXmlFrom(Option(placemark))
           case networkLink: NetworkLink => getXmlFrom(Option(networkLink))
           case tour: Tour => getXmlFrom(Option(tour))
@@ -866,18 +873,21 @@ object KmlToXml extends XmlExtractor {
           case photoOverlay: PhotoOverlay => getXmlFrom(Option(photoOverlay))
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
   implicit object ContainerToXml extends KmlToXml[Option[Container]] {
-    def toXml(container: Option[Container]): NodeSeq = {
-      if (!container.isDefined) NodeSeq.Empty
-      else
-        container.get match {
-          case document: Document => getXmlFrom(container)
-          case folder: Folder => getXmlFrom(container)
-          case _ => NodeSeq.Empty
-        }
+    def toXml(containerOption: Option[Container]): NodeSeq = {
+       containerOption match {
+         case Some(container) => container match {
+           case document: Document => getXmlFrom(Option(document))
+           case folder: Folder => getXmlFrom(Option(folder))
+           case _ => NodeSeq.Empty
+         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
@@ -975,34 +985,39 @@ object KmlToXml extends XmlExtractor {
   def getXmlSeqFrom[A: KmlToXmlSeq](kml: A) = implicitly[KmlToXmlSeq[A]].toXml(kml)
 
   def getNodeFromFieldName(name: String, objOption: Option[Any]): NodeSeq = {
-    val baseName = if(name.startsWith("gx:")) name.substring(3) else name
+    val baseName = if (name.startsWith("gx:")) name.substring(3) else name
     objOption match {
       case Some(obj) => {
-        Some(obj.getClass.getDeclaredField(baseName)) match {
-          case Some(field) => {
-            field.setAccessible(true)
-            val fieldValue = field.get(obj)
-            if (fieldValue == null || !fieldValue.isInstanceOf[Option[_]]) NodeSeq.Empty
-            else makeXmlNode(name, fieldValue.asInstanceOf[Option[_]])
+        if (!obj.getClass.getDeclaredFields.exists(field => field.getName.equals(baseName)))
+          NodeSeq.Empty
+        else {
+          Some(obj.getClass.getDeclaredField(baseName)) match {
+            case Some(field) => {
+              field.setAccessible(true)
+              val fieldValue = field.get(obj)
+              if (fieldValue == null || !fieldValue.isInstanceOf[Option[_]]) NodeSeq.Empty
+              else makeXmlNode(name, fieldValue.asInstanceOf[Option[_]])
+            }
+            case _ => NodeSeq.Empty
           }
-          case _ => NodeSeq.Empty
         }
       }
       case None => NodeSeq.Empty
     }
   }
 
-  def makeXmlNode[_](name: String, value: Option[_]): NodeSeq = {
-    if (value.isDefined) {
-      value.get match {
+  def makeXmlNode[_](name: String, valueOption: Option[_]): NodeSeq = {
+    valueOption match {
+      case Some(value) => value match {
         case bool: Boolean => <a>{if (bool) "1" else "0"}</a>.copy(label = name)
         case vec2: Vec2 => {
           val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
           theNode.copy(label = name)
         }
-        case _ => <a>{value.get}</a>.copy(label = name)
+        case _ => <a>{value}</a>.copy(label = name)
       }
-    } else NodeSeq.Empty
+      case None => NodeSeq.Empty
+    }
   }
 
 //-----------------------------------------------------------------------------------------------
@@ -1108,10 +1123,9 @@ object KmlToXml extends XmlExtractor {
   }
 
   implicit object TourPrimitiveToXml extends KmlToXml[Option[TourPrimitive]] {
-    def toXml(tourPrimitive: Option[TourPrimitive]): NodeSeq = {
-      if (!tourPrimitive.isDefined) NodeSeq.Empty
-      else
-        tourPrimitive.get match {
+    def toXml(tourPrimitiveOption: Option[TourPrimitive]): NodeSeq = {
+      tourPrimitiveOption match {
+        case Some(tourPrimitive) => tourPrimitive match {
           case animatedUpdate: AnimatedUpdate => getXmlFrom(Option(animatedUpdate))
           case flyTo: FlyTo => getXmlFrom(Option(flyTo))
           case soundCue: SoundCue => getXmlFrom(Option(soundCue))
@@ -1119,6 +1133,8 @@ object KmlToXml extends XmlExtractor {
           case tourControl: TourControl => getXmlFrom(Option(tourControl))
           case _ => NodeSeq.Empty
         }
+        case None => NodeSeq.Empty
+      }
     }
   }
 
