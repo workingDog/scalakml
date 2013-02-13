@@ -70,7 +70,7 @@ object KmlToXml extends XmlExtractor {
   implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
     def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
       addressDetailsOption match {
-        case Some(addressDetails) => XalToXml.toXml(addressDetails)
+        case Some(addressDetails) => XalToXml(addressDetails)
         case None => NodeSeq.Empty
       }
     }
