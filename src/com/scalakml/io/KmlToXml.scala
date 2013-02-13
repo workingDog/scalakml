@@ -166,7 +166,7 @@ object KmlToXml extends XmlExtractor {
           if (change.objectChangeSet == Nil) NodeSeq.Empty
           else
             <Change>
-              { for (kmlObject <- change.objectChangeSet) yield getXmlFrom(Option(kmlObject.asInstanceOf[KmlObject])) }
+              {for (kmlObject <- change.objectChangeSet) yield getXmlFrom(Option(kmlObject.asInstanceOf[KmlObject]))}
             </Change>
         case None => NodeSeq.Empty
       }
@@ -326,9 +326,7 @@ object KmlToXml extends XmlExtractor {
   implicit object IconStateToXml extends KmlToXml[Option[ItemIconState]] {
     def toXml(iconStateOption: Option[ItemIconState]): NodeSeq = {
       iconStateOption match {
-        case Some(iconState) => <state>
-          {getXmlFrom(iconStateOption)}
-        </state>
+        case Some(iconState) => <state>{getXmlFrom(iconStateOption)}</state>
         case None => NodeSeq.Empty
       }
     }
@@ -701,7 +699,7 @@ object KmlToXml extends XmlExtractor {
     def toXml(scaleOption: Option[Scale]): NodeSeq = {
       scaleOption match {
         case Some(scale) => <Scale>
-          { for (field <- scale.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, scaleOption) }
+          {for (field <- scale.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, scaleOption)}
         </Scale>
         case None => NodeSeq.Empty
       }
@@ -712,7 +710,7 @@ object KmlToXml extends XmlExtractor {
     def toXml(orientationOption: Option[Orientation]): NodeSeq = {
       orientationOption match {
         case Some(orientation) => <Orientation id={if (orientation.id.isDefined) orientation.id.get else null} targetId={if (orientation.targetId.isDefined) orientation.targetId.get else null}>
-          { for (field <- orientation.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, orientationOption) }
+          {for (field <- orientation.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, orientationOption)}
         </Orientation>
         case None => NodeSeq.Empty
       }
@@ -723,7 +721,7 @@ object KmlToXml extends XmlExtractor {
     def toXml(locationOption: Option[Location]): NodeSeq = {
       locationOption match {
         case Some(location) => <Location id={if (location.id.isDefined) location.id.get else null} targetId={if (location.targetId.isDefined) location.targetId.get else null}>
-          { for (field <- location.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, locationOption) }
+          {for (field <- location.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, locationOption)}
         </Location>
         case None => NodeSeq.Empty
       }
@@ -734,13 +732,10 @@ object KmlToXml extends XmlExtractor {
     def toXml(coordsOption: Option[Seq[Location]]): NodeSeq = {
       coordsOption match {
         case Some(coords) =>
-          <coordinates>
-            {for (x <- coords) yield {
-            if (x.longitude.isDefined && x.latitude.isDefined) {
-              x.longitude.get.toString + "," + x.latitude.get.toString + (if (x.altitude.isDefined) "," + x.altitude.get.toString else "") + "\n"
-            }
-          }}
-          </coordinates>
+          <coordinates>{for (x <- coords) yield {
+            if (x.longitude.isDefined && x.latitude.isDefined)
+            {x.longitude.get.toString + "," + x.latitude.get.toString + (if (x.altitude.isDefined) "," + x.altitude.get.toString else "") + " \n"}
+          }}</coordinates>
         case None => NodeSeq.Empty
       }
     }
@@ -749,9 +744,7 @@ object KmlToXml extends XmlExtractor {
   implicit object HexColorToXml extends KmlToXml[Option[HexColor]] {
     def toXml(colorOption: Option[HexColor]): NodeSeq = {
       colorOption match {
-        case Some(color) => <color>
-          {if ((color.hexString != null) && !color.hexString.isEmpty) color.hexString else null}
-        </color>
+        case Some(color) => <color>{if ((color.hexString != null) && !color.hexString.isEmpty) color.hexString else null}</color>
         case None => NodeSeq.Empty
       }
     }
@@ -1002,40 +995,15 @@ object KmlToXml extends XmlExtractor {
   def makeXmlNode[_](name: String, value: Option[_]): NodeSeq = {
     if (value.isDefined) {
       value.get match {
-        case bool: Boolean => <a> {if (bool) "1" else "0"} </a>.copy(label = name)
+        case bool: Boolean => <a>{if (bool) "1" else "0"}</a>.copy(label = name)
         case vec2: Vec2 => {
           val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
           theNode.copy(label = name)
         }
-        case _ => <a> {value.get} </a>.copy(label = name)
+        case _ => <a>{value.get}</a>.copy(label = name)
       }
     } else NodeSeq.Empty
   }
-
-  // a hack attempt to preserve the CDATA, but it does not work for KML_Samples.kml
-  // because there is a <tessellate> in the text
-  def makeXmlNode2[_](name: String, value: Option[_]): NodeSeq = {
-    if (value.isDefined) {
-      value.get match {
-        case bool: Boolean => <a> {if (bool) "1" else "0"} </a>.copy(label = name)
-        case vec2: Vec2 => {
-          val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
-          theNode.copy(label = name)
-        }
-        case x => {
-             x match {
-               case x: String => {
-                 val content = value.get
-                 <a> { scala.xml.Unparsed(s"$content")} </a>.copy(label = name)
-               }
-
-               case _ => <a> { value.get } </a>.copy(label = name)
-             }
-        }
-      }
-    } else NodeSeq.Empty
-  }
-
 
 //-----------------------------------------------------------------------------------------------
 //----------------------------------gx-----------------------------------------------------------
