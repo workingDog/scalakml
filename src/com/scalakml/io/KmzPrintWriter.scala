@@ -44,7 +44,7 @@ import scala.Some
  */
 
 /**
- * writes the kml element object to xml representation
+ * writes the kml elements as xml to a kmz file
  *
  * @param kmzFileName the kmz File name to write to
  * @param encoding the encoding
@@ -55,7 +55,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
                      xmlExtractor: Option[XmlExtractor] = Some(KmlToXml),
                      encoding: String = "UTF-8",
                      xmlDecl: Boolean = true,
-                     doctype: dtd.DocType = null) extends KmlPrintWriter {
+                     doctype: dtd.DocType = null)  {
 
   private val resourcesFiles = collection.mutable.Map.empty[String, FileInputStream]
   private val zipFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
@@ -63,31 +63,50 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   def this(fileName: String) = this(Option(fileName))
 
   /**
-   * adds a resource file to the kmz (zip) file. This needs to be done
-   * before the kmz file is written
+   * adds a resource file to the kmz file.
+   * This needs to be done before the kmz file is written.
    *
-   * @param filenameInKmzFile the name the file will have in the kmz file
+   * @param filenameInKmzFile the name the resource file will have in the kmz file
    * @param resourceFilename the file containing the resource
    */
   def addResourceFile(filenameInKmzFile: String, resourceFilename: String)  {
     resourcesFiles += (filenameInKmzFile -> new FileInputStream(resourceFilename))
   }
 
+  /**
+   * writes the kml object to a kmz file.
+   * The kmz file has to exist, it is set during construction of a KmzPrintWriter()
+   * For example: new KmzPrintWriter("test.kmz")
+   * The kml file inside the kmz will be named the same as the kmz file but with the kml extension.
+   * Following from the example, test.kml
+   *
+   * @param kml the kml object to write to the kmz file
+   * @param pretty the pretty printer to use
+   */
   def writeKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
       kmzFileName match {
         case Some(fileName) => {
           val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length-4) else fileName
-          writeAllToKmz(Map(baseName+".kml" -> kml), pretty)
+          writeAllToKmz(scala.collection.mutable.Map(baseName+".kml" -> kml), pretty)
         }
         case None => Unit
       }
   }
 
-  def writeAllToKmz[A: KmlToXml](kmlList: Map[String, A], pretty: PrettyPrinter = null) {
-  if ((kmzFileName.isDefined) && (zipFile.isDefined) && (kmlList != Nil) && (!kmlList.isEmpty)) {
+  /**
+   * writes all input kml objects to the designated kmz file.
+   * The kmz file has to exist, it is set during construction of a KmzPrintWriter().
+   * For example: new KmzPrintWriter("test.kmz").
+   * Each kml object must have a corresponding file name in the input kmlMap.
+   *
+   * @param kmlMap the Map of kml objects and file names
+   * @param pretty the pretty printer to use
+   */
+  def writeAllToKmz[A: KmlToXml](kmlMap: scala.collection.mutable.Map[String, A], pretty: PrettyPrinter = null) {
+  if ((kmzFileName.isDefined) && (zipFile.isDefined) && (kmlMap != Nil) && (!kmlMap.isEmpty)) {
     xmlExtractor match {
       case Some(extractor) => {
-        for (kmlObj <- kmlList) {
+        for (kmlObj <- kmlMap) {
           val outputStream = new ByteArrayOutputStream()
           val tempWriter = new PrintWriter(outputStream)
 
@@ -110,6 +129,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   }
   }
 
+  // TODO replace this, looks inefficient
   private def readByte(bufferedReader: BufferedReader): Stream[Int] = {
     bufferedReader.read() #:: readByte(bufferedReader)
   }
