@@ -30,9 +30,9 @@
 
 package com.scalakml.io
 
-import java.io.{ PrintWriter, File }
+import java.io._
 import xml.{NodeSeq, dtd, XML, PrettyPrinter}
-
+import scala.Some
 
 /**
  * @author Ringo Wathelet

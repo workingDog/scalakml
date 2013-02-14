@@ -34,7 +34,7 @@ import com.scalakml.kml._
 import org.xml.sax.InputSource
 import scala.xml.XML._
 import scala.xml.{NodeSeq, XML}
-import java.io.{ InputStream, Reader, StringReader, File, FileDescriptor, FileInputStream }
+import java.io.{ File, FileDescriptor }
 import scala.xml.Source._
 import scala.language.postfixOps
 /**
@@ -76,19 +76,12 @@ class KmlFileReader(kmlExtractor: Option[KmlExtractor] = Some(KmlFromXml),
   }
 
   /**
-   * get a sequence of Kml root element options from the input kmz file
-   * @param file the input kmz file
-   * @return a sequence of Kml root element options
+   * get a Kml root element from the inputStream
+   *
+   * @param is kml inputStream
+   * @return a Kml root element option
    */
-  def getKmlFromKmzFile(file: File): Seq[Option[Kml]] = {
-    import scala.collection.JavaConversions._
-    if (!file.getName.toLowerCase.endsWith(".kmz")) Seq.empty
-    else {
-      (new java.util.zip.ZipFile(file).entries.
-        filter(_.getName.toLowerCase.endsWith(".kml")).
-        collect { case kmlFile => getKmlFromFile(kmlFile.getName) } toSeq)
-    }
-  }
+  def loadKml(is: java.io.InputStream): Option[Kml] = loadKml(fromInputStream(is))
 
   /**
    * get a Kml root element from the input file
