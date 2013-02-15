@@ -58,7 +58,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
                      doctype: dtd.DocType = null)  {
 
   private val resourcesFiles = collection.mutable.Map.empty[String, FileInputStream]
-  private val zipFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
+  private val kmzFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
 
   def this(fileName: String) = this(Option(fileName))
 
@@ -67,7 +67,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * This needs to be done before the kmz file is written.
    *
    * @param filenameInKmzFile the name the resource file will have in the kmz file
-   * @param resourceFilename the file containing the resource
+   * @param resourceFilename the name of the file containing the resource
    */
   def addResourceFile(filenameInKmzFile: String, resourceFilename: String)  {
     resourcesFiles += (filenameInKmzFile -> new FileInputStream(resourceFilename))
@@ -83,7 +83,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param kml the kml object to write to the kmz file
    * @param pretty the pretty printer to use
    */
-  def writeKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
+  def writeToKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
       kmzFileName match {
         case Some(fileName) => {
           val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length-4) else fileName
@@ -103,7 +103,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param pretty the pretty printer to use
    */
   def writeAllToKmz[A: KmlToXml](kmlMap: scala.collection.mutable.Map[String, A], pretty: PrettyPrinter = null) {
-  if ((kmzFileName.isDefined) && (zipFile.isDefined) && (kmlMap != Nil) && (!kmlMap.isEmpty)) {
+  if ((kmzFileName.isDefined) && (kmzFile.isDefined) && (kmlMap != Nil) && (!kmlMap.isEmpty)) {
     xmlExtractor match {
       case Some(extractor) => {
         for (kmlObj <- kmlMap) {
@@ -119,23 +119,22 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
           tempWriter.close()
           outputStream.close()
 
-          addToZip(kmlObj._1, outputStream)
+          addToKmz(kmlObj._1, outputStream)
         }
-        addResourceFilesToZip()
-        zipFile.get.close()
+        addResourceFilesToKmz()
+        kmzFile.get.close()
       }
       case None => Unit
     }
   }
   }
 
-  // TODO replace this, looks inefficient
   private def readByte(bufferedReader: BufferedReader): Stream[Int] = {
     bufferedReader.read() #:: readByte(bufferedReader)
   }
 
-  private def addResourceFilesToZip() {
-    zipFile match {
+  private def addResourceFilesToKmz() {
+    kmzFile match {
       case Some(zip) => {
         for (file <- resourcesFiles) {
           zip.putNextEntry(new ZipEntry(file._1))
@@ -153,8 +152,8 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
     }
   }
 
-  private def addToZip(kmlFileName: String, kmlStream: ByteArrayOutputStream) {
-    zipFile match {
+  private def addToKmz(kmlFileName: String, kmlStream: ByteArrayOutputStream) {
+    kmzFile match {
       case Some(zip) => {
         try {
           zip.putNextEntry(new ZipEntry(kmlFileName))

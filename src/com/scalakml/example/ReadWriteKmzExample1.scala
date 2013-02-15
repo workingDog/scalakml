@@ -32,7 +32,7 @@ object ReadWriteKmzExample1 {
     new KmzPrintWriter("./kml-files/test.kmz").writeAllToKmz(kmlMap, pretty)
 
     // write a single kml object to a kmz file
-    //    new KmzPrintWriter("./kml-files/test_single.kmz").writeKmz(kmlSeq.head, pretty)
+    //    new KmzPrintWriter("./kml-files/test_single.kmz").writeToKmz(kmlSeq.head, pretty)
 
     println("\n....ReadWriteKmzExample1 done...")
   }

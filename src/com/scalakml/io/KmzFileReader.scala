@@ -31,7 +31,6 @@
 package com.scalakml.io
 
 import com.scalakml.kml._
-import scala.xml.{NodeSeq, XML}
 import java.io.{ File }
 import scala.language.postfixOps
 
@@ -42,7 +41,7 @@ import scala.language.postfixOps
  */
 
 /**
- * Reads into a kml root element (Kml) from kmz file
+ * Reads into a kml root elements from a kmz file
  *
  * @param kmlExtractor the KmlExtractor object used to extract kml from xml, default KmlFromXml
  * @param parser the SAX XML parser, default scala.xml.XML.parser
