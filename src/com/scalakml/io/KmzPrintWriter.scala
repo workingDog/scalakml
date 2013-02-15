@@ -30,7 +30,6 @@
 
 package com.scalakml.io
 
-import io.Source
 import java.io._
 import xml.{dtd, XML, PrettyPrinter}
 import java.util.zip.{ZipEntry, ZipOutputStream}
@@ -129,25 +128,20 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   }
   }
 
-  private def readByte(bufferedReader: BufferedReader): Stream[Int] = {
-    bufferedReader.read() #:: readByte(bufferedReader)
-  }
-
   private def addResourceFilesToKmz() {
     kmzFile match {
       case Some(zip) => {
         for (file <- resourcesFiles) {
           zip.putNextEntry(new ZipEntry(file._1))
-          val in = Source.fromInputStream(file._2).bufferedReader()
           try {
-            readByte(in).takeWhile(_ > -1).toList.foreach(zip.write(_))
+            zip.write(Stream.continually(file._2.read).takeWhile(-1 !=).map(_.toByte).toArray)
+            }
+            finally {
+              file._2.close()
+            }
+            zip.closeEntry()
           }
-          finally {
-            in.close()
-          }
-          zip.closeEntry()
         }
-      }
       case None => Unit
     }
   }
@@ -159,7 +153,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
           zip.putNextEntry(new ZipEntry(kmlFileName))
           val in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(kmlStream.toByteArray())))
           try {
-            readByte(in).takeWhile(_ > -1).toList.foreach(zip.write(_))
+            zip.write(Stream.continually(in.read).takeWhile(-1 !=).map(_.toByte).toArray)
           }
           finally {
             in.close()
