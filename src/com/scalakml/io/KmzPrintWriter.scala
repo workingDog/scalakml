@@ -35,7 +35,6 @@ import xml.{dtd, XML, PrettyPrinter}
 import java.util.zip.{ZipEntry, ZipOutputStream}
 import scala.Some
 
-
 /**
  * @author Ringo Wathelet
  * Date: 14/02/13
@@ -45,7 +44,7 @@ import scala.Some
 /**
  * writes the kml elements as xml to a kmz file
  *
- * @param kmzFileName the kmz File name to write to
+ * @param kmzFileName the kmz file name to write to
  * @param encoding the encoding
  * @param xmlDecl if true, write xml declaration
  * @param doctype if not null, write doctype declaration
@@ -59,7 +58,11 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   private val resourcesFiles = collection.mutable.Map.empty[String, FileInputStream]
   private val kmzFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
 
-  def this(fileName: String) = this(Option(fileName))
+  /**
+   * writes the kml elements as xml to a kmz file
+   * @param kmzFileName the kmz file name to write to
+   */
+  def this(kmzFileName: String) = this(Option(kmzFileName))
 
   /**
    * adds a resource file to the kmz file.
@@ -74,19 +77,19 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
 
   /**
    * writes the kml object to a kmz file.
-   * The kmz file has to exist, it is set during construction of a KmzPrintWriter()
-   * For example: new KmzPrintWriter("test.kmz")
-   * The kml file inside the kmz will be named the same as the kmz file but with the kml extension.
-   * Following from the example, test.kml
+   * The kmz file has to exist, it is set during construction of a KmzPrintWriter.
+   * For example: new KmzPrintWriter("test.kmz"), cannot have new KmzPrintWriter().
+   * The kml file inside the kmz will be named the same as the kmz file but with the ".kml" extension.
+   * Following from the example, "test.kml"
    *
    * @param kml the kml object to write to the kmz file
-   * @param pretty the pretty printer to use
+   * @param pretty the optional pretty printer to use
    */
   def writeToKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
       kmzFileName match {
         case Some(fileName) => {
           val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length-4) else fileName
-          writeAllToKmz(scala.collection.mutable.Map(baseName+".kml" -> kml), pretty)
+          writeAllToKmz(Map(baseName+".kml" -> kml), pretty)
         }
         case None => Unit
       }
@@ -94,14 +97,14 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
 
   /**
    * writes all input kml objects to the designated kmz file.
-   * The kmz file has to exist, it is set during construction of a KmzPrintWriter().
-   * For example: new KmzPrintWriter("test.kmz").
+   * The kmz file has to exist, it is set during construction of a KmzPrintWriter.
+   * For example: new KmzPrintWriter("test.kmz"), cannot have new KmzPrintWriter().
    * Each kml object must have a corresponding file name in the input kmlMap.
    *
-   * @param kmlMap the Map of kml objects and file names
-   * @param pretty the pretty printer to use
+   * @param kmlMap the Map of file names (keys) and kml objects (values)
+   * @param pretty the optional pretty printer to use
    */
-  def writeAllToKmz[A: KmlToXml](kmlMap: scala.collection.mutable.Map[String, A], pretty: PrettyPrinter = null) {
+  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A], pretty: PrettyPrinter = null) {
   if ((kmzFileName.isDefined) && (kmzFile.isDefined) && (kmlMap != Nil) && (!kmlMap.isEmpty)) {
     xmlExtractor match {
       case Some(extractor) => {
@@ -135,13 +138,13 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
           zip.putNextEntry(new ZipEntry(file._1))
           try {
             zip.write(Stream.continually(file._2.read).takeWhile(-1 !=).map(_.toByte).toArray)
-            }
-            finally {
-              file._2.close()
-            }
-            zip.closeEntry()
           }
+          finally {
+            file._2.close()
+          }
+          zip.closeEntry()
         }
+      }
       case None => Unit
     }
   }
