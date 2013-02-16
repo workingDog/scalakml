@@ -44,7 +44,7 @@ import xml.XML._
  * Date: 12/12/12
  * Version: 1
  *
- * Reference: OGC 07-147r2 Version: 2.2.0, Category: OGC� Standard, Editor: Tim Wilson, at
+ * Reference: OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at
  * http://www.opengeospatial.org/standards/kml
  * also
  * Google developers KML Reference, at
@@ -62,7 +62,7 @@ object KmlFromXml extends KmlExtractor {
   import TourPrimitiveTypes._
 
   /**
-   * creates a Kml root element from the XML NodeSeq, e.g. <kml> ... <kml>
+   * creates a Kml root element from the XML NodeSeq, e.g. <kml> ... </kml>
    * The Kml consists of 0 or 1 Feature type object, and 0 or 1 NetworkLinkControl
    * The Kml can also have a hint attribute used as a signal to Google Earth to display the file as celestial data.
    *
@@ -80,7 +80,7 @@ object KmlFromXml extends KmlExtractor {
   /**
    * Creates a NetworkLinkControl from the NodeSeq.
    *
-   * @param nodeSeq the scala xml NodeSeq, e.g. <NetworkLinkControl> ... <NetworkLinkControl>
+   * @param nodeSeq the scala xml NodeSeq, e.g. <NetworkLinkControl> ... </NetworkLinkControl>
    * @return an NetworkLinkControl object
    */
   def makeNetworkLinkControl(nodeSeq: NodeSeq): Option[NetworkLinkControl] = {
@@ -98,7 +98,7 @@ object KmlFromXml extends KmlExtractor {
   }
 
   /**
-   * Creates a Hint attribute for the Kml root element from the NodeSeq <kml> ... <kml>
+   * Creates a Hint attribute for the Kml root element from the NodeSeq <kml> ... </kml>
    *
    * @param nodeSeq the scala xml NodeSeq
    * @return an Hint attribute
@@ -111,7 +111,7 @@ object KmlFromXml extends KmlExtractor {
    * Returns the first found non empty Feature from amongst:
    * Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay, Tour
    *
-   * @param nodeSeq the scala xml NodeSeq, e.g. <kml> ... <kml>
+   * @param nodeSeq the scala xml NodeSeq, e.g. <kml> ... </kml>
    * @return an object that derives from Feature, one of: Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay, Tour
    */
   def makeMainFeature(nodeSeq: NodeSeq): Option[Feature] = {
@@ -125,9 +125,9 @@ object KmlFromXml extends KmlExtractor {
   }
 
   /**
-   * Creates a Update from the NodeSeq.
+   * Creates an Update from the NodeSeq.
    *
-   * @param nodeSeq the scala xml NodeSeq, e.g. <Update> ... <Update>
+   * @param nodeSeq the scala xml NodeSeq, e.g. <Update> ... </Update>
    * @return an Update object
    */
   def makeUpdate(nodeSeq: NodeSeq): Option[Update] = {
@@ -139,7 +139,7 @@ object KmlFromXml extends KmlExtractor {
   /**
    * Creates a Update option, one of: Delete, Create or Change from the NodeSeq.
    *
-   * @param nodeSeq the scala xml NodeSeq, e.g. <Update> ... <Update>
+   * @param nodeSeq the scala xml NodeSeq, e.g. <Update> ... </Update>
    * @return an Update option sequence containing: Delete, Create or Change options
    */
   def makeUpdateOptions(nodeSeq: NodeSeq): Seq[UpdateOption] = {
@@ -324,7 +324,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeLink(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
     if (nodeSeq.isEmpty) None else {
-      for (x <- List("Link", "Url")) {  // <--- possible labels, "Url" not part of the formal reference
+      for (x <- List("Link", "Url")) {  // <--- possible labels, "Url" is not part of the formal reference
          val link = makeLinkFromNode(nodeSeq \ x)
          if(link.isDefined) return link
       }

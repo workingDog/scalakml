@@ -1,7 +1,7 @@
 package com.scalakml.example
 
 import com.scalakml.io.{KmzPrintWriter, KmzFileReader, KmlPrintWriter}
-import xml.PrettyPrinter
+import xml.{Null, PrettyPrinter}
 import com.scalakml.kml.Kml
 import util.Random
 
@@ -28,8 +28,13 @@ object ReadWriteKmzExample1 {
     // make a map of (fileName -> kml object) with the kml objects
     var kmlMap = Map.empty[String, Option[Kml]]
     kmlSeq.foreach(kmlObj => (kmlMap += ("kml_"+math.abs(Random.nextInt).toString) -> kmlObj))
-    // write all kml objects into a kmz file, each kml object is in a separate kml file
-    new KmzPrintWriter("./kml-files/test.kmz").writeAllToKmz(kmlMap, pretty)
+
+    // create a kmz file writer
+    val pWriter = new KmzPrintWriter("./kml-files/test.kmz")
+    // add a resource file to the kmz file
+    pWriter.addResourceFile("test_picture","./kml-files/testPicture.png")
+    // write all kml objects (including the resource files) to a kmz file, each kml object is in a separate kml file
+    pWriter.writeAllToKmz(kmlMap, pretty)
 
     // write a single kml object to a kmz file
     //    new KmzPrintWriter("./kml-files/test_single.kmz").writeToKmz(kmlSeq.head, pretty)

@@ -42,7 +42,7 @@ import scala.Some
  */
 
 /**
- * writes the kml elements as xml to a kmz file
+ * Writer to write the kml elements as xml to a kmz file
  *
  * @param kmzFileName the kmz file name to write to
  * @param encoding the encoding
@@ -59,13 +59,13 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   private val kmzFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
 
   /**
-   * writes the kml elements as xml to a kmz file
+   * Writer to write the kml elements as xml to a kmz file
    * @param kmzFileName the kmz file name to write to
    */
   def this(kmzFileName: String) = this(Option(kmzFileName))
 
   /**
-   * adds a resource file to the kmz file.
+   * add a resource file to the set that will be written to the kmz file.
    * This needs to be done before the kmz file is written.
    *
    * @param filenameInKmzFile the name the resource file will have in the kmz file
@@ -76,7 +76,13 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   }
 
   /**
-   * writes the kml object to a kmz file.
+   * returns the resource files
+   * @return the resource files as a collection.mutable.Map.empty[String, FileInput]
+   */
+  def getResourceFiles = resourcesFiles
+
+  /**
+   * writes the kml object and any resource files to a kmz file.
    * The kmz file has to exist, it is set during construction of a KmzPrintWriter.
    * For example: new KmzPrintWriter("test.kmz"), cannot have new KmzPrintWriter().
    * The kml file inside the kmz will be named the same as the kmz file but with the ".kml" extension.
@@ -96,7 +102,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
   }
 
   /**
-   * writes all input kml objects to the designated kmz file.
+   * writes all input kml objects and any resource files to the designated kmz file.
    * The kmz file has to exist, it is set during construction of a KmzPrintWriter.
    * For example: new KmzPrintWriter("test.kmz"), cannot have new KmzPrintWriter().
    * Each kml object must have a corresponding file name in the input kmlMap.
@@ -104,8 +110,8 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param kmlMap the Map of file names (keys) and kml objects (values)
    * @param pretty the optional pretty printer to use
    */
-  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A], pretty: PrettyPrinter = null) {
-  if ((kmzFileName.isDefined) && (kmzFile.isDefined) && (kmlMap != Nil) && (!kmlMap.isEmpty)) {
+  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, Option[A]], pretty: PrettyPrinter = null) {
+  if ((kmzFileName.isDefined) && (kmzFile.isDefined)) {
     xmlExtractor match {
       case Some(extractor) => {
         for (kmlObj <- kmlMap) {
@@ -127,8 +133,8 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
         kmzFile.get.close()
       }
       case None => Unit
+      }
     }
-  }
   }
 
   private def addResourceFilesToKmz() {
