@@ -107,6 +107,8 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * For example: new KmzPrintWriter("test.kmz"), cannot have new KmzPrintWriter().
    * Each kml object must have a corresponding file name in the input kmlMap.
    *
+   * Note: if the input kmlMap is empty, only the resource files will be written to the kmz file.
+   *
    * @param kmlMap the Map of file names (keys) and kml objects (values)
    * @param pretty the optional pretty printer to use
    */

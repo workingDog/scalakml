@@ -1,8 +1,8 @@
 package com.scalakml.example
 
 
-import com.scalakml.io.{KmlFromXml, KmlPrintWriter, KmlFileReader}
-import xml.PrettyPrinter
+import com.scalakml.io.{KmlToXml, KmlFromXml, KmlPrintWriter, KmlFileReader}
+import xml.{XML, PrettyPrinter}
 import com.scalakml.kml.{Point, Placemark}
 
 /**
@@ -14,6 +14,7 @@ import com.scalakml.kml.{Point, Placemark}
 object ReadExample1 {
   def main(args: Array[String]) {
     println("....ReadExample1 start...\n")
+
     // read a kml file into a kml root object.
     // Note the default extractor (as shown) can be replaced by your own KmlExtractor
     // see KmlExtractor trait in KmlFileReader
