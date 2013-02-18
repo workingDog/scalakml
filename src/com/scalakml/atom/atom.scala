@@ -46,9 +46,7 @@ package com.scalakml.atom
  */
 
 
-case class Author(name: String) {
-  def this() = this("")
-}
+case class Author(name: String)
 
 case class Link(href: Option[String] = None,
                 rel: Option[String] = None,
@@ -57,6 +55,7 @@ case class Link(href: Option[String] = None,
                 title: Option[String] = None,
                 length: Option[String] = None) {
 
-  def this() = this(None, None, None, None, None, None)
-
+  def this(href: String) = this(Option(href))
+  def this(href: String, rel: String) = this(Option(href), Option(rel))
+  def this(href: String, rel: String, typeValue: String) = this(Option(href), Option(rel), Option(typeValue))
 }

@@ -105,8 +105,8 @@ case class AnimatedUpdate(duration: Option[Double] = None,
                           targetId: Option[String] = None,
                           objectSimpleExtensionGroup: Seq[Any] = Nil) extends TourPrimitive {
 
-  def this() = this(None,None,None,None, Nil)
-
+  def this(duration: Double) = this(Option(duration))
+  def this(duration: Double, update: Update) = this(Option(duration), Option(update))
 }
 
 
@@ -117,7 +117,8 @@ case class FlyTo(duration: Option[Double] = None,
                  targetId: Option[String] = None,
                  objectSimpleExtensionGroup: Seq[Any] = Nil) extends TourPrimitive {
 
-  def this() = this(None,None,None,None, None, Nil)
+  def this(duration: Double) = this(Option(duration))
+  def this(duration: Double, flyToMode: FlyToMode) = this(Option(duration), Option(flyToMode))
 
 }
 
@@ -127,8 +128,8 @@ case class Playlist(tourPrimitiveGroup: Option[Seq[TourPrimitive]] = None,
                     targetId: Option[String] = None,
                     objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None,None,None, Nil)
-
+  def this(tourPrimitive: TourPrimitive) = this(Option(Seq.empty :+ tourPrimitive))
+  def this(tourPrimitiveGroup: Seq[TourPrimitive]) = this(Option(tourPrimitiveGroup))
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -149,7 +150,7 @@ case class SoundCue(href: Option[String] = None,
                     targetId: Option[String] = None,
                     objectSimpleExtensionGroup: Seq[Any] = Nil) extends TourPrimitive {
 
-  def this() = this(None,None,None, Nil)
+  def this(href: String) = this(Option(href))
 
 }
 
@@ -160,7 +161,7 @@ case class Tour(featurePart: FeaturePart = new FeaturePart(),
                 targetId: Option[String] = None,
                 objectSimpleExtensionGroup: Seq[Any] = Nil) extends Feature {
 
-  def this() = this(new FeaturePart(), None,None,None, Nil)
+  def this(playlist: Playlist) = this(new FeaturePart(), Option(playlist))
 
 }
 
@@ -169,7 +170,7 @@ case class TourControl(playMode: Option[PlayMode] = None,
                     targetId: Option[String] = None,
                     objectSimpleExtensionGroup: Seq[Any] = Nil) extends TourPrimitive {
 
-  def this() = this(None,None,None, Nil)
+  def this(playMode: PlayMode) = this(Option(playMode))
 
 }
 
@@ -179,17 +180,16 @@ case class Wait(duration: Option[Double] = None,
                 targetId: Option[String] = None,
                 objectSimpleExtensionGroup: Seq[Any] = Nil) extends TourPrimitive {
 
-  def this() = this(None,None,None, Nil)
+  def this(duration: Double) = this(Option(duration))
 
 }
-
 
 case class LatLonQuad(coordinates: Option[Seq[Location]] = None,
                       id: Option[String] = None,
                       targetId: Option[String] = None,
                       objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None,None,None, Nil)
+  def this(coordinates: Seq[Location]) = this(Option(coordinates))
 
   /**
    * returns a new object with a new Location added to the sequence of coordinates

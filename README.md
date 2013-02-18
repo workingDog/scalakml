@@ -60,11 +60,13 @@ Feature element, such as Document, Folder, Placemark, etc...
     object WriteExample1 {
     def main(args: Array[String]) {
     // create a Point at a location
-    val point = Point(coordinates = Some(Seq.empty :+ new Location(151.21037, -33.8526)))
-    // create a Placemark with the point, a name and open
-    val placemark = Placemark(Some(point), FeaturePart(name = Some("Sydney, OZ"), open = Some(true)))
+    val point = Point(coordinates = Option(Seq.empty :+ new Location(151.21037, -33.8526)))
+    // create a Placemark with the point, and a name
+    val placemark = Placemark(Option(point), FeaturePart(name = Option("Sydney")))
     // create a kml root object with the placemark
-    val kml = Kml(feature = Some(placemark))
+    val kml = Kml(feature = Option(placemark))
+    // or you could have
+//    val kml = new Kml(new Placemark("Sydney", new Point(151.21037, -33.8526)))
     // write the kml to the output file
     new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }

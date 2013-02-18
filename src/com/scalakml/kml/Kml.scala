@@ -835,7 +835,6 @@ object KmlObjectTypes extends Enumeration {
  */
 case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Units) {
   def this() = this(0.0, 0.0, Fraction, Fraction)
-
 }
 
 
@@ -865,7 +864,6 @@ object HexColor {
  */
 case class HexColor(hexString: String = "ffffffff") {
   def this() = this("ffffffff")
-
   def asColor = HexColor.colorFromHex(hexString)
 }
 
@@ -993,16 +991,17 @@ case class FeaturePart(
   featureSimpleExtensionGroup: Seq[Any] = Nil,
   featureObjectExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(None, None, None, None,None, None,None, None,None, None,None, None,None, None, Nil, None, Nil, Nil)
+  def this(name: String) = this(Option(name))
+  def this(name: String, visibility: Boolean) = this(Option(name), Option(visibility))
 
   def this(name: String, visibility: Boolean, open: Boolean, atomAuthor: com.scalakml.atom.Author, atomLink: com.scalakml.atom.Link,
            address: String, addressDetails: AddressDetails, phoneNumber:String, extendedData: ExtendedData,
            description: String, snippet: Snippet, abstractView: AbstractView, timePrimitive: TimePrimitive,
            styleUrl: String, styleSelector: Seq[StyleSelector], region: Region) =
-    this(Some(name), Some(visibility), Some(open), Some(atomAuthor), Some(atomLink), Some(address),
-      Some(addressDetails),Some(phoneNumber), Some(extendedData), Some(description), Some(snippet),
-      Some(abstractView), Some(timePrimitive), Some(styleUrl),
-      styleSelector, Some(region), Nil, Nil)
+    this(Option(name), Option(visibility), Option(open), Option(atomAuthor), Option(atomLink), Option(address),
+      Option(addressDetails),Option(phoneNumber), Option(extendedData), Option(description), Option(snippet),
+      Option(abstractView), Option(timePrimitive), Option(styleUrl),
+      styleSelector, Option(region), Nil, Nil)
 
   /**
    * returns a new object with value added to the sequence
@@ -1062,11 +1061,10 @@ case class Placemark(
   placemarkObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Feature {
 
-  def this() = this(None, new FeaturePart(), None, None, Nil, Nil, Nil)
-
-  def this(geometry: Geometry, featureElement: FeaturePart, id: String) =
-    this(Some(geometry), featureElement, Some(id), None, Nil, Nil, Nil)
-
+  def this(geom: Geometry) = this(Option(geom))
+  def this(name: String) = this(None, new FeaturePart(name = Option(name)))
+  def this(name: String, geom: Geometry) = this(Option(geom), new FeaturePart(name = Option(name)))
+  def this(name: String, geom: Geometry, id: String) = this(Option(geom), new FeaturePart(name = Option(name)), Option(id))
 }
 
 /**
@@ -1080,9 +1078,7 @@ case class Placemark(
  * @param value a short text description of the feature
  * @param maxLines maximum number of lines to display
  */
-case class Snippet(value: String = "", maxLines: Int = 0) {
-  def this() = this("", 0)
-}
+case class Snippet(value: String = "", maxLines: Int = 0)
 
 /**
  * This is an abstract element and cannot be used directly in a KML file.
@@ -1148,12 +1144,14 @@ case class LookAt(
   abstractViewObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends AbstractView {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(range: Double) = this(Option(range))
 
-  def this(range: Double, longitude: Double, latitude: Double, altitude: Double, heading: Double, tilt: Double,
-           altitudeMode: AltitudeMode, id: String) =
-    this(Some(range), Some(longitude), Some(latitude), Some(altitude), Some(heading), Some(tilt), Some(altitudeMode) ,
-      Some(id), None, Nil, Nil, Nil, Nil, Nil)
+  def this(range: Double, longitude: Double, latitude: Double, altitude: Double) =
+    this(Option(range), Option(longitude), Option(latitude), Option(altitude))
+
+  def this(range: Double, longitude: Double, latitude: Double, altitude: Double, heading: Double,
+           tilt: Double, altitudeMode: AltitudeMode, id: String) =
+    this(Option(range), Option(longitude), Option(latitude), Option(altitude), Option(heading), Option(tilt), Option(altitudeMode) ,Option(id))
 
 }
 
@@ -1214,12 +1212,14 @@ case class Camera(
   abstractViewObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends AbstractView {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(roll: Double) = this(Option(roll))
+
+  def this(roll: Double, longitude: Double, latitude: Double, altitude: Double) =
+    this(Option(roll), Option(longitude), Option(latitude), Option(altitude))
 
   def this(roll: Double, longitude: Double, latitude: Double, altitude: Double, heading: Double, tilt: Double,
            altitudeMode: AltitudeMode, id: String) =
-    this(Some(roll), Some(longitude), Some(latitude), Some(altitude), Some(heading), Some(tilt), Some(altitudeMode) ,
-      Some(id), None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(roll), Option(longitude), Option(latitude), Option(altitude), Option(heading), Option(tilt), Option(altitudeMode) ,Option(id))
 }
 
 /**
@@ -1236,11 +1236,7 @@ case class Camera(
  * @param schemaData This element is used in conjunction with <Schema> to add typed custom data to a KML Feature.
  * @param other
  */
-case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil, other: Seq[Any] = Nil) {
-
-  def this() = this(Nil, Nil, Nil)
-
-}
+case class ExtendedData(data: Seq[Data] = Nil, schemaData: Seq[SchemaData] = Nil, other: Seq[Any] = Nil)
 
 /**
  *  This element is used in conjunction with <Schema> to add typed custom data to a KML Feature.
@@ -1269,7 +1265,9 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
   schemaDataExtension: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(Nil, None, None, None, Nil, Nil)
+  def this(simpleData: SimpleData) = this(Seq.empty :+ simpleData)
+  def this(simpleData: SimpleData, schemaUrl: String) = this((Seq.empty :+ simpleData), Option(schemaUrl))
+  def this(simpleData: SimpleData, schemaUrl: String, id: String) = this((Seq.empty :+ simpleData), Option(schemaUrl), Option(id))
 
   /**
    * returns a new object with value added to the sequence
@@ -1292,10 +1290,7 @@ case class SchemaData(simpleData: Seq[SimpleData] = Nil,
  * @param name
  */
 case class SimpleData(value: Option[String] = None, name: Option[String] = None) {
-  def this() = this(None, None)
-
-  def this(value: String, name: String) = this(Some(value), Some(name))
-
+  def this(value: String, name: String) = this(Option(value), Option(name))
 }
 
 /**
@@ -1323,10 +1318,9 @@ case class Data(displayName: Option[String] = None,
   targetId: Option[String] = None,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, Nil, None, None, Nil)
-
-  def this(displayName: String, value: String, name: String) =
-    this(Some(displayName), Some(value), Some(name), Nil, None, None, Nil)
+  def this(displayName: String) = this(Option(displayName))
+  def this(displayName: String, value: String) = this(Option(displayName), Option(value))
+  def this(displayName: String, value: String, name: String) = this(Option(displayName), Option(value), Option(name))
 
 }
 
@@ -1391,10 +1385,9 @@ case class Kml(networkLinkControl: Option[NetworkLinkControl] = None,
   kmlSimpleExtensionGroup: Seq[Any] = Nil,
   kmlObjectExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(None, None, None, Nil, Nil)
-
-  def this(networkLinkControl: NetworkLinkControl, feature: Feature) =
-    this(Some(networkLinkControl), Some(feature), None, Nil, Nil)
+  def this(networkLinkControl: NetworkLinkControl, feature: Feature) = this(Option(networkLinkControl), Option(feature))
+  def this(networkLinkControl: NetworkLinkControl) = this(Option(networkLinkControl))
+  def this(feature: Feature) = this(None, Option(feature))
 }
 
 /**
@@ -1426,7 +1419,9 @@ case class NetworkLinkControl(minRefreshPeriod: Option[Double] = None,
   networkLinkControlSimpleExtensionGroup: Seq[Any] = Nil,
   networkLinkControlObjectExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, None, Nil, Nil)
+  def this(minRefreshPeriod: Double, maxSessionLength: Double) =  this(Option(minRefreshPeriod), Option(maxSessionLength))
+  def this(minRefreshPeriod: Double, maxSessionLength: Double, expires: String, update: Update) =
+    this(Option(minRefreshPeriod), Option(maxSessionLength), None, None, None, None, None, Option(expires), Option(update))
 
 }
 
@@ -1462,7 +1457,11 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
   containerObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Container {
 
-  def this() = this(new FeaturePart(), Nil, Nil, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(feature: Feature) = this(new FeaturePart(), Nil, (Seq.empty :+ feature))
+  def this(name: String, feature: Feature) = this(new FeaturePart(name = Option(name)), Nil, (Seq.empty :+ feature))
+  def this(name: String, feature: Feature, schema: Schema) =
+    this(new FeaturePart(name = Option(name)), (Seq.empty :+ schema), (Seq.empty :+ feature))
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -1496,7 +1495,9 @@ case class Schema(simpleField: Seq[SimpleField] = Nil,
   id: Option[String] = None,
   schemaExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(Nil, None, None, Nil)
+  def this(simpleField: SimpleField) = this(Seq.empty :+ simpleField)
+  def this(name: String, simpleField: SimpleField) = this((Seq.empty :+ simpleField), Option(name))
+  def this(name: String, simpleField: SimpleField, id: String) = this((Seq.empty :+ simpleField), Option(name), Option(id))
 
   /**
    * returns a new object with value added to the sequence
@@ -1525,10 +1526,9 @@ case class SimpleField(displayName: Option[String] = None,
   name: Option[String] = None,
   simpleFieldExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(None, None, None, Nil)
-
-  def this(displayName: String, typeValue: String, name: String) =
-    this(Some(displayName), Some(typeValue), Some(name), Nil)
+  def this(typeValue: String) = this(None, Option(typeValue))
+  def this(typeValue: String, name: String) = this(None, Option(typeValue), Option(name))
+  def this(displayName: String, typeValue: String, name: String) = this(Option(displayName), Option(typeValue), Option(name))
 
 }
 
@@ -1556,7 +1556,10 @@ case class Folder(features: Seq[Feature] = Nil,
   containerObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Container {
 
-  def this() = this(Nil, new FeaturePart(), None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(feature: Feature) = this(Seq.empty :+ feature)
+  def this(name: String, feature: Feature) = this((Seq.empty :+ feature), new FeaturePart(name = Option(name)))
+  def this(name: String, feature: Feature, id: String) =
+    this((Seq.empty :+ feature), new FeaturePart(name = Option(name)), Option(id))
 
   /**
    * returns a new object with value added to the sequence
@@ -1589,10 +1592,9 @@ case class Region(latLonAltBox: Option[LatLonAltBox] = None,
   regionObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, Nil, Nil, Nil)
-
-  def this(latLonAltBox: LatLonAltBox, lod: Lod, id: String) =
-    this(Some(latLonAltBox), Some(lod), Some(id), None, Nil, Nil, Nil)
+  def this(latLonAltBox: LatLonAltBox) = this(Option(latLonAltBox))
+  def this(latLonAltBox: LatLonAltBox, lod: Lod) = this(Option(latLonAltBox), Option(lod))
+  def this(latLonAltBox: LatLonAltBox, lod: Lod, id: String) = this(Option(latLonAltBox), Option(lod), Option(id))
 }
 
 trait LatLonBoxType extends KmlObject {
@@ -1632,10 +1634,11 @@ case class LatLonBox(rotation: Option[Double] = None,
   latLonBoxTypeObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends LatLonBoxType {
 
-  def this() = this(None, None, None, None, None, None, None, Nil, Nil, Nil)
+  def this(rotation: Double, north: Double, south: Double, east: Double, west: Double) =
+    this(Option(rotation), Option(north), Option(south), Option(east), Option(west))
 
   def this(rotation: Double, north: Double, south: Double, east: Double, west: Double, id:String) =
-    this(Some(rotation), Some(north), Some(south), Some(east), Some(west), Some(id), None, Nil, Nil, Nil)
+    this(Option(rotation), Option(north), Option(south), Option(east), Option(west), Option(id))
 
 }
 
@@ -1672,12 +1675,15 @@ case class LatLonAltBox(minAltitude: Option[Double] = None,
   latLonBoxTypeObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends LatLonBoxType {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil)
+  def this(minAltitude: Double, maxAltitude: Double, altitudeMode: AltitudeMode,
+           north: Double, south: Double, east: Double, west: Double) =
+    this(Option(minAltitude), Option(maxAltitude), Option(altitudeMode),
+      Option(north), Option(south), Option(east), Option(west))
 
   def this(minAltitude: Double, maxAltitude: Double, altitudeMode: AltitudeMode,
            north: Double, south: Double, east: Double, west: Double, id:String) =
-    this(Some(minAltitude), Some(maxAltitude), Some(altitudeMode),
-      Some(north), Some(south), Some(east), Some(west), Some(id), None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(minAltitude), Option(maxAltitude), Option(altitudeMode),
+      Option(north), Option(south), Option(east), Option(west), Option(id))
 
 }
 
@@ -1709,10 +1715,14 @@ case class Lod(minLodPixels: Option[Double] = None,
   lodObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, None, None, Nil, Nil, Nil)
+  def this(minLodPixels: Double, maxLodPixels: Double) =
+    this(Option(minLodPixels), Option(maxLodPixels))
+
+  def this(minLodPixels: Double, maxLodPixels: Double, minFadeExtent: Double, maxFadeExtent: Double) =
+    this(Option(minLodPixels), Option(maxLodPixels), Option(minFadeExtent), Option(maxFadeExtent))
 
   def this(minLodPixels: Double, maxLodPixels: Double, minFadeExtent: Double, maxFadeExtent: Double, id: String) =
-    this(Some(minLodPixels), Some(maxLodPixels), Some(minFadeExtent), Some(maxFadeExtent), Some(id), None, Nil, Nil, Nil)
+    this(Option(minLodPixels), Option(maxLodPixels), Option(minFadeExtent), Option(maxFadeExtent), Option(id))
 
 }
 
@@ -1740,10 +1750,20 @@ case class NetworkLink(
   networkLinkObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Feature {
 
-  def this() = this(new FeaturePart(), None, None,  None, None, None, Nil, Nil, Nil)
+  def this(link: Link) =
+    this(new FeaturePart(), None, None, Option(link))
 
-  def this(featureElement: FeaturePart, refreshVisibility: Boolean, flyToView: Boolean, link: Link, id: String) =
-    this(featureElement, Some(refreshVisibility), Some(flyToView), Some(link), Some(id), None, Nil, Nil, Nil)
+  def this(name: String, link: Link) =
+    this(new FeaturePart(name = Option(name)), None, None, Option(link))
+
+  def this(name: String, refreshVisibility: Boolean, link: Link) =
+    this(new FeaturePart(name = Option(name)), Option(refreshVisibility), None, Option(link))
+
+  def this(name: String, refreshVisibility: Boolean, flyToView: Boolean, link: Link) =
+    this(new FeaturePart(name = Option(name)), Option(refreshVisibility), Option(flyToView), Option(link))
+
+  def this(featurePart: FeaturePart, refreshVisibility: Boolean, flyToView: Boolean, link: Link, id: String) =
+    this(featurePart, Option(refreshVisibility), Option(flyToView), Option(link), Option(id))
 
 }
 
@@ -1822,15 +1842,17 @@ case class Icon(href: Option[String] = None,
                 basicLinkObjectExtensionGroup: Seq[Any] = Nil,
                 objectSimpleExtensionGroup: Seq[Any] = Nil) extends BasicLinkType {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(href: String) = this(Option(href))
+  def this(href: String, refreshMode: RefreshMode) = this(Option(href), Option(refreshMode))
+  def this(href: String, refreshMode: RefreshMode, refreshInterval: Double) = this(Option(href), Option(refreshMode), Option(refreshInterval))
 
-  def this(href: String, id: String) = this(Some(href), None, None, None, None, None, None, None, Some(id))
+  def this(href: String, refreshMode: RefreshMode, refreshInterval: Double, viewRefreshMode: ViewRefreshMode, viewFreshTime: Double) =
+    this(Option(href), Option(refreshMode), Option(refreshInterval), Option(viewRefreshMode), Option(viewFreshTime))
 
   def this(href: String, refreshMode: RefreshMode, refreshInterval: Double, viewRefreshMode: ViewRefreshMode, viewFreshTime: Double,
            viewBoundScale: Double, viewFormat: String, httpQuery: String, id: String) =
-    this(Some(href), Some(refreshMode), Some(refreshInterval), Some(viewRefreshMode), Some(viewFreshTime),
-      Some(viewBoundScale), Some(viewFormat), Some(httpQuery), Some(id),
-      None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(href), Option(refreshMode), Option(refreshInterval), Option(viewRefreshMode), Option(viewFreshTime),
+      Option(viewBoundScale), Option(viewFormat), Option(httpQuery), Option(id))
 
 }
 
@@ -1909,15 +1931,17 @@ case class Link(href: Option[String] = None,
                 basicLinkObjectExtensionGroup: Seq[Any] = Nil,
                 objectSimpleExtensionGroup: Seq[Any] = Nil) extends BasicLinkType {
 
-  def this() = this(None, None, None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(href: String) = this(Option(href))
+  def this(href: String, refreshMode: RefreshMode) = this(Option(href), Option(refreshMode))
+  def this(href: String, refreshMode: RefreshMode, refreshInterval: Double) = this(Option(href), Option(refreshMode), Option(refreshInterval))
 
-  def this(href: String, id: String) = this(Some(href), None, None, None, None, None, None, None, Some(id))
+  def this(href: String, refreshMode: RefreshMode, refreshInterval: Double, viewRefreshMode: ViewRefreshMode, viewFreshTime: Double) =
+    this(Option(href), Option(refreshMode), Option(refreshInterval), Option(viewRefreshMode), Option(viewFreshTime))
 
   def this(href: String, refreshMode: RefreshMode, refreshInterval: Double, viewRefreshMode: ViewRefreshMode, viewFreshTime: Double,
            viewBoundScale: Double, viewFormat: String, httpQuery: String, id: String) =
-    this(Some(href), Some(refreshMode), Some(refreshInterval), Some(viewRefreshMode), Some(viewFreshTime),
-      Some(viewBoundScale), Some(viewFormat), Some(httpQuery), Some(id),
-      None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(href), Option(refreshMode), Option(refreshInterval), Option(viewRefreshMode), Option(viewFreshTime),
+      Option(viewBoundScale), Option(viewFormat), Option(httpQuery), Option(id))
 
 }
 
@@ -1942,7 +1966,7 @@ case class MultiGeometry(geometries: Seq[Geometry] = Nil,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(Nil, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(geom: Geometry) = this(Seq.empty :+ geom)
 
   /**
    * returns a new object with value added to the sequence
@@ -1986,11 +2010,13 @@ case class Point(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
-
-  def this(extrude: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
-    this(Some(extrude), Some(altitudeMode), Some(coordinates), Some(id),
-    None, Nil, Nil, Nil, Nil, Nil)
+  def this(lon: Double, lat: Double) = this(None, None, Option(Seq.empty :+ new Location(lon, lat)))
+  def this(lon: Double, lat: Double, alt: Double) = this(None, None, Option(Seq.empty :+ new Location(lon, lat, alt)))
+  def this(location: Location) = this(None, None, Option(Seq.empty :+ location))
+  def this(altMode: AltitudeMode, lon: Double, lat: Double, alt: Double) = this(None, Option(altMode), Option(Seq.empty :+ new Location(lon, lat, alt)))
+  def this(coordinates: Seq[Location]) = this(None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, locations: Seq[Location]) = this(None,  Option(altMode), Option(locations))
+  def this(extrude: Boolean, altMode: AltitudeMode, coordinates: Seq[Location]) = this(Option(extrude),  Option(altMode), Option(coordinates))
 
   /**
    * returns a new object with a new Location added to the sequence of coordinates
@@ -2037,11 +2063,15 @@ case class LineString(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(coordinates: Seq[Location]) = this(None, None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, coordinates: Seq[Location]) = this(None, None, Option(altMode), Option(coordinates))
+  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Location]) = this(Option(extrude),  None, Option(altMode), Option(locations))
+
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location]) =
+    this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates))
 
   def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
-    this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
-      Some(id), None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates), Option(id))
 
   /**
    * returns a new object with a new Location added to the sequence of coordinates
@@ -2087,11 +2117,16 @@ case class LinearRing(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(coordinates: Seq[Location]) = this(None, None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, coordinates: Seq[Location]) = this(None, None, Option(altMode), Option(coordinates))
+  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Location]) = this(Option(extrude),  None, Option(altMode), Option(locations))
+
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location]) =
+    this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates))
 
   def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
-    this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(coordinates),
-       Some(id), None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates), Option(id))
+
   /**
    * returns a new object with a new Location added to the sequence of coordinates
    * @param value the new Location to add
@@ -2140,12 +2175,19 @@ case class Polygon(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(None, None, None, None, Nil, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(outerBoundaryIs: Boundary) = this(None, None, None, Option(outerBoundaryIs))
+  def this(outerBoundaryIs: Boundary, innerBoundaryIs: Boundary) =
+    this(None, None, None, Option(outerBoundaryIs), (Seq.empty :+ innerBoundaryIs))
 
-  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, outerBoundaryIs: Boundary,
-           innerBoundaryIs: Seq[Boundary], id: String) =
-    this(Some(extrude), Some(tessellate), Some(altitudeMode), Some(outerBoundaryIs),
-      innerBoundaryIs, Some(id), None, Nil, Nil, Nil, Nil, Nil)
+  def this(outerBoundaryIs: Boundary, innerBoundaryIsSet: Seq[Boundary]) =
+    this(None, None, None, Option(outerBoundaryIs), innerBoundaryIsSet)
+
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, outerBoundaryIs: Boundary, innerBoundaryIsSet: Seq[Boundary]) =
+    this(Option(extrude), Option(tessellate), Option(altitudeMode),  Option(outerBoundaryIs), innerBoundaryIsSet)
+
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode,
+           outerBoundaryIs: Boundary, innerBoundaryIsSet: Seq[Boundary], id: String) =
+    this(Option(extrude), Option(tessellate), Option(altitudeMode),  Option(outerBoundaryIs), innerBoundaryIsSet, Option(id))
 
   /**
    * returns a new object with value added to the sequence
@@ -2168,9 +2210,7 @@ case class Boundary(linearRing: Option[LinearRing] = None,
                     boundarySimpleExtensionGroup: Seq[Any] = Nil,
                     boundaryObjectExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this(None, Nil, Nil)
-
-  def this(linearRing: LinearRing) = this(Some(linearRing), Nil, Nil)
+  def this(linearRing: LinearRing) = this(Option(linearRing))
 
 }
 
@@ -2214,12 +2254,13 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this() = this(None, None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(altitudeMode: AltitudeMode, location: Location, orientation: Orientation, scale: Scale, link: Link) =
+    this(Option(altitudeMode), Option(location), Option(orientation), Option(scale), Option(link))
 
   def this(altitudeMode: AltitudeMode, location: Location, orientation: Orientation,
            scale: Scale, link: Link, resourceMap: ResourceMap, id: String) =
-    this(Some(altitudeMode), Some(location), Some(orientation), Some(scale), Some(link),
-      Some(resourceMap), Some(id), None, Nil, Nil, Nil, Nil, Nil)
+    this(Option(altitudeMode), Option(location), Option(orientation), Option(scale), Option(link),
+      Option(resourceMap), Option(id))
 
 }
 
@@ -2240,8 +2281,8 @@ object Location {
       var alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
       if (!lon.isDefined || !lat.isDefined) None
       else {
-        if (!alt.isDefined) alt = Some(0.0)
-        Some(Location(lon, lat, alt))
+        if (!alt.isDefined) alt = Option(0.0)
+        Option(Location(lon, lat, alt))
       }
     }
   }
@@ -2251,7 +2292,7 @@ object Location {
     else
     if (s.trim.isEmpty) None
     else try {
-      Some(s.trim.toDouble)
+      Option(s.trim.toDouble)
     } catch {
       case _: Throwable => None
     }
@@ -2310,14 +2351,10 @@ case class Location(longitude: Option[Double] = None,
   locationObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, None, Nil, Nil, Nil)
-
   def this(longitude: Double, latitude: Double, altitude: Double) =
-    this(Some(longitude), Some(latitude), Some(altitude), None, None, Nil, Nil, Nil)
+    this(Option(longitude), Option(latitude), Option(altitude))
 
-  def this(longitude: Double, latitude: Double) =
-    this(Some(longitude), Some(latitude), None, None, None, Nil, Nil, Nil)
-
+  def this(longitude: Double, latitude: Double) = this(Option(longitude), Option(latitude))
 
   def llaToString() = this.longitude.getOrElse("") + "," + this.latitude.getOrElse("") + "," + this.altitude.getOrElse("")
 
@@ -2344,10 +2381,10 @@ case class Orientation(heading: Option[Double] = None,
   orientationObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, None, Nil, Nil, Nil)
+  def this(heading: Double) = this(Option(heading))
 
   def this(heading: Double, tilt: Double, roll: Double) =
-    this(Some(heading), Some(tilt), Some(roll), None, None, Nil, Nil, Nil)
+    this(Option(heading), Option(tilt), Option(roll))
 
 }
 
@@ -2372,9 +2409,7 @@ case class Scale(x: Option[Double] = None,
   scaleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, None, Nil, Nil, Nil)
-
-  def this(x: Double, y: Double, z: Double) = this(Some(x), Some(y), Some(z), None, None, Nil, Nil, Nil)
+  def this(x: Double, y: Double, z: Double) = this(Option(x), Option(y), Option(z))
 
 }
 
@@ -2395,7 +2430,10 @@ case class ResourceMap(alias: Seq[Alias] = Nil,
   resourceMapObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(Nil, None, None, Nil, Nil, Nil)
+  def this(alias: Alias) = this(Seq.empty :+ alias)
+  def this(alias: Alias, id: String) = this((Seq.empty :+ alias), Option(id))
+  def this(alias: Alias, id: String, targetId: String) = this((Seq.empty :+ alias), Option(id), Option(targetId))
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2429,9 +2467,8 @@ case class Alias(targetHref: Option[String] = None,
   aliasObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None, None, None, None, Nil, Nil, Nil)
-
-  def this(tgtHref: String, srcHref: String) = this(Some(tgtHref), Some(srcHref), None, None, Nil, Nil, Nil)
+  def this(tgtHref: String, srcHref: String) = this(Option(tgtHref), Option(srcHref))
+  def this(tgtHref: String, srcHref: String, id: String) = this(Option(tgtHref), Option(srcHref), Option(id))
 
 }
 
@@ -2488,7 +2525,17 @@ case class GroundOverlay(altitude: Option[Double] = None,
   overlayObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Overlay {
 
-  def this() = this(None,None,None, new FeaturePart(), None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(name: String, altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(name = Option(name)))
+
+  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart())
+
+  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, color: HexColor, drawOrder: Int, icon: Icon) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(), Option(color), Option(drawOrder), Option(icon))
+
+  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, icon: Icon) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(), None, None, Option(icon))
 
 //  lazy val name = featurePart.name
 //  lazy val visibility = featurePart.visibility
@@ -2529,7 +2576,11 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
   overlayObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Overlay {
 
-  def this() = this(None,None,None, None, None, new FeaturePart(), None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(overlayXY: Vec2, screenXY: Vec2, rotationXY: Vec2, size:  Vec2, rotation: Double) =
+    this(Option(overlayXY),Option(screenXY),Option(rotationXY), Option(size), Option(rotation))
+
+  def this(name: String, overlayXY: Vec2, screenXY: Vec2, rotationXY: Vec2, size:  Vec2, rotation: Double) =
+    this(Option(overlayXY),Option(screenXY),Option(rotationXY), Option(size), Option(rotation), new FeaturePart(name = Option(name)))
 
 }
 
@@ -2550,7 +2601,11 @@ case class PhotoOverlay(rotation: Option[Double] = None,
   overlayObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Overlay {
 
-  def this() = this(None,None,None, None, None, new FeaturePart(), None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(rotation: Double, viewVolume: ViewVolume, imagePyramid: ImagePyramid, point: Point, shape: Shape) =
+    this(Option(rotation),Option(viewVolume),Option(imagePyramid),Option(point),Option(shape))
+
+  def this(name: String, rotation: Double, viewVolume: ViewVolume, imagePyramid: ImagePyramid, point: Point, shape: Shape) =
+    this(Option(rotation),Option(viewVolume),Option(imagePyramid),Option(point),Option(shape), new FeaturePart(name = Option(name)))
 
 }
 
@@ -2565,7 +2620,8 @@ case class ViewVolume(leftFov: Option[Double] = None,
   viewVolumeObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None,None,None,None,None,None,None, Nil, Nil, Nil)
+  def this(leftFov: Double, rightFov: Double, bottomFov: Double, near: Double) =
+    this(Option(leftFov),Option(rightFov),Option(bottomFov),Option(near))
 
 }
 
@@ -2579,7 +2635,8 @@ case class ImagePyramid(tileSize: Option[Int] = None,
   imagePyramidObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None,None,None, None, None,None, Nil, Nil, Nil)
+  def this(tileSize: Int, maxWidth: Int, maxHeight: Int, gridOrigin: GridOrigin) =
+    this(Option(tileSize),Option(maxWidth),Option(maxHeight),Option(gridOrigin))
 
 }
 
@@ -2597,7 +2654,12 @@ case class Style(iconStyle: Option[IconStyle] = None,
   styleSelectorObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends StyleSelector {
 
-  def this() = this(None,None,None, None,None,None,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(iconStyle: IconStyle) = this(Option(iconStyle))
+  def this(labelStyle: LabelStyle) = this(None, Option(labelStyle))
+  def this(lineStyle: LineStyle) = this(None, None, Option(lineStyle))
+  def this(polyStyle: PolyStyle) = this(None, None, None, Option(polyStyle))
+  def this(balloonStyle: BalloonStyle) = this(None, None, None, None, Option(balloonStyle))
+  def this(listStyle: ListStyle) = this(None, None, None, None, None, Option(listStyle))
 
 }
 
@@ -2610,7 +2672,7 @@ case class StyleMap(pair: Seq[Pair] = Nil,
   styleSelectorObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends StyleSelector {
 
-  def this() = this(Nil,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(pair: Pair) = this(Seq.empty :+ pair)
 
   /**
    * returns a new object with value added to the sequence
@@ -2631,11 +2693,9 @@ case class Pair(key: Option[StyleState] = None,
   pairObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this() = this(None,None,None,None,None,Nil,Nil,Nil)
-
-  def this(key: StyleState, styleUrl: String) = this(Some(key), Some(styleUrl),None, None, None, Nil, Nil, Nil)
+  def this(key: StyleState, styleUrl: String) = this(Option(key), Option(styleUrl))
   def this(key: StyleState, styleUrl: String, styleSelector: StyleSelector, id: String) =
-    this(Some(key), Some(styleUrl), Some(styleSelector), Some(id), None, Nil, Nil, Nil)
+    this(Option(key), Option(styleUrl), Option(styleSelector), Option(id))
 
 }
 
@@ -2667,7 +2727,11 @@ case class IconStyle(scale: Option[Double] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
-  def this() = this(None,None,None, None, None,None,None,None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
+  def this(scale: Double, heading: Double, icon: Icon) =
+    this(Option(scale), Option(heading), Option(icon))
+
+  def this(scale: Double, heading: Double, icon: Icon, hotSpot: Vec2) =
+    this(Option(scale), Option(heading), Option(icon), Option(hotSpot))
 
 }
 
@@ -2693,8 +2757,10 @@ case class LabelStyle(scale: Option[Double] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
-  def this() = this(None,None,None, None, None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
+  def this(scale: Double) = this(Option(scale))
 
+  def this(scale: Double, color: HexColor, colorMode: ColorMode) =
+    this(Option(scale), Option(color), Option(colorMode))
 }
 
 case class LineStyle(width: Option[Double] = None,
@@ -2710,8 +2776,10 @@ case class LineStyle(width: Option[Double] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
-  def this() = this(None,None,None, None, None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
+  def this(width: Double) = this(Option(width))
 
+  def this(width: Double, color: HexColor, colorMode: ColorMode) =
+    this(Option(width), Option(color), Option(colorMode))
 }
 
 case class PolyStyle(fill: Option[Boolean] = None,
@@ -2728,7 +2796,12 @@ case class PolyStyle(fill: Option[Boolean] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
-  def this() = this(None,None,None, None, None,  None, Nil, Nil, Nil, Nil, Nil, Nil, Nil)
+  def this(fill: Boolean) = this(Option(fill))
+
+  def this(fill: Boolean, outLine: Boolean) = this(Option(fill), Option(outLine))
+
+  def this(fill: Boolean, outLine: Boolean, color: HexColor, colorMode: ColorMode) =
+    this(Option(fill), Option(outLine), Option(color), Option(colorMode))
 
 }
 
@@ -2745,7 +2818,11 @@ case class BalloonStyle(color: Option[HexColor] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends SubStyle {
 
-  def this() = this(None, None, None, None, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(text: String) = this(None, None, None, Option(text))
+  def this(text: String, displayMode: DisplayMode) = this(None, None, None, Option(text), Option(displayMode))
+
+  def this(color: HexColor, bgColor: HexColor, textColor: HexColor, text: String) =
+    this(Option(color), Option(bgColor), Option(textColor), Option(text))
 
 }
 
@@ -2761,7 +2838,11 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends SubStyle {
 
-  def this() = this(None,None,Nil, None, None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(listItemType: ListItemType) = this(Option(listItemType))
+  def this(listItemType: ListItemType, bgColor: HexColor) = this(Option(listItemType), Option(bgColor))
+  def this(listItemType: ListItemType, bgColor: HexColor, itemIcon: ItemIcon) =
+    this(Option(listItemType), Option(bgColor), (Seq.empty :+ itemIcon))
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2780,7 +2861,10 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
   itemIconObjectExtensionGroup: Seq[Any] = Nil,
   targetId: Option[String] = None) extends KmlObject {
 
-  def this() = this(Nil,Nil,None, None, Nil, Nil, None)
+  def this(href: String) = this(Nil, Nil, Option(href))
+  def this(href: String, state: ItemIconState) = this(Nil, (Seq.empty :+ state), Option(href))
+  def this(href: String, state: Seq[ItemIconState]) = this(Nil, state, Option(href))
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2800,7 +2884,7 @@ case class TimeStamp(when: Option[String] = None,
   timePrimitiveObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends TimePrimitive {
 
-  def this() = this(None,None,None, Nil, Nil, Nil, Nil, Nil)
+  def this(when: String) = this(Option(when))
 
 }
 
@@ -2814,7 +2898,7 @@ case class TimeSpan(begin: Option[String] = None,
   timePrimitiveObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends TimePrimitive {
 
-  def this() = this(None,None,None, None, Nil, Nil, Nil, Nil, Nil)
+  def this(begin: String, end: String) = this(Option(begin), Option(end))
 
 }
 
@@ -2823,7 +2907,8 @@ case class Update(targetHref: String,
   updateOpExtensionGroup: Seq[Any] = Nil,
   updateExtensionGroup: Seq[Any] = Nil) {
 
-  def this() = this("", Nil, Nil, Nil)
+  def this(targetHref: String, updateOption: UpdateOption) = this(targetHref, (Seq.empty :+ updateOption))
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2838,7 +2923,8 @@ trait UpdateOption
 
 case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
-  def this() = this(Seq.empty)
+  def this(container: Container) = this(Seq.empty :+ container)
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2851,7 +2937,8 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
 case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
-  def this() = this(Seq.empty)
+  def this(feature: Feature) = this(Seq.empty :+ feature)
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2864,7 +2951,8 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
 case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 
-  def this() = this(Seq.empty)
+  def this(objectChange: Any) = this(Seq.empty :+ objectChange)
+
   /**
    * returns a new object with value added to the sequence
    * @param value to add
@@ -2876,7 +2964,8 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 }
 
 case class IdAttributes(id: Option[String] = None, targetId: Option[String] = None) {
-  def this()=this(None, None)
+
+  def this(id: String, targetId: String) = this(Option(id), Option(targetId))
 
 }
 

@@ -22,12 +22,12 @@ object WriteExample3 {
     val writer = new KmlPrintWriter()
 
     // create a Placemark
-    val placemark = Placemark(featurePart = new FeaturePart(name = Some("test_placemark")), id = Some("test_id"))
+    val placemark = Placemark(featurePart = new FeaturePart(name = Option("test_placemark")), id = Option("test_id"))
     // write the placemark
     writer.write(Option(placemark), new PrettyPrinter(80, 3))
 
     // create a Document with the placemark
-    val doc = Document(features = (Seq.empty :+ placemark), featurePart = new FeaturePart(name = Some("test_document")))
+    val doc = Document(features = (Seq.empty :+ placemark), featurePart = new FeaturePart(name = Option("test_document")))
     // write the document
     writer.write(Option(doc), new PrettyPrinter(80, 3))
 
