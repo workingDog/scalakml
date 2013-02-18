@@ -66,7 +66,7 @@ Feature element, such as Document, Folder, Placemark, etc...
     // create a kml root object with the placemark
     val kml = Kml(feature = Option(placemark))
     // or you could have
-    //    val kml = new Kml(new Placemark("Sydney", new Point(151.21037, -33.8526)))
+    // val kml = new Kml(new Placemark("Sydney", new Point(151.21037, -33.8526)))
     // write the kml to the output file
     new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }
