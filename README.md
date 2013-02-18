@@ -66,14 +66,14 @@ Feature element, such as Document, Folder, Placemark, etc...
     // create a kml root object with the placemark
     val kml = Kml(feature = Option(placemark))
     // or you could have
-//    val kml = new Kml(new Placemark("Sydney", new Point(151.21037, -33.8526)))
+    // val kml = new Kml(new Placemark("Sydney", new Point(151.21037, -33.8526)))
     // write the kml to the output file
     new KmlPrintWriter("./kml-files/Sydney-oz.kml").write(Option(kml), new PrettyPrinter(80, 3))
     } }
 
-## Issues:
+## Issues
   One current major issue is scala does not preserve CDATA, 
-  such that angle brackets and ampersands are corrupted, Google Earth for example cannot process that.
+  such that angle brackets and ampersands are corrupted, Google Earth for example does not like that.
 
 ## Status
 
@@ -85,8 +85,6 @@ it does not include many of the gx: elements from Google listed in reference 2.
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
 
 I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
-
-Very little testing has been done to date.
 
 
 Ringo Wathelet
