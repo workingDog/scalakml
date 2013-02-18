@@ -119,7 +119,8 @@ case class FlyTo(duration: Option[Double] = None,
 
   def this(duration: Double) = this(Option(duration))
   def this(duration: Double, flyToMode: FlyToMode) = this(Option(duration), Option(flyToMode))
-
+  def this(duration: Double, flyToMode: FlyToMode, abstractView: AbstractView) =
+    this(Option(duration), Option(flyToMode), Option(abstractView))
 }
 
 
@@ -162,7 +163,7 @@ case class Tour(featurePart: FeaturePart = new FeaturePart(),
                 objectSimpleExtensionGroup: Seq[Any] = Nil) extends Feature {
 
   def this(playlist: Playlist) = this(new FeaturePart(), Option(playlist))
-
+  def this(name: String, playlist: Playlist) = this(new FeaturePart(name = Option(name)), Option(playlist))
 }
 
 case class TourControl(playMode: Option[PlayMode] = None,

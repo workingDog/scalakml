@@ -1001,7 +1001,7 @@ case class FeaturePart(
     this(Option(name), Option(visibility), Option(open), Option(atomAuthor), Option(atomLink), Option(address),
       Option(addressDetails),Option(phoneNumber), Option(extendedData), Option(description), Option(snippet),
       Option(abstractView), Option(timePrimitive), Option(styleUrl),
-      styleSelector, Option(region), Nil, Nil)
+      styleSelector, Option(region))
 
   /**
    * returns a new object with value added to the sequence
@@ -1637,7 +1637,7 @@ case class LatLonBox(rotation: Option[Double] = None,
   def this(rotation: Double, north: Double, south: Double, east: Double, west: Double) =
     this(Option(rotation), Option(north), Option(south), Option(east), Option(west))
 
-  def this(rotation: Double, north: Double, south: Double, east: Double, west: Double, id:String) =
+  def this(rotation: Double, north: Double, south: Double, east: Double, west: Double, id: String) =
     this(Option(rotation), Option(north), Option(south), Option(east), Option(west), Option(id))
 
 }
@@ -1681,7 +1681,7 @@ case class LatLonAltBox(minAltitude: Option[Double] = None,
       Option(north), Option(south), Option(east), Option(west))
 
   def this(minAltitude: Double, maxAltitude: Double, altitudeMode: AltitudeMode,
-           north: Double, south: Double, east: Double, west: Double, id:String) =
+           north: Double, south: Double, east: Double, west: Double, id: String) =
     this(Option(minAltitude), Option(maxAltitude), Option(altitudeMode),
       Option(north), Option(south), Option(east), Option(west), Option(id))
 
@@ -2273,7 +2273,7 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
  */
 object Location {
 
-  def fromStringArray(lonLatAlt: Array[String]) = {
+  private def fromStringArray(lonLatAlt: Array[String]) = {
     if (lonLatAlt.length < 2) None
     else {
       val lon = if (lonLatAlt.isDefinedAt(0)) getOptionDouble(lonLatAlt(0)) else None
@@ -2287,7 +2287,7 @@ object Location {
     }
   }
 
-  def getOptionDouble(s: String): Option[Double] = {
+  private def getOptionDouble(s: String): Option[Double] = {
     if (s == null) None
     else
     if (s.trim.isEmpty) None
@@ -2311,17 +2311,17 @@ object Location {
    */
   def fromBsString(coordString: String) = fromStringArray(coordString split "s+")
 
-  def fromMGRS(coord: String) = {
-    // TODO
-  }
-
-  def fromUTM(coord: String) = {
-    // TODO
-  }
-
-  def fromECEF(coord: String) = {
-    // TODO
-  }
+//  def fromMGRS(coord: String) = {
+//    // TODO
+//  }
+//
+//  def fromUTM(coord: String) = {
+//    // TODO
+//  }
+//
+//  def fromECEF(coord: String) = {
+//    // TODO
+//  }
 
 }
 
@@ -2383,8 +2383,7 @@ case class Orientation(heading: Option[Double] = None,
 
   def this(heading: Double) = this(Option(heading))
 
-  def this(heading: Double, tilt: Double, roll: Double) =
-    this(Option(heading), Option(tilt), Option(roll))
+  def this(heading: Double, tilt: Double, roll: Double) = this(Option(heading), Option(tilt), Option(roll))
 
 }
 
@@ -2654,6 +2653,7 @@ case class Style(iconStyle: Option[IconStyle] = None,
   styleSelectorObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends StyleSelector {
 
+  def this(id: String) = this(None, None, None, None, None, None, Option(id))
   def this(iconStyle: IconStyle) = this(Option(iconStyle))
   def this(labelStyle: LabelStyle) = this(None, Option(labelStyle))
   def this(lineStyle: LineStyle) = this(None, None, Option(lineStyle))
@@ -2673,6 +2673,7 @@ case class StyleMap(pair: Seq[Pair] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends StyleSelector {
 
   def this(pair: Pair) = this(Seq.empty :+ pair)
+  def this(pair: Pair, id: String) = this((Seq.empty :+ pair), Option(id))
 
   /**
    * returns a new object with value added to the sequence
@@ -2758,7 +2759,7 @@ case class LabelStyle(scale: Option[Double] = None,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
   def this(scale: Double) = this(Option(scale))
-
+  def this(color: HexColor) = this(None, Option(color))
   def this(scale: Double, color: HexColor, colorMode: ColorMode) =
     this(Option(scale), Option(color), Option(colorMode))
 }
@@ -2777,7 +2778,7 @@ case class LineStyle(width: Option[Double] = None,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
 
   def this(width: Double) = this(Option(width))
-
+  def this(color: HexColor) = this(None, Option(color))
   def this(width: Double, color: HexColor, colorMode: ColorMode) =
     this(Option(width), Option(color), Option(colorMode))
 }
@@ -2795,6 +2796,8 @@ case class PolyStyle(fill: Option[Boolean] = None,
   subStyleSimpleExtensionGroup: Seq[Any] = Nil,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends ColorStyle {
+
+  def this(color: HexColor) = this(None, None, Option(color))
 
   def this(fill: Boolean) = this(Option(fill))
 
@@ -2820,9 +2823,10 @@ case class BalloonStyle(color: Option[HexColor] = None,
 
   def this(text: String) = this(None, None, None, Option(text))
   def this(text: String, displayMode: DisplayMode) = this(None, None, None, Option(text), Option(displayMode))
-
-  def this(color: HexColor, bgColor: HexColor, textColor: HexColor, text: String) =
+  def this(text: String, color: HexColor, bgColor: HexColor, textColor: HexColor) =
     this(Option(color), Option(bgColor), Option(textColor), Option(text))
+
+  def this(text: String, color: HexColor) = this(Option(color), None, None, Option(text))
 
 }
 
@@ -2838,6 +2842,7 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends SubStyle {
 
+  def this(bgColor: HexColor) = this(None, Option(bgColor))
   def this(listItemType: ListItemType) = this(Option(listItemType))
   def this(listItemType: ListItemType, bgColor: HexColor) = this(Option(listItemType), Option(bgColor))
   def this(listItemType: ListItemType, bgColor: HexColor, itemIcon: ItemIcon) =
