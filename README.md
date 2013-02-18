@@ -73,7 +73,7 @@ Feature element, such as Document, Folder, Placemark, etc...
 
 ## Issues:
   One current major issue is scala does not preserve CDATA, 
-  such that angle brackets and ampersands are corrupted, Google Earth for example cannot process that.
+  such that angle brackets and ampersands are corrupted, Google Earth for example does not like that.
 
 ## Status
 
