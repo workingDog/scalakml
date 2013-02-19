@@ -79,7 +79,7 @@ Feature element, such as Document, Folder, Placemark, etc...
 
 This scalakml library needs more testing and more documentation.  
 
-The gx: extension PACKAGE has only what is in the official kml22gx.xsd schema,
+The gx: extension package has only what is in the official kml22gx.xsd schema,
 it does not include many of the gx: elements from Google listed in reference 2.
 
 Some very basic examples and kml files from http://code.google.com/p/kml-samples/ are included. 
