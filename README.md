@@ -38,9 +38,9 @@ The scalaxal.jar is included here in the lib directory.
 
 ## Documentation
 
-See reference 1 and 2 for a full documentation.
-I've copied and pasted some documentation from the references into the classes,
-but there is still more to be done.
+See reference 1 and 2 for the full documentation of kml.
+I've copied and pasted most of the documentations from the references into the classes,
+but there is still a bit more to be done.
 
 Most kml elements described in the references have been implemented with the same or similar class name.
 There is one exception, and that is the FeaturePart.
@@ -66,7 +66,7 @@ A FeaturePart can be created and is typically added as an element to: Document, 
     }
 
 ## Issues
-  One current issue is scala does not preserve CDATA,
+  One current issue is scala xml does not preserve CDATA,
   such that angle brackets and ampersands in CDATA elements are corrupted, Google Earth for example does not like that.
 
 ## Status
@@ -76,7 +76,7 @@ This scalakml library needs more testing and a bit more documentation.
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-An example and kml file from http://code.google.com/p/kml-samples/ is included in the kml-files directory.
+An example of a kml file from http://code.google.com/p/kml-samples/ is included in the kml-files directory.
 
 I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
 
