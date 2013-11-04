@@ -39,8 +39,8 @@ The scalaxal.jar is included here in the lib directory.
 ## Documentation
 
 See reference 1 and 2 for a full documentation.
-I've copied and pasted some documentation from the references into the classes, 
-but there is still more to be done. 
+I've copied and pasted some documentation from the references into the classes,
+but there is still more to be done.
 
 Most kml elements described in the references have been implemented with the same or similar class name.
 There is one exception, and that is the FeaturePart.
@@ -50,20 +50,20 @@ Such that, for example, Placemark has a featurePart element, so to get the name 
 you could write:
 - placemark.featurePart.name
 
-The following (Feature) classes use FeaturePart: 
+The following (Feature) classes use FeaturePart:
 Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay and Tour.
 A FeaturePart can be created and is typically added as an element to: Document, Folder, Placemark, etc...
 
 ## Usage
 
-object WriteExample4 {
-  def main(args: Array[String])  {
-    // create a scala Kml object with a Placemark that contains a Point
-    val kml = new Kml(new Placemark("Sydney", new Point(RelativeToGround, 151.21037, -33.8526, 12345.0)))
-    // write the kml object to System.out as xml
-    new KmlPrintWriter().write(Option(kml), new PrettyPrinter(80, 3))
-  }
-}
+    object WriteExample4 {
+      def main(args: Array[String])  {
+        // create a scala Kml object with a Placemark that contains a Point
+        val kml = new Kml(new Placemark("Sydney", new Point(RelativeToGround, 151.21037, -33.8526, 12345.0)))
+        // write the kml object to System.out as xml
+        new KmlPrintWriter().write(Option(kml), new PrettyPrinter(80, 3))
+      }
+    }
 
 ## Issues
   One current issue is scala does not preserve CDATA,
