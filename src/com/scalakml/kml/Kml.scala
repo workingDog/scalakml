@@ -40,7 +40,7 @@ import com.scalaxal.xAL.AddressDetails
  * Date: 12/12/12
  * Version: 1
  *
- * Reference: OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at
+ * References: OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at
  * http://www.opengeospatial.org/standards/kml
  * also
  * Google developers KML Reference, at
@@ -2558,6 +2558,37 @@ case class GroundOverlay(altitude: Option[Double] = None,
 
 }
 
+/**
+ * ScreenOverlay
+ * This element draws an image overlay fixed to the screen. Sample uses for ScreenOverlays
+ * are compasses, logos, and heads-up displays. ScreenOverlay sizing is determined by
+ * the <size> element. Positioning of the overlay is handled by mapping a point in the
+ * image specified by <overlayXY> to a point on the screen specified by <screenXY>.
+ * Then the image is rotated by <rotation> degrees about a point relative to the screen
+ * specified by <rotationXY>.
+ * The <href> child of <Icon> specifies the image to be used as the overlay.
+ * This file can be either on a local file system or on a web server.
+ * If this element is omitted or contains no <href>, a rectangle is drawn using the
+ * color and size defined by the screen overlay.
+ *
+ *
+ * @param overlayXY
+ * @param screenXY
+ * @param rotationXY
+ * @param size
+ * @param rotation
+ * @param featurePart
+ * @param color
+ * @param drawOrder
+ * @param icon
+ * @param id
+ * @param targetId
+ * @param screenOverlaySimpleExtensionGroup
+ * @param screenOverlayObjectExtensionGroup
+ * @param overlaySimpleExtensionGroup
+ * @param overlayObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class ScreenOverlay(overlayXY: Option[Vec2] = None,
   screenXY: Option[Vec2] = None,
   rotationXY: Option[Vec2] = None,
@@ -2583,6 +2614,45 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
 
 }
 
+/**
+ * PhotoOverlay
+ *
+ * The <PhotoOverlay> element allows you to geographically locate a photograph on the Earth
+ * and to specify viewing parameters for this PhotoOverlay. The PhotoOverlay can be a
+ * simple 2D rectangle, a partial or full cylinder, or a sphere (for spherical panoramas).
+ * The overlay is placed at the specified location and oriented toward the viewpoint.
+ * Because <PhotoOverlay> is derived from <Feature>, it can contain one of the two elements
+ * derived from <AbstractView>—either <Camera> or <LookAt>. The Camera (or LookAt) specifies
+ * a viewpoint and a viewing direction (also referred to as a view vector).
+ * The PhotoOverlay is positioned in relation to the viewpoint. Specifically, the plane
+ * of a 2D rectangular image is orthogonal (at right angles to) the view vector.
+ * The normal of this plane—that is, its front, which is the part with the photo—is
+ * oriented toward the viewpoint.
+ *
+ * The URL for the PhotoOverlay image is specified in the <Icon> tag, which is inherited
+ * from <Overlay>. The <Icon> tag must contain an <href> element that specifies the image
+ * file to use for the PhotoOverlay. In the case of a very large image, the <href> is a
+ * special URL that indexes into a pyramid of images of varying resolutions (see ImagePyramid).
+ *
+ * For more information, see the "Topics in KML" page on PhotoOverlay.
+ *
+ * @param rotation
+ * @param viewVolume
+ * @param imagePyramid
+ * @param point
+ * @param shape
+ * @param featurePart
+ * @param color
+ * @param drawOrder
+ * @param icon
+ * @param id
+ * @param targetId
+ * @param photoOverlaySimpleExtensionGroup
+ * @param photoOverlayObjectExtensionGroup
+ * @param overlaySimpleExtensionGroup
+ * @param overlayObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class PhotoOverlay(rotation: Option[Double] = None,
   viewVolume: Option[ViewVolume] = None,
   imagePyramid: Option[ImagePyramid] = None,
@@ -2608,6 +2678,25 @@ case class PhotoOverlay(rotation: Option[Double] = None,
 
 }
 
+/**
+ * ViewVolume
+ *
+ * Defines how much of the current scene is visible. Specifying the field of view
+ * is analogous to specifying the lens opening in a physical camera.
+ * A small field of view, like a telephoto lens, focuses on a small part of the scene.
+ * A large field of view, like a wide-angle lens, focuses on a large part of the scene.
+ *
+ * @param leftFov Angle, in degrees, between the camera's viewing direction and the left side of the view volume.
+ * @param rightFov Angle, in degrees, between the camera's viewing direction and the right side of the view volume.
+ * @param bottomFov Angle, in degrees, between the camera's viewing direction and the bottom side of the view volume.
+ * @param topFov Angle, in degrees, between the camera's viewing direction and the top side of the view volume.
+ * @param near Measurement in meters along the viewing direction from the camera viewpoint to the PhotoOverlay shape.
+ * @param id
+ * @param targetId
+ * @param viewVolumeSimpleExtensionGroup
+ * @param viewVolumeObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class ViewVolume(leftFov: Option[Double] = None,
   rightFov: Option[Double] = None,
   bottomFov: Option[Double] = None,
@@ -2624,6 +2713,31 @@ case class ViewVolume(leftFov: Option[Double] = None,
 
 }
 
+/**
+ * ImagePyramid
+ *
+ * For very large images, you'll need to construct an image pyramid, which is a hierarchical set of images,
+ * each of which is an increasingly lower resolution version of the original image.
+ * Each image in the pyramid is subdivided into tiles, so that only the portions in view need to be loaded.
+ * Google Earth calculates the current viewpoint and loads the tiles that are appropriate to
+ * the user's distance from the image. As the viewpoint moves closer to the PhotoOverlay,
+ * Google Earth loads higher resolution tiles. Since all the pixels in the original image can't be viewed
+ * on the screen at once, this preprocessing allows Google Earth to achieve maximum performance
+ * because it loads only the portions of the image that are in view, and only the pixel details
+ * that can be discerned by the user at the current viewpoint.
+ * When you specify an image pyramid, you also modify the <href> in the <Icon> element
+ * to include specifications for which tiles to load.
+ *
+ * @param tileSize Size of the tiles, in pixels. Tiles must be square, and <tileSize> must be a power of 2. A tile size of 256 (the default) or 512 is recommended. The original image is divided into tiles of this size, at varying resolutions.
+ * @param maxWidth Width in pixels of the original image.
+ * @param maxHeight Height in pixels of the original image.
+ * @param gridOrigin Specifies where to begin numbering the tiles in each layer of the pyramid. A value of lowerLeft specifies that row 1, column 1 of each layer is in the bottom left corner of the grid.
+ * @param id
+ * @param targetId
+ * @param imagePyramidSimpleExtensionGroup
+ * @param imagePyramidObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class ImagePyramid(tileSize: Option[Int] = None,
   maxWidth: Option[Int] = None,
   maxHeight: Option[Int] = None,
@@ -2639,6 +2753,28 @@ case class ImagePyramid(tileSize: Option[Int] = None,
 
 }
 
+/**
+ * Style
+ *
+ * A Style defines an addressable style group that can be referenced by StyleMaps and Features.
+ * Styles affect how Geometry is presented in the 3D viewer and how Features appear in the Places panel
+ * of the List view. Shared styles are collected in a <Document> and must have an id defined for them
+ * so that they can be referenced by the individual Features that use them.
+ *
+ * @param iconStyle
+ * @param labelStyle
+ * @param lineStyle
+ * @param polyStyle
+ * @param balloonStyle
+ * @param listStyle
+ * @param id
+ * @param targetId
+ * @param styleSimpleExtensionGroup
+ * @param styleObjectExtensionGroup
+ * @param styleSelectorSimpleExtensionGroup
+ * @param styleSelectorObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class Style(iconStyle: Option[IconStyle] = None,
   labelStyle: Option[LabelStyle] = None,
   lineStyle: Option[LineStyle] = None,
@@ -2663,6 +2799,24 @@ case class Style(iconStyle: Option[IconStyle] = None,
 
 }
 
+/**
+ * StyleMap
+ *
+ * A <StyleMap> maps between two different Styles. Typically a <StyleMap> element is used to
+ * provide separate normal and highlighted styles for a placemark, so that the highlighted version
+ * appears when the user mouses over the icon in Google Earth.
+ *
+ * @param pair Defines a key/value pair that maps a mode (normal or highlight) to the predefined <styleUrl>. <Pair> contains two elements (both are required):
+<key>, which identifies the key
+<styleUrl> or <Style>, which references the style. In <styleUrl>, for referenced style elements that are local to the KML document, a simple # referencing is used. For styles that are contained in external files, use a full URL along with # referencing.
+ * @param id
+ * @param targetId
+ * @param styleMapSimpleExtensionGroup
+ * @param styleMapObjectExtensionGroup
+ * @param styleSelectorSimpleExtensionGroup
+ * @param styleSelectorObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class StyleMap(pair: Seq[Pair] = Nil,
   id: Option[String] = None,
   targetId: Option[String] = None,
@@ -2685,6 +2839,24 @@ case class StyleMap(pair: Seq[Pair] = Nil,
   }
 }
 
+/**
+ * Pair
+ *
+ * Defines a key/value pair that maps a mode (normal or highlight) to the predefined <styleUrl>.
+ * <Pair> contains two elements (both are required):
+ * <key>, which identifies the key
+ * <styleUrl> or <Style>, which references the style. In <styleUrl>, for referenced style elements that are local to the KML document, a simple # referencing is used. For styles that are contained in external files, use a full URL along with # referencing.
+ *
+ *
+ * @param key
+ * @param styleUrl
+ * @param styleSelector
+ * @param id
+ * @param targetId
+ * @param pairSimpleExtensionGroup
+ * @param pairObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class Pair(key: Option[StyleState] = None,
   styleUrl: Option[String] = None,
   styleSelector: Option[StyleSelector] = None,
@@ -2712,6 +2884,30 @@ trait ColorStyle extends SubStyle {
   val colorStyleObjectExtensionGroup: Seq[Any]
 }
 
+/**
+ * IconStyle
+ *
+ * Specifies how icons for point Placemarks are drawn, both in the Places panel and in the 3D viewer
+ * of Google Earth. The <Icon> element specifies the icon image. The <scale> element specifies
+ * the x, y scaling of the icon. The color specified in the <color> element of <IconStyle> is
+ * blended with the color of the <Icon>.
+ *
+ * @param scale
+ * @param heading
+ * @param icon
+ * @param hotSpot
+ * @param color
+ * @param colorMode
+ * @param id
+ * @param targetId
+ * @param iconStyleSimpleExtensionGroup
+ * @param iconStyleObjectExtensionGroup
+ * @param colorStyleSimpleExtensionGroup
+ * @param colorStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class IconStyle(scale: Option[Double] = None,
   heading: Option[Double] = None,
   icon: Option[Icon] = None,
@@ -2745,6 +2941,25 @@ trait BasicLinkType extends KmlObject {
   val objectSimpleExtensionGroup: Seq[Any]
 }
 
+/**
+ * LabelStyle
+ *
+ * Specifies how the <name> of a Feature is drawn in the 3D viewer.
+ * A custom color, color mode, and scale for the label (name) can be specified.
+ *
+ * @param scale
+ * @param color
+ * @param colorMode
+ * @param id
+ * @param targetId
+ * @param labelStyleSimpleExtensionGroup
+ * @param labelStyleObjectExtensionGroup
+ * @param colorStyleSimpleExtensionGroup
+ * @param colorStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class LabelStyle(scale: Option[Double] = None,
   color: Option[HexColor] = None,
   colorMode: Option[ColorMode] = None,
@@ -2764,6 +2979,26 @@ case class LabelStyle(scale: Option[Double] = None,
     this(Option(scale), Option(color), Option(colorMode))
 }
 
+/**
+ * LineStyle
+ *
+ * Specifies the drawing style (color, color mode, and line width) for all line geometry.
+ * Line geometry includes the outlines of outlined polygons and the extruded "tether" of
+ * Placemark icons (if extrusion is enabled).
+ *
+ * @param width
+ * @param color
+ * @param colorMode
+ * @param id
+ * @param targetId
+ * @param lineStyleSimpleExtensionGroup
+ * @param lineStyleObjectExtensionGroup
+ * @param colorStyleSimpleExtensionGroup
+ * @param colorStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class LineStyle(width: Option[Double] = None,
   color: Option[HexColor] = None,
   colorMode: Option[ColorMode] = None,
@@ -2783,6 +3018,26 @@ case class LineStyle(width: Option[Double] = None,
     this(Option(width), Option(color), Option(colorMode))
 }
 
+/**
+ * PolyStyle
+ *
+ * Specifies the drawing style for all polygons, including polygon extrusions
+ * (which look like the walls of buildings) and line extrusions (which look like solid fences).
+ *
+ * @param fill
+ * @param outline
+ * @param color
+ * @param colorMode
+ * @param id
+ * @param targetId
+ * @param polyStyleSimpleExtensionGroup
+ * @param polyStyleObjectExtensionGroup
+ * @param colorStyleSimpleExtensionGroup
+ * @param colorStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class PolyStyle(fill: Option[Boolean] = None,
   outline: Option[Boolean] = None,
   color: Option[HexColor] = None,
@@ -2808,6 +3063,26 @@ case class PolyStyle(fill: Option[Boolean] = None,
 
 }
 
+/**
+ * BalloonStyle
+ *
+ * Specifies how the description balloon for placemarks is drawn.
+ * The <bgColor>, if specified, is used as the background color of the balloon.
+ * See <Feature> for a diagram illustrating how the default description balloon appears in Google Earth.
+ *
+ * @param color
+ * @param bgColor
+ * @param textColor
+ * @param text
+ * @param displayMode
+ * @param id
+ * @param targetId
+ * @param balloonStyleSimpleExtensionGroup
+ * @param balloonStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class BalloonStyle(color: Option[HexColor] = None,
   bgColor: Option[HexColor] = None,
   textColor: Option[HexColor] = None,
@@ -2830,6 +3105,24 @@ case class BalloonStyle(color: Option[HexColor] = None,
 
 }
 
+/**
+ * ListStyle
+ *
+ * Specifies how a Feature is displayed in the list view.
+ * The list view is a hierarchy of containers and children; in Google Earth, this is the Places panel.
+ *
+ * @param listItemType
+ * @param bgColor
+ * @param itemIcon
+ * @param maxSnippetLines
+ * @param id
+ * @param targetId
+ * @param listStyleSimpleExtensionGroup
+ * @param listStyleObjectExtensionGroup
+ * @param subStyleSimpleExtensionGroup
+ * @param subStyleObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class ListStyle(listItemType: Option[ListItemType] = None,
   bgColor: Option[HexColor] = None,
   itemIcon: Seq[ItemIcon] = Nil,
@@ -2858,6 +3151,22 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
   }
 }
 
+/**
+ * IconStyle
+ *
+ * Specifies how icons for point Placemarks are drawn, both in the Places panel and in the 3D viewer
+ * of Google Earth. The <Icon> element specifies the icon image.
+ * The <scale> element specifies the x, y scaling of the icon.
+ * The color specified in the <color> element of <IconStyle> is blended with the color of the <Icon>.
+ *
+ * @param objectSimpleExtensionGroup
+ * @param state
+ * @param href
+ * @param id
+ * @param itemIconSimpleExtensionGroup
+ * @param itemIconObjectExtensionGroup
+ * @param targetId
+ */
 case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
   state: Seq[ItemIconState] = Nil,
   href: Option[String] = None,
@@ -2880,6 +3189,22 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
   }
 }
 
+/**
+ * TimeStamp
+ *
+ * Represents a single moment in time. This is a simple element and contains no children.
+ * Its value is a dateTime, specified in XML time (see XML Schema Part 2: Datatypes Second Edition).
+ * The precision of the TimeStamp is dictated by the dateTime value in the <when> element.
+ *
+ * @param when
+ * @param id
+ * @param targetId
+ * @param timeStampSimpleExtensionGroup
+ * @param timeStampObjectExtensionGroup
+ * @param timePrimitiveSimpleExtensionGroup
+ * @param timePrimitiveObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class TimeStamp(when: Option[String] = None,
   id: Option[String] = None,
   targetId: Option[String] = None,
@@ -2893,6 +3218,27 @@ case class TimeStamp(when: Option[String] = None,
 
 }
 
+/**
+ *  TimeSpan
+ *
+ * Represents an extent in time bounded by begin and end dateTimes.
+ * If <begin> or <end> is missing, then that end of the period is unbounded (see Example below).
+ * The dateTime is defined according to XML Schema time (see XML Schema Part 2: Datatypes Second Edition).
+ * The value can be expressed as yyyy-mm-ddThh:mm:ss.ssszzzzzz, where T is the separator between
+ * the date and the time, and the time zone is either Z (for UTC) or zzzzzz, which represents
+ * ±hh:mm in relation to UTC. Additionally, the value can be expressed as a date only.
+ * See <TimeStamp> for examples.
+
+ * @param begin
+ * @param end
+ * @param id
+ * @param targetId
+ * @param timeSpanSimpleExtensionGroup
+ * @param timeSpanObjectExtensionGroup
+ * @param timePrimitiveSimpleExtensionGroup
+ * @param timePrimitiveObjectExtensionGroup
+ * @param objectSimpleExtensionGroup
+ */
 case class TimeSpan(begin: Option[String] = None,
   end: Option[String] = None,
   id: Option[String] = None,
@@ -2907,6 +3253,17 @@ case class TimeSpan(begin: Option[String] = None,
 
 }
 
+/**
+ * Update
+ *
+ * With <Update>, you can specify any number of Change, Create, and Delete tags for a .kml file or .kmz archive
+ * that has previously been loaded with a network link.
+ *
+ * @param targetHref
+ * @param updateOption
+ * @param updateOpExtensionGroup
+ * @param updateExtensionGroup
+ */
 case class Update(targetHref: String,
   updateOption: Seq[UpdateOption] = Nil,
   updateOpExtensionGroup: Seq[Any] = Nil,
@@ -2926,6 +3283,22 @@ case class Update(targetHref: String,
 
 trait UpdateOption
 
+/**
+ * Create
+ *
+ * Adds new elements to a Folder or Document that has already been loaded via a <NetworkLink>.
+ * The <targetHref> element in <Update> specifies the URL of the .kml or .kmz file that
+ * contained the original Folder or Document. Within that file, the Folder or Document that
+ * is to contain the new data must already have an explicit id defined for it.
+ * This id is referenced as the targetId attribute of the Folder or Document within <Create> that
+ * contains the element to be added.
+ * Once an object has been created and loaded into Google Earth, it takes on the URL of the original
+ * parent Document of Folder. To perform subsequent updates to objects added with this
+ * Update/Create mechanism, set <targetHref> to the URL of the original Document or Folder
+ * (not the URL of the file that loaded the intervening updates).
+ *
+ * @param containerSet
+ */
 case class Create(containerSet: Seq[Container]) extends UpdateOption {
 
   def this(container: Container) = this(Seq.empty :+ container)
@@ -2940,6 +3313,18 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
   }
 }
 
+/**
+ * Delete
+ *
+ * Deletes features from a complex element that has already been loaded via a <NetworkLink>.
+ * The <targetHref> element in <Update> specifies the .kml or .kmz file containing the data
+ * to be deleted. Within that file, the element to be deleted must already have an explicit id
+ * defined for it. The <Delete> element references this id in the targetId attribute.
+ * Child elements for <Delete>, which are the only elements that can be deleted, are
+ * Document, Folder, GroundOverlay, Placemark, and ScreenOverlay.
+
+ * @param featureSet
+ */
 case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 
   def this(feature: Feature) = this(Seq.empty :+ feature)
@@ -2954,6 +3339,19 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
   }
 }
 
+/**
+ * Change
+ *
+ * Modifies the values in an element that has already been loaded with a <NetworkLink>.
+ * Within the Change element, the child to be modified must include a targetId attribute that
+ * references the original element's id.
+ * This update can be considered a "sparse update": in the modified element, only the values listed
+ * in <Change> are replaced; all other values remained untouched. When <Change> is applied to a set
+ * of coordinates, the new coordinates replace the current coordinates.
+ * Children of this element are the element(s) to be modified, which are identified by the targetId attribute.
+
+ * @param objectChangeSet
+ */
 case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 
   def this(objectChange: Any) = this(Seq.empty :+ objectChange)
@@ -2968,6 +3366,13 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
   }
 }
 
+/**
+ * IdAttributes
+ * represents the attribute id and targetId
+ *
+ * @param id
+ * @param targetId
+ */
 case class IdAttributes(id: Option[String] = None, targetId: Option[String] = None) {
 
   def this(id: String, targetId: String) = this(Option(id), Option(targetId))
