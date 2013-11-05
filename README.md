@@ -24,10 +24,10 @@ From this I learned a lot about scala (and cutting and pasting of code).
 ## Packages
 
 The scalakml library consists of 4 major packages:
-- 1) package com.scalakml.kml, the set of KML classes
-- 2) package com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd 
-- 3) package com.scalakml.io, the simple reading and writing of kml from/to xml
-- 4) package com.scalakml.atom, the Atom classes
+- 1) com.scalakml.kml, the set of KML classes
+- 2) com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd
+- 3) com.scalakml.io, the simple reading and writing of kml from/to xml
+- 4) com.scalakml.atom, the Atom classes
 
 ## Dependencies
 
@@ -66,12 +66,12 @@ A FeaturePart can be created and is typically added as an element to: Document, 
     }
 
 ## Issues
-  One current issue is scala xml does not preserve CDATA,
+  One current issue is, scala xml does not preserve CDATA,
   such that angle brackets and ampersands in CDATA elements are corrupted, Google Earth for example does not like that.
 
 ## Status
 
-This scalakml library needs more testing and a bit more documentation.
+This scalakml library needs a bit more testing and a bit more documentation.
 
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
