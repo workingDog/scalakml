@@ -54,7 +54,6 @@ package com.scalakml.atom
  * atom:link element - contains the href attribute
  * href attribute - URL of the web page containing the KML/KMZ file
  * These elements are defined in the Atom Syndication Format.
- * The complete specification is found at http://atompub.org. (see the sample that follows).
  *
  * The <atom:author> element is the parent element for <atom:name>, which specifies the author of the KML feature.
  * @param name the name of the author
