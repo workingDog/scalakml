@@ -45,9 +45,34 @@ package com.scalakml.atom
  * The documentations are taken from these two references.
  */
 
-
+/**
+ * KML 2.2 supports new elements for including data about the author and related website in your KML file.
+ * This information is displayed in geo search results, both in Earth browsers such as Google Earth,
+ * and in other applications such as Google Maps. The ascription elements used in KML are as follows:
+ * atom:author element - parent element for atom:name
+ * atom:name element - the name of the author
+ * atom:link element - contains the href attribute
+ * href attribute - URL of the web page containing the KML/KMZ file
+ * These elements are defined in the Atom Syndication Format.
+ * The complete specification is found at http://atompub.org. (see the sample that follows).
+ *
+ * The <atom:author> element is the parent element for <atom:name>, which specifies the author of the KML feature.
+ * @param name the name of the author
+ */
 case class Author(name: String)
 
+/**
+ * Specifies the URL of the website containing this KML or KMZ file.
+ * Be sure to include the namespace for this element in any KML file that uses it:
+ * xmlns:atom="http://www.w3.org/2005/Atom"
+ *
+ * @param href URL of the web page containing the KML/KMZ file
+ * @param rel
+ * @param typeValue
+ * @param hrefLang
+ * @param title
+ * @param length
+ */
 case class Link(href: Option[String] = None,
                 rel: Option[String] = None,
                 typeValue: Option[String] = None,
