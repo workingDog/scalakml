@@ -2215,6 +2215,8 @@ case class Boundary(linearRing: Option[LinearRing] = None,
 }
 
 /**
+ * Model
+ *
  * A 3D object described in a COLLADA file (referenced in the <Link> tag). COLLADA files have a .dae file extension. Models are created in their own coordinate space and then located, positioned, and scaled in Google Earth. See the "Topics in KML" page on Models for more detail.
 
 Google Earth supports the COLLADA common profile, with the following exceptions:
@@ -2472,7 +2474,6 @@ case class Alias(targetHref: Option[String] = None,
 }
 
 
-
 /**
  * This element draws an image overlay draped onto the terrain.
  * The <href> child of <Icon> specifies the image to be used as the overlay.
@@ -2560,6 +2561,7 @@ case class GroundOverlay(altitude: Option[Double] = None,
 
 /**
  * ScreenOverlay
+ *
  * This element draws an image overlay fixed to the screen. Sample uses for ScreenOverlays
  * are compasses, logos, and heads-up displays. ScreenOverlay sizing is determined by
  * the <size> element. Positioning of the overlay is handled by mapping a point in the
@@ -2572,11 +2574,23 @@ case class GroundOverlay(altitude: Option[Double] = None,
  * color and size defined by the screen overlay.
  *
  *
- * @param overlayXY
- * @param screenXY
- * @param rotationXY
- * @param size
- * @param rotation
+ * @param overlayXY Specifies a point on (or outside of) the overlay image that is mapped to the screen coordinate (<screenXY>). It requires x and y values, and the units for those values.
+The x and y values can be specified in three different ways: as pixels ("pixels"), as fractions of the image ("fraction"), or as inset pixels ("insetPixels"), which is an offset in pixels from the upper right corner of the image. The x and y positions can be specified in different ways—for example, x can be in pixels and y can be a fraction. The origin of the coordinate system is in the lower left corner of the image.
+x - Either the number of pixels, a fractional component of the image, or a pixel inset indicating the x component of a point on the overlay image.
+y - Either the number of pixels, a fractional component of the image, or a pixel inset indicating the y component of a point on the overlay image.
+xunits - Units in which the x value is specified. A value of "fraction" indicates the x value is a fraction of the image. A value of "pixels" indicates the x value in pixels. A value of "insetPixels" indicates the indent from the right edge of the image.
+yunits - Units in which the y value is specified. A value of "fraction" indicates the y value is a fraction of the image. A value of "pixels" indicates the y value in pixels. A value of "insetPixels" indicates the indent from the top edge of the image.
+ * @param screenXY Specifies a point relative to the screen origin that the overlay image is mapped to. The x and y values can be specified in three different ways: as pixels ("pixels"), as fractions of the screen ("fraction"), or as inset pixels ("insetPixels"), which is an offset in pixels from the upper right corner of the screen. The x and y positions can be specified in different ways—for example, x can be in pixels and y can be a fraction. The origin of the coordinate system is in the lower left corner of the screen.
+x - Either the number of pixels, a fractional component of the screen, or a pixel inset indicating the x component of a point on the screen.
+y - Either the number of pixels, a fractional component of the screen, or a pixel inset indicating the y component of a point on the screen.
+xunits - Units in which the x value is specified. A value of "fraction" indicates the x value is a fraction of the screen. A value of "pixels" indicates the x value in pixels. A value of "insetPixels" indicates the indent from the right edge of the screen.
+yunits - Units in which the y value is specified. A value of fraction indicates the y value is a fraction of the screen. A value of "pixels" indicates the y value in pixels. A value of "insetPixels" indicates the indent from the top edge of the screen.
+ * @param rotationXY Point relative to the screen about which the screen overlay is rotated.
+ * @param size Specifies the size of the image for the screen overlay, as follows:
+A value of −1 indicates to use the native dimension
+A value of 0 indicates to maintain the aspect ratio
+A value of n sets the value of the dimension
+ * @param rotation Indicates the angle of rotation of the parent object. A value of 0 means no rotation. The value is an angle in degrees counterclockwise starting from north. Use ±180 to indicate the rotation of the parent object from 0. The center of the <rotation>, if not (.5,.5), is specified in <rotationXY>.
  * @param featurePart
  * @param color
  * @param drawOrder
@@ -2636,11 +2650,17 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
  *
  * For more information, see the "Topics in KML" page on PhotoOverlay.
  *
- * @param rotation
- * @param viewVolume
- * @param imagePyramid
- * @param point
- * @param shape
+ * @param rotation Adjusts how the photo is placed inside the field of view. This element is useful if your photo has been rotated and deviates slightly from a desired horizontal view.
+ * @param viewVolume Defines how much of the current scene is visible. Specifying the field of view is analogous to specifying the lens opening in a physical camera. A small field of view, like a telephoto lens, focuses on a small part of the scene. A large field of view, like a wide-angle lens, focuses on a large part of the scene.
+ * @param imagePyramid For very large images, you'll need to construct an image pyramid, which is a hierarchical set of images, each of which is an increasingly lower resolution version of the original image. Each image in the pyramid is subdivided into tiles, so that only the portions in view need to be loaded. Google Earth calculates the current viewpoint and loads the tiles that are appropriate to the user's distance from the image. As the viewpoint moves closer to the PhotoOverlay, Google Earth loads higher resolution tiles. Since all the pixels in the original image can't be viewed on the screen at once, this preprocessing allows Google Earth to achieve maximum performance because it loads only the portions of the image that are in view, and only the pixel details that can be discerned by the user at the current viewpoint.
+When you specify an image pyramid, you also modify the <href> in the <Icon> element to include specifications for which tiles to load.
+ * @param point The <Point> element acts as a <Point> inside a <Placemark> element. It draws an icon to mark the position of the PhotoOverlay. The icon drawn is specified by the <styleUrl> and <StyleSelector> fields, just as it is for <Placemark>.
+ * @param shape The PhotoOverlay is projected onto the <shape>. The <shape> can be one of the following:
+rectangle (default) - for an ordinary photo
+
+cylinder - for panoramas, which can be either partial or full cylinders
+
+sphere - for spherical panoramas
  * @param featurePart
  * @param color
  * @param drawOrder
@@ -2848,8 +2868,8 @@ case class StyleMap(pair: Seq[Pair] = Nil,
  * <styleUrl> or <Style>, which references the style. In <styleUrl>, for referenced style elements that are local to the KML document, a simple # referencing is used. For styles that are contained in external files, use a full URL along with # referencing.
  *
  *
- * @param key
- * @param styleUrl
+ * @param key  identifies the key
+ * @param styleUrl references the style. For referenced style elements that are local to the KML document, a simple # referencing is used. For styles that are contained in external files, use a full URL along with # referencing.
  * @param styleSelector
  * @param id
  * @param targetId
@@ -2892,12 +2912,21 @@ trait ColorStyle extends SubStyle {
  * the x, y scaling of the icon. The color specified in the <color> element of <IconStyle> is
  * blended with the color of the <Icon>.
  *
- * @param scale
- * @param heading
- * @param icon
- * @param hotSpot
- * @param color
- * @param colorMode
+ * @param scale Resizes the icon.
+ * @param heading Direction (that is, North, South, East, West), in degrees. Default=0 (North)
+ * @param icon A custom Icon. In <IconStyle>, the only child element of <Icon> is <href>:
+<href>: An HTTP address or a local file specification used to load an icon.
+ * @param hotSpot Specifies the position within the Icon that is "anchored" to the <Point> specified in the Placemark. The x and y values can be specified in three different ways: as pixels ("pixels"), as fractions of the icon ("fraction"), or as inset pixels ("insetPixels"), which is an offset in pixels from the upper right corner of the icon. The x and y positions can be specified in different ways—for example, x can be in pixels and y can be a fraction. The origin of the coordinate system is in the lower left corner of the icon.
+x - Either the number of pixels, a fractional component of the icon, or a pixel inset indicating the x component of a point on the icon.
+y - Either the number of pixels, a fractional component of the icon, or a pixel inset indicating the y component of a point on the icon.
+xunits - Units in which the x value is specified. A value of fraction indicates the x value is a fraction of the icon. A value of pixels indicates the x value in pixels. A value of insetPixels indicates the indent from the right edge of the icon.
+yunits - Units in which the y value is specified. A value of fraction indicates the y value is a fraction of the icon. A value of pixels indicates the y value in pixels. A value of insetPixels indicates the indent from the top edge of the icon.
+ * @param color Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <color>7fff0000</color>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00.
+ * @param colorMode Values for <colorMode> are normal (no effect) and random. A value of random applies a random linear scale to the base <color> as follows.
+To achieve a truly random selection of colors, specify a base <color> of white (ffffffff).
+If you specify a single color component (for example, a value of ff0000ff for red), random color values for that one component (red) will be selected. In this case, the values would range from 00 (black) to ff (full red).
+If you specify values for two or for all three color components, a random linear scale is applied to each color component, with results ranging from black to the maximum values specified for each component.
+The opacity of a color comes from the alpha component of <color> and is never randomized.
  * @param id
  * @param targetId
  * @param iconStyleSimpleExtensionGroup
@@ -2947,9 +2976,13 @@ trait BasicLinkType extends KmlObject {
  * Specifies how the <name> of a Feature is drawn in the 3D viewer.
  * A custom color, color mode, and scale for the label (name) can be specified.
  *
- * @param scale
- * @param color
- * @param colorMode
+ * @param scale Resizes the label.
+ * @param color Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <color>7fff0000</color>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00.
+ * @param colorMode Values for <colorMode> are normal (no effect) and random. A value of random applies a random linear scale to the base <color> as follows.
+To achieve a truly random selection of colors, specify a base <color> of white (ffffffff).
+If you specify a single color component (for example, a value of ff0000ff for red), random color values for that one component (red) will be selected. In this case, the values would range from 00 (black) to ff (full red).
+If you specify values for two or for all three color components, a random linear scale is applied to each color component, with results ranging from black to the maximum values specified for each component.
+The opacity of a color comes from the alpha component of <color> and is never randomized.
  * @param id
  * @param targetId
  * @param labelStyleSimpleExtensionGroup
@@ -2986,9 +3019,13 @@ case class LabelStyle(scale: Option[Double] = None,
  * Line geometry includes the outlines of outlined polygons and the extruded "tether" of
  * Placemark icons (if extrusion is enabled).
  *
- * @param width
- * @param color
- * @param colorMode
+ * @param width Width of the line, in pixels.
+ * @param color Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <color>7fff0000</color>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00.
+ * @param colorMode Values for <colorMode> are normal (no effect) and random. A value of random applies a random linear scale to the base <color> as follows.
+To achieve a truly random selection of colors, specify a base <color> of white (ffffffff).
+If you specify a single color component (for example, a value of ff0000ff for red), random color values for that one component (red) will be selected. In this case, the values would range from 00 (black) to ff (full red).
+If you specify values for two or for all three color components, a random linear scale is applied to each color component, with results ranging from black to the maximum values specified for each component.
+The opacity of a color comes from the alpha component of <color> and is never randomized.
  * @param id
  * @param targetId
  * @param lineStyleSimpleExtensionGroup
@@ -3024,10 +3061,14 @@ case class LineStyle(width: Option[Double] = None,
  * Specifies the drawing style for all polygons, including polygon extrusions
  * (which look like the walls of buildings) and line extrusions (which look like solid fences).
  *
- * @param fill
- * @param outline
- * @param color
- * @param colorMode
+ * @param fill Boolean value. Specifies whether to fill the polygon.
+ * @param outline Boolean value. Specifies whether to outline the polygon. Polygon outlines use the current LineStyle.
+ * @param color Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <color>7fff0000</color>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00.
+ * @param colorMode Values for <colorMode> are normal (no effect) and random. A value of random applies a random linear scale to the base <color> as follows.
+To achieve a truly random selection of colors, specify a base <color> of white (ffffffff).
+If you specify a single color component (for example, a value of ff0000ff for red), random color values for that one component (red) will be selected. In this case, the values would range from 00 (black) to ff (full red).
+If you specify values for two or for all three color components, a random linear scale is applied to each color component, with results ranging from black to the maximum values specified for each component.
+The opacity of a color comes from the alpha component of <color> and is never randomized.
  * @param id
  * @param targetId
  * @param polyStyleSimpleExtensionGroup
@@ -3070,11 +3111,11 @@ case class PolyStyle(fill: Option[Boolean] = None,
  * The <bgColor>, if specified, is used as the background color of the balloon.
  * See <Feature> for a diagram illustrating how the default description balloon appears in Google Earth.
  *
- * @param color
- * @param bgColor
- * @param textColor
- * @param text
- * @param displayMode
+ * @param bgColor Background color of the balloon (optional). Color and opacity (alpha) values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <bgColor>7fff0000</bgColor>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00. The default is opaque white (ffffffff).
+ * @param textColor Foreground color for text. The default is black (ff000000).
+ * @param text Text displayed in the balloon. If no text is specified, Google Earth draws the default balloon (with the Feature <name> in boldface, the Feature <description>, links for driving directions, a white background, and a tail that is attached to the point coordinates of the Feature, if specified).
+You can add entities to the <text> tag using the following format to refer to a child element of Feature: $[name], $[description], $[address], $[id], $[Snippet]. Google Earth looks in the current Feature for the corresponding string entity and substitutes that information in the balloon. To include To here - From here driving directions in the balloon, use the $[geDirections] tag. To prevent the driving directions links from appearing in a balloon, include the <text> element with some content, or with $[description] to substitute the basic Feature <description>.
+ * @param displayMode If <displayMode> is default, Google Earth uses the information supplied in <text> to create a balloon . If <displayMode> is hide, Google Earth does not display the balloon. In Google Earth, clicking the List View icon for a Placemark whose balloon's <displayMode> is hide causes Google Earth to fly to the Placemark.
  * @param id
  * @param targetId
  * @param balloonStyleSimpleExtensionGroup
@@ -3083,8 +3124,7 @@ case class PolyStyle(fill: Option[Boolean] = None,
  * @param subStyleObjectExtensionGroup
  * @param objectSimpleExtensionGroup
  */
-case class BalloonStyle(color: Option[HexColor] = None,
-  bgColor: Option[HexColor] = None,
+case class BalloonStyle(bgColor: Option[HexColor] = None,
   textColor: Option[HexColor] = None,
   text: Option[String] = None,
   displayMode: Option[DisplayMode] = None,
@@ -3096,12 +3136,12 @@ case class BalloonStyle(color: Option[HexColor] = None,
   subStyleObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends SubStyle {
 
-  def this(text: String) = this(None, None, None, Option(text))
-  def this(text: String, displayMode: DisplayMode) = this(None, None, None, Option(text), Option(displayMode))
+  def this(text: String) = this(None, None, Option(text))
+  def this(text: String, displayMode: DisplayMode) = this(None, None, Option(text), Option(displayMode))
   def this(text: String, color: HexColor, bgColor: HexColor, textColor: HexColor) =
-    this(Option(color), Option(bgColor), Option(textColor), Option(text))
+    this(Option(bgColor), Option(textColor), Option(text))
 
-  def this(text: String, color: HexColor) = this(Option(color), None, None, Option(text))
+  def this(text: String, color: HexColor) = this(None, None, Option(text))
 
 }
 
@@ -3111,10 +3151,14 @@ case class BalloonStyle(color: Option[HexColor] = None,
  * Specifies how a Feature is displayed in the list view.
  * The list view is a hierarchy of containers and children; in Google Earth, this is the Places panel.
  *
- * @param listItemType
- * @param bgColor
- * @param itemIcon
- * @param maxSnippetLines
+ * @param listItemType Specifies how a Feature is displayed in the list view. Possible values are:
+check (default) - The Feature's visibility is tied to its item's checkbox.
+radioFolder - When specified for a Container, only one of the Container's items is visible at a time
+checkOffOnly - When specified for a Container or Network Link, prevents all items from being made visible at once—that is, the user can turn everything in the Container or Network Link off but cannot turn everything on at the same time. This setting is useful for Containers or Network Links containing large amounts of data.
+checkHideChildren - Use a normal checkbox for visibility but do not display the Container or Network Link's children in the list view. A checkbox allows the user to toggle visibility of the child objects in the viewer.
+ * @param bgColor Background color for the Snippet. Color and opacity values are expressed in hexadecimal notation. The range of values for any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff). For example, if you want to apply a blue color with 50 percent opacity to an overlay, you would specify the following: <color>7fff0000</color>, where alpha=0x7f, blue=0xff, green=0x00, and red=0x00.
+ * @param itemIcon Icon used in the List view that reflects the state of a Folder or Link fetch. Icons associated with the open and closed modes are used for Folders and Network Links. Icons associated with the error and fetching0, fetching1, and fetching2 modes are used for Network Links.
+ * @param maxSnippetLines Specifies the maximum number of lines to display for the kml:AbstractFeatureGroup kml:snippet value in the list view.
  * @param id
  * @param targetId
  * @param listStyleSimpleExtensionGroup
@@ -3152,16 +3196,16 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
 }
 
 /**
- * IconStyle
+ * ItemIcon
  *
- * Specifies how icons for point Placemarks are drawn, both in the Places panel and in the 3D viewer
- * of Google Earth. The <Icon> element specifies the icon image.
- * The <scale> element specifies the x, y scaling of the icon.
- * The color specified in the <color> element of <IconStyle> is blended with the color of the <Icon>.
+ * Icon used in the List view that reflects the state of a Folder or Link fetch.
+ * Icons associated with the open and closed modes are used for Folders and Network Links.
+ * Icons associated with the error and fetching0, fetching1, and fetching2 modes are used
+ * for Network Links.
  *
  * @param objectSimpleExtensionGroup
- * @param state
- * @param href
+ * @param state Specifies the current state of the NetworkLink or Folder. Possible values are open, closed, error, fetching0, fetching1, and fetching2. These values can be combined by inserting a space between two values (no comma).
+ * @param href Specifies the URI of the image used in the List View for the Feature.
  * @param id
  * @param itemIconSimpleExtensionGroup
  * @param itemIconObjectExtensionGroup
@@ -3196,7 +3240,11 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
  * Its value is a dateTime, specified in XML time (see XML Schema Part 2: Datatypes Second Edition).
  * The precision of the TimeStamp is dictated by the dateTime value in the <when> element.
  *
- * @param when
+ * @param when Specifies a single moment in time. The value is a dateTime, which can be one of the following:
+dateTime gives second resolution
+date gives day resolution
+gYearMonth gives month resolution
+gYear gives year resolution
  * @param id
  * @param targetId
  * @param timeStampSimpleExtensionGroup
@@ -3229,8 +3277,8 @@ case class TimeStamp(when: Option[String] = None,
  * ±hh:mm in relation to UTC. Additionally, the value can be expressed as a date only.
  * See <TimeStamp> for examples.
 
- * @param begin
- * @param end
+ * @param begin Describes the beginning instant of a time period. If absent, the beginning of the period is unbounded.
+ * @param end Describes the ending instant of a time period. If absent, the end of the period is unbounded.
  * @param id
  * @param targetId
  * @param timeSpanSimpleExtensionGroup
@@ -3259,8 +3307,8 @@ case class TimeSpan(begin: Option[String] = None,
  * With <Update>, you can specify any number of Change, Create, and Delete tags for a .kml file or .kmz archive
  * that has previously been loaded with a network link.
  *
- * @param targetHref
- * @param updateOption
+ * @param targetHref Specifies the URL for the target KML resource that has been previously retrieved via kml:NetworkLink.
+ * @param updateOption Create,Change and Delete options
  * @param updateOpExtensionGroup
  * @param updateExtensionGroup
  */
@@ -3370,8 +3418,8 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
  * IdAttributes
  * represents the attribute id and targetId
  *
- * @param id
- * @param targetId
+ * @param id the attribute, which allows unique identification of a KML element
+ * @param targetId attribute, which is used to reference objects that have already been loaded into Google Earth
  */
 case class IdAttributes(id: Option[String] = None, targetId: Option[String] = None) {
 

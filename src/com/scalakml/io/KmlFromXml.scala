@@ -457,7 +457,6 @@ object KmlFromXml extends KmlExtractor {
   def makeBalloonStyle(nodeSeq: NodeSeq): Option[BalloonStyle] = {
     if (nodeSeq.isEmpty) None else Some(new BalloonStyle(
       id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      color = makeColor(nodeSeq \ "color"),
       bgColor = makeColor(nodeSeq \ "bgColor"),
       textColor = makeColor(nodeSeq \ "textColor"),
       text = getFromNode[String](nodeSeq \ "text"),

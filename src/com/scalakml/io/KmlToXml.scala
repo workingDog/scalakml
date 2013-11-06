@@ -259,7 +259,6 @@ object KmlToXml extends XmlExtractor {
     def toXml(balloonStyleOption: Option[BalloonStyle]): NodeSeq = {
       balloonStyleOption match {
         case Some(balloonStyle) => <BalloonStyle id={if (balloonStyle.id.isDefined) balloonStyle.id.get else null} targetId={if (balloonStyle.targetId.isDefined) balloonStyle.targetId.get else null}>
-          {getXmlFrom(balloonStyle.color)}
           {getXmlFrom(balloonStyle.bgColor)}
           {getXmlFrom(balloonStyle.textColor)}
           {getNodeFromFieldName("displayMode", balloonStyleOption)}
