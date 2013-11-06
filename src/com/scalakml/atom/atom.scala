@@ -29,6 +29,8 @@
  */
 package com.scalakml.atom
 
+import java.net.URI
+
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
  *
@@ -58,7 +60,12 @@ package com.scalakml.atom
  * The <atom:author> element is the parent element for <atom:name>, which specifies the author of the KML feature.
  * @param name the name of the author
  */
-case class Author(name: String)
+case class Author(name: Option[String] = None, uri: Option[String] = None, email: Option[String] = None) {
+
+  def this(name: String) = this(Option(name), None, None)
+  def this(name: String, uri: String) = this(Option(name), Option(uri), None)
+  def this(name: String, uri: String, email: String) = this(Option(name), Option(uri), Option(email))
+}
 
 /**
  * Specifies the URL of the website containing this KML or KMZ file.

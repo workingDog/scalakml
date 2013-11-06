@@ -3276,12 +3276,12 @@ case class TimeSpan(begin: Option[String] = None,
  * @param updateOpExtensionGroup
  * @param updateExtensionGroup
  */
-case class Update(targetHref: String,
+case class Update(targetHref: Option[String],
   updateOption: Seq[UpdateOption] = Nil,
   updateOpExtensionGroup: Seq[Any] = Nil,
   updateExtensionGroup: Seq[Any] = Nil) {
 
-  def this(targetHref: String, updateOption: UpdateOption) = this(targetHref, (Seq.empty :+ updateOption))
+  def this(targetHref: String, updateOption: UpdateOption) = this(Option(targetHref), (Seq.empty :+ updateOption))
 
   /**
    * returns a new object with value added to the sequence

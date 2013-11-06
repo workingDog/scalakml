@@ -136,8 +136,7 @@ object KmlFromXml extends KmlExtractor {
    */
   def makeUpdate(nodeSeq: NodeSeq): Option[Update] = {
     if (nodeSeq.isEmpty) None
-    else
-      (getString(nodeSeq \ "targetHref")).map(x => new Update(targetHref = x, updateOption = makeUpdateOptions(nodeSeq)))
+    else Some(new Update(targetHref = getString(nodeSeq \ "targetHref"), updateOption = makeUpdateOptions(nodeSeq)))
   }
 
   // TODO this does not check that there must be only one of the different types
@@ -246,8 +245,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeKmlObjectSet(nodeSeq: NodeSeq): Seq[KmlObject] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      (KmlObjectTypes.values.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten)
+    else (KmlObjectTypes.values.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten)
   }
 
   def makeKmlObjects(nodeSeq: NodeSeq, kmlObjectType: KmlObjectTypes): Seq[Option[KmlObject]] = {
@@ -347,7 +345,8 @@ object KmlFromXml extends KmlExtractor {
   def makeLink(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
     if (nodeSeq.isEmpty) None
     else {
-      for (x <- List("Link", "Url")) { // <--- possible labels, "Url" is not part of the formal reference
+      for (x <- List("Link", "Url")) {
+        // <--- possible labels, "Url" is not part of the formal reference
         val link = makeLinkFromNode(nodeSeq \ x)
         if (link.isDefined) return link
       }
@@ -437,7 +436,11 @@ object KmlFromXml extends KmlExtractor {
   }
 
   def makeAtomAuthor(nodeSeq: NodeSeq): Option[com.scalakml.atom.Author] = {
-    if (nodeSeq.isEmpty) None else (getString(nodeSeq \ "name")).map(x => new com.scalakml.atom.Author(name = x))
+    if (nodeSeq.isEmpty) None
+    else Some(new com.scalakml.atom.Author(
+      name = getString(nodeSeq \ "name"),
+      uri = getString(nodeSeq \ "uri"),
+      email = getString(nodeSeq \ "email")))
   }
 
   def makeFeaturePart(nodeSeq: NodeSeq): FeaturePart =
@@ -446,8 +449,8 @@ object KmlFromXml extends KmlExtractor {
       name = getString(nodeSeq \ "name"),
       visibility = getBoolean(nodeSeq \ "visibility"),
       open = getBoolean(nodeSeq \ "open"),
-      atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
-      atomLink = makeAtomLink(nodeSeq \ "link"),
+      atomAuthor = makeAtomAuthor(nodeSeq \ "atom:author"),
+      atomLink = makeAtomLink(nodeSeq \ "atom:link"),
       address = getString(nodeSeq \ "address"),
       addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
       phoneNumber = getString(nodeSeq \ "phoneNumber"),

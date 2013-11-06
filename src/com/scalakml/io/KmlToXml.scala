@@ -79,7 +79,7 @@ object KmlToXml extends XmlExtractor {
   implicit object UpdateToXml extends KmlToXml[Option[Update]] {
     def toXml(updateOption: Option[Update]): NodeSeq = {
       updateOption match {
-        case Some(update) => <Update targetHref={if (update.targetHref != null) update.targetHref else null}>
+        case Some(update) => <Update targetHref={if (update.targetHref.isDefined) update.targetHref.get else null}>
           {getXmlSeqFrom(Option(update.updateOption))}
         </Update>
         case None => NodeSeq.Empty
@@ -133,13 +133,11 @@ object KmlToXml extends XmlExtractor {
     def toXml(kmlObjectOption: Option[KmlObject]): NodeSeq = {
       kmlObjectOption match {
         case Some(kmlObject) => kmlObject match {
-          case feature: Feature => getXmlFrom(Option(feature))
           case resourceMap: ResourceMap => getXmlFrom(Option(resourceMap))
           case alias: Alias => getXmlFrom(Option(alias))
           case viewVolume: ViewVolume => getXmlFrom(Option(viewVolume))
           case imagePyramid: ImagePyramid => getXmlFrom(Option(imagePyramid))
           case pair: Pair => getXmlFrom(Option(pair))
-          case abstractView: AbstractView => getXmlFrom(Option(abstractView))
           case data: Data => getXmlFrom(Option(data))
           case schemaData: SchemaData => getXmlFrom(Option(schemaData))
           case timePrimitive: TimePrimitive => getXmlFrom(Option(timePrimitive))
@@ -152,8 +150,24 @@ object KmlToXml extends XmlExtractor {
           case orientation: Orientation => getXmlFrom(Option(orientation))
           case scale: Scale => getXmlFrom(Option(scale))
           case geometry: Geometry => getXmlFrom(Option(geometry))
+          case iconStyle: IconStyle => getXmlFrom(Option(iconStyle))
+          case labelStyle: LabelStyle => getXmlFrom(Option(labelStyle))
+          case lineStyle: LineStyle => getXmlFrom(Option(lineStyle))
+          case polyStyle: PolyStyle => getXmlFrom(Option(polyStyle))
+          case balloonStyle: BalloonStyle => getXmlFrom(Option(balloonStyle))
+          case listStyle: ListStyle => getXmlFrom(Option(listStyle))
           case style: Style => getXmlFrom(Option(style))
           case styleMap: StyleMap => getXmlFrom(Option(styleMap))
+          case itemIcon: ItemIcon => getXmlFrom(Option(itemIcon))
+          case placemark: Placemark => getXmlFrom(Option(placemark))
+          case document: Document => getXmlFrom(Option(document))
+          case folder: Folder => getXmlFrom(Option(folder))
+          case networkLink: NetworkLink => getXmlFrom(Option(networkLink))
+          case photoOverlay: PhotoOverlay => getXmlFrom(Option(photoOverlay))
+          case screenOverlay: ScreenOverlay => getXmlFrom(Option(screenOverlay))
+          case groundOverlay: GroundOverlay => getXmlFrom(Option(groundOverlay))
+          case abstractView: AbstractView => getXmlFrom(Option(abstractView))
+          case feature: Feature => getXmlFrom(Option(feature))
           case _ => NodeSeq.Empty
         }
         case None => NodeSeq.Empty
@@ -414,9 +428,9 @@ object KmlToXml extends XmlExtractor {
     def toXml(authorOption: Option[Author]): NodeSeq = {
       authorOption match {
         case Some(author) => <atom:author>
-          <atom:name>
-            {if ((author.name != null) && (!author.name.isEmpty)) author.name else null}
-          </atom:name>
+          {getNodeFromFieldName("name", authorOption)}
+          {getNodeFromFieldName("uri", authorOption)}
+          {getNodeFromFieldName("email", authorOption)}
         </atom:author>
         case None => NodeSeq.Empty
       }
