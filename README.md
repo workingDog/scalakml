@@ -54,6 +54,10 @@ The following (Feature) classes use FeaturePart:
 Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay and Tour.
 A FeaturePart can be created and is typically added as an element to: Document, Folder, Placemark, etc...
 
+Example kml files from http://code.google.com/p/kml-samples/ are included in the kml-files directory.
+The file KML_Samples.kml contains CDATA elements. The same file without
+the CDATA elements (example-no-cdata.kml) is also included.
+
 ## Usage
 
     object WriteExample4 {
@@ -75,10 +79,6 @@ This scalakml library needs a bit more testing and a bit more documentation.
 
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
-
-Example kml files from http://code.google.com/p/kml-samples/ is included in the kml-files directory.
-The file KML_Samples.kml contains CDATA elements. The same file without
-the CDATA elements (example-no-cdata.kml) is also included.
 
 I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
 
