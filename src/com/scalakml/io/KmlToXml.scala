@@ -428,9 +428,15 @@ object KmlToXml extends XmlExtractor {
     def toXml(authorOption: Option[Author]): NodeSeq = {
       authorOption match {
         case Some(author) => <atom:author>
-          {getNodeFromFieldName("name", authorOption)}
-          {getNodeFromFieldName("uri", authorOption)}
-          {getNodeFromFieldName("email", authorOption)}
+          <atom:name>
+            {if (author.name.isDefined) author.name.get else null}
+          </atom:name>
+          <atom:uri>
+            {if (author.uri.isDefined) author.uri.get else null}
+          </atom:uri>
+          <atom:email>
+            {if (author.email.isDefined) author.email.get else null}
+          </atom:email>
         </atom:author>
         case None => NodeSeq.Empty
       }
@@ -440,9 +446,14 @@ object KmlToXml extends XmlExtractor {
   implicit object AtomLinkToXml extends KmlToXml[Option[com.scalakml.atom.Link]] {
     def toXml(linkOption: Option[com.scalakml.atom.Link]): NodeSeq = {
       linkOption match {
-        case Some(link) => <atom:link>
-          {(link.getClass.getDeclaredFields.map(x => getNodeFromFieldName(x.getName, linkOption)) filter (_ != null) toSeq)}
-        </atom:link>
+        case Some(link) =>
+          <atom:link
+          href={if (link.href.isDefined) link.href.get else null}
+          rel={if (link.rel.isDefined) link.rel.get else null}
+          type={if (link.typeValue.isDefined) link.typeValue.get else null}
+          hrefLang={if (link.hrefLang.isDefined) link.hrefLang.get else null}
+          title={if (link.title.isDefined) link.title.get else null}
+          length={if (link.length.isDefined) link.length.get else null} />
         case None => NodeSeq.Empty
       }
     }

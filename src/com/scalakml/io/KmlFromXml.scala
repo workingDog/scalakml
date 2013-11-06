@@ -428,11 +428,11 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new com.scalakml.atom.Link(
       href = getString(nodeSeq \ "@href"),
-      rel = getString(nodeSeq \ "rel"),
-      typeValue = getString(nodeSeq \ "typeValue"),
-      hrefLang = getString(nodeSeq \ "hrefLang"),
-      title = getString(nodeSeq \ "title"),
-      length = getString(nodeSeq \ "length")))
+      rel = getString(nodeSeq \ "@rel"),
+      typeValue = getString(nodeSeq \ "@type"),
+      hrefLang = getString(nodeSeq \ "@hrefLang"),
+      title = getString(nodeSeq \ "@title"),
+      length = getString(nodeSeq \ "@length")))
   }
 
   def makeAtomAuthor(nodeSeq: NodeSeq): Option[com.scalakml.atom.Author] = {
@@ -449,8 +449,8 @@ object KmlFromXml extends KmlExtractor {
       name = getString(nodeSeq \ "name"),
       visibility = getBoolean(nodeSeq \ "visibility"),
       open = getBoolean(nodeSeq \ "open"),
-      atomAuthor = makeAtomAuthor(nodeSeq \ "atom:author"),
-      atomLink = makeAtomLink(nodeSeq \ "atom:link"),
+      atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
+      atomLink = makeAtomLink(nodeSeq \ "link"),
       address = getString(nodeSeq \ "address"),
       addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
       phoneNumber = getString(nodeSeq \ "phoneNumber"),
