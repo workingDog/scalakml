@@ -2215,8 +2215,6 @@ case class Boundary(linearRing: Option[LinearRing] = None,
 }
 
 /**
- * Model
- *
  * A 3D object described in a COLLADA file (referenced in the <Link> tag). COLLADA files have a .dae file extension. Models are created in their own coordinate space and then located, positioned, and scaled in Google Earth. See the "Topics in KML" page on Models for more detail.
 
 Google Earth supports the COLLADA common profile, with the following exceptions:
@@ -2560,8 +2558,6 @@ case class GroundOverlay(altitude: Option[Double] = None,
 }
 
 /**
- * ScreenOverlay
- *
  * This element draws an image overlay fixed to the screen. Sample uses for ScreenOverlays
  * are compasses, logos, and heads-up displays. ScreenOverlay sizing is determined by
  * the <size> element. Positioning of the overlay is handled by mapping a point in the
@@ -2629,8 +2625,6 @@ case class ScreenOverlay(overlayXY: Option[Vec2] = None,
 }
 
 /**
- * PhotoOverlay
- *
  * The <PhotoOverlay> element allows you to geographically locate a photograph on the Earth
  * and to specify viewing parameters for this PhotoOverlay. The PhotoOverlay can be a
  * simple 2D rectangle, a partial or full cylinder, or a sphere (for spherical panoramas).
@@ -2699,8 +2693,6 @@ case class PhotoOverlay(rotation: Option[Double] = None,
 }
 
 /**
- * ViewVolume
- *
  * Defines how much of the current scene is visible. Specifying the field of view
  * is analogous to specifying the lens opening in a physical camera.
  * A small field of view, like a telephoto lens, focuses on a small part of the scene.
@@ -2734,8 +2726,6 @@ case class ViewVolume(leftFov: Option[Double] = None,
 }
 
 /**
- * ImagePyramid
- *
  * For very large images, you'll need to construct an image pyramid, which is a hierarchical set of images,
  * each of which is an increasingly lower resolution version of the original image.
  * Each image in the pyramid is subdivided into tiles, so that only the portions in view need to be loaded.
@@ -2774,8 +2764,6 @@ case class ImagePyramid(tileSize: Option[Int] = None,
 }
 
 /**
- * Style
- *
  * A Style defines an addressable style group that can be referenced by StyleMaps and Features.
  * Styles affect how Geometry is presented in the 3D viewer and how Features appear in the Places panel
  * of the List view. Shared styles are collected in a <Document> and must have an id defined for them
@@ -2820,8 +2808,6 @@ case class Style(iconStyle: Option[IconStyle] = None,
 }
 
 /**
- * StyleMap
- *
  * A <StyleMap> maps between two different Styles. Typically a <StyleMap> element is used to
  * provide separate normal and highlighted styles for a placemark, so that the highlighted version
  * appears when the user mouses over the icon in Google Earth.
@@ -2860,8 +2846,6 @@ case class StyleMap(pair: Seq[Pair] = Nil,
 }
 
 /**
- * Pair
- *
  * Defines a key/value pair that maps a mode (normal or highlight) to the predefined <styleUrl>.
  * <Pair> contains two elements (both are required):
  * <key>, which identifies the key
@@ -2905,8 +2889,6 @@ trait ColorStyle extends SubStyle {
 }
 
 /**
- * IconStyle
- *
  * Specifies how icons for point Placemarks are drawn, both in the Places panel and in the 3D viewer
  * of Google Earth. The <Icon> element specifies the icon image. The <scale> element specifies
  * the x, y scaling of the icon. The color specified in the <color> element of <IconStyle> is
@@ -2971,8 +2953,6 @@ trait BasicLinkType extends KmlObject {
 }
 
 /**
- * LabelStyle
- *
  * Specifies how the <name> of a Feature is drawn in the 3D viewer.
  * A custom color, color mode, and scale for the label (name) can be specified.
  *
@@ -3013,8 +2993,6 @@ case class LabelStyle(scale: Option[Double] = None,
 }
 
 /**
- * LineStyle
- *
  * Specifies the drawing style (color, color mode, and line width) for all line geometry.
  * Line geometry includes the outlines of outlined polygons and the extruded "tether" of
  * Placemark icons (if extrusion is enabled).
@@ -3056,8 +3034,6 @@ case class LineStyle(width: Option[Double] = None,
 }
 
 /**
- * PolyStyle
- *
  * Specifies the drawing style for all polygons, including polygon extrusions
  * (which look like the walls of buildings) and line extrusions (which look like solid fences).
  *
@@ -3105,8 +3081,6 @@ case class PolyStyle(fill: Option[Boolean] = None,
 }
 
 /**
- * BalloonStyle
- *
  * Specifies how the description balloon for placemarks is drawn.
  * The <bgColor>, if specified, is used as the background color of the balloon.
  * See <Feature> for a diagram illustrating how the default description balloon appears in Google Earth.
@@ -3146,8 +3120,6 @@ case class BalloonStyle(bgColor: Option[HexColor] = None,
 }
 
 /**
- * ListStyle
- *
  * Specifies how a Feature is displayed in the list view.
  * The list view is a hierarchy of containers and children; in Google Earth, this is the Places panel.
  *
@@ -3196,8 +3168,6 @@ case class ListStyle(listItemType: Option[ListItemType] = None,
 }
 
 /**
- * ItemIcon
- *
  * Icon used in the List view that reflects the state of a Folder or Link fetch.
  * Icons associated with the open and closed modes are used for Folders and Network Links.
  * Icons associated with the error and fetching0, fetching1, and fetching2 modes are used
@@ -3234,8 +3204,6 @@ case class ItemIcon(objectSimpleExtensionGroup: Seq[Any] = Nil,
 }
 
 /**
- * TimeStamp
- *
  * Represents a single moment in time. This is a simple element and contains no children.
  * Its value is a dateTime, specified in XML time (see XML Schema Part 2: Datatypes Second Edition).
  * The precision of the TimeStamp is dictated by the dateTime value in the <when> element.
@@ -3267,8 +3235,6 @@ case class TimeStamp(when: Option[String] = None,
 }
 
 /**
- *  TimeSpan
- *
  * Represents an extent in time bounded by begin and end dateTimes.
  * If <begin> or <end> is missing, then that end of the period is unbounded (see Example below).
  * The dateTime is defined according to XML Schema time (see XML Schema Part 2: Datatypes Second Edition).
@@ -3302,8 +3268,6 @@ case class TimeSpan(begin: Option[String] = None,
 }
 
 /**
- * Update
- *
  * With <Update>, you can specify any number of Change, Create, and Delete tags for a .kml file or .kmz archive
  * that has previously been loaded with a network link.
  *
@@ -3332,8 +3296,6 @@ case class Update(targetHref: String,
 trait UpdateOption
 
 /**
- * Create
- *
  * Adds new elements to a Folder or Document that has already been loaded via a <NetworkLink>.
  * The <targetHref> element in <Update> specifies the URL of the .kml or .kmz file that
  * contained the original Folder or Document. Within that file, the Folder or Document that
@@ -3362,8 +3324,6 @@ case class Create(containerSet: Seq[Container]) extends UpdateOption {
 }
 
 /**
- * Delete
- *
  * Deletes features from a complex element that has already been loaded via a <NetworkLink>.
  * The <targetHref> element in <Update> specifies the .kml or .kmz file containing the data
  * to be deleted. Within that file, the element to be deleted must already have an explicit id
@@ -3388,8 +3348,6 @@ case class Delete(featureSet: Seq[Feature]) extends UpdateOption  {
 }
 
 /**
- * Change
- *
  * Modifies the values in an element that has already been loaded with a <NetworkLink>.
  * Within the Change element, the child to be modified must include a targetId attribute that
  * references the original element's id.
@@ -3415,7 +3373,6 @@ case class Change(objectChangeSet: Seq[Any]) extends UpdateOption  {
 }
 
 /**
- * IdAttributes
  * represents the attribute id and targetId
  *
  * @param id the attribute, which allows unique identification of a KML element
