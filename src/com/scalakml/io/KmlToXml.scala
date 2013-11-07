@@ -308,7 +308,9 @@ object KmlToXml extends XmlExtractor {
     def toXml(lineStyleOption: Option[LineStyle]): NodeSeq = {
       lineStyleOption match {
         case Some(lineStyle) => <LineStyle id={if (lineStyle.id.isDefined) lineStyle.id.get else null} targetId={if (lineStyle.targetId.isDefined) lineStyle.targetId.get else null}>
-          {getNodeFromFieldName("width", lineStyleOption)}{getXmlFrom(lineStyle.color)}{getNodeFromFieldName("colorMode", lineStyleOption)}
+          {getNodeFromFieldName("width", lineStyleOption)}
+          {getXmlFrom(lineStyle.color)}
+          {getNodeFromFieldName("colorMode", lineStyleOption)}
         </LineStyle>
         case None => NodeSeq.Empty
       }
@@ -319,7 +321,12 @@ object KmlToXml extends XmlExtractor {
     def toXml(listStyleOption: Option[ListStyle]): NodeSeq = {
       listStyleOption match {
         case Some(listStyle) => <ListStyle id={if (listStyle.id.isDefined) listStyle.id.get else null} targetId={if (listStyle.targetId.isDefined) listStyle.targetId.get else null}>
-          {getNodeFromFieldName("listItemType", listStyleOption)}{getXmlSeqFrom(Option(listStyle.itemIcon))}{getXmlFrom(listStyle.bgColor)}{getNodeFromFieldName("maxSnippetLines", listStyleOption)}
+          {getNodeFromFieldName("listItemType", listStyleOption)}
+          {getXmlSeqFrom(Option(listStyle.itemIcon))}
+          <bgColor>
+            {if (listStyle.bgColor.isDefined) listStyle.bgColor.get.hexString else null}
+          </bgColor>
+          {getNodeFromFieldName("maxSnippetLines", listStyleOption)}
         </ListStyle>
         case None => NodeSeq.Empty
       }
@@ -330,7 +337,7 @@ object KmlToXml extends XmlExtractor {
     def toXml(iconStateOption: Option[ItemIconState]): NodeSeq = {
       iconStateOption match {
         case Some(iconState) => <state>
-          {getXmlFrom(iconStateOption)}
+          {iconState}
         </state>
         case None => NodeSeq.Empty
       }
@@ -341,7 +348,8 @@ object KmlToXml extends XmlExtractor {
     def toXml(itemIconOption: Option[ItemIcon]): NodeSeq = {
       itemIconOption match {
         case Some(itemIcon) => <ItemIcon id={if (itemIcon.id.isDefined) itemIcon.id.get else null} targetId={if (itemIcon.targetId.isDefined) itemIcon.targetId.get else null}>
-          {getNodeFromFieldName("href", itemIconOption)}{getXmlSeqFrom(Option(itemIcon.state))}
+          {getNodeFromFieldName("href", itemIconOption)}
+          {if (itemIcon.state != Nil) { <state> {for (x <- itemIcon.state) yield x.toString + " "} </state> }}
         </ItemIcon>
         case None => NodeSeq.Empty
       }
@@ -352,7 +360,10 @@ object KmlToXml extends XmlExtractor {
     def toXml(polyStyleOption: Option[PolyStyle]): NodeSeq = {
       polyStyleOption match {
         case Some(polyStyle) => <PolyStyle id={if (polyStyle.id.isDefined) polyStyle.id.get else null} targetId={if (polyStyle.targetId.isDefined) polyStyle.targetId.get else null}>
-          {getNodeFromFieldName("fill", polyStyleOption)}{getNodeFromFieldName("outline", polyStyleOption)}{getXmlFrom(polyStyle.color)}{getNodeFromFieldName("colorMode", polyStyleOption)}
+          {getNodeFromFieldName("fill", polyStyleOption)}
+          {getNodeFromFieldName("outline", polyStyleOption)}
+          {getXmlFrom(polyStyle.color)}
+          {getNodeFromFieldName("colorMode", polyStyleOption)}
         </PolyStyle>
         case None => NodeSeq.Empty
       }
@@ -363,7 +374,12 @@ object KmlToXml extends XmlExtractor {
     def toXml(styleOption: Option[Style]): NodeSeq = {
       styleOption match {
         case Some(style) => <Style id={if (style.id.isDefined) style.id.get else null} targetId={if (style.targetId.isDefined) style.targetId.get else null}>
-          {getXmlFrom(style.iconStyle)}{getXmlFrom(style.labelStyle)}{getXmlFrom(style.lineStyle)}{getXmlFrom(style.listStyle)}{getXmlFrom(style.polyStyle)}{getXmlFrom(style.balloonStyle)}
+          {getXmlFrom(style.iconStyle)}
+          {getXmlFrom(style.labelStyle)}
+          {getXmlFrom(style.lineStyle)}
+          {getXmlFrom(style.listStyle)}
+          {getXmlFrom(style.polyStyle)}
+          {getXmlFrom(style.balloonStyle)}
         </Style>
         case None => NodeSeq.Empty
       }
@@ -508,7 +524,8 @@ object KmlToXml extends XmlExtractor {
     def toXml(extendedDataOption: Option[ExtendedData]): NodeSeq = {
       extendedDataOption match {
         case Some(extendedData) => <ExtendedData>
-          {if (extendedData.data != Nil) for (x <- extendedData.data) yield getXmlFrom(Option(x))}{if (extendedData.schemaData != Nil) for (x <- extendedData.schemaData) yield getXmlFrom(Option(x))}
+          {if (extendedData.data != Nil) for (x <- extendedData.data) yield getXmlFrom(Option(x))}
+          {if (extendedData.schemaData != Nil) for (x <- extendedData.schemaData) yield getXmlFrom(Option(x))}
         </ExtendedData>
         case None => NodeSeq.Empty
       }

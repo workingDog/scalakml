@@ -546,10 +546,13 @@ object KmlFromXml extends KmlExtractor {
 
   def makeItemIcon(nodeSeq: NodeSeq): Option[ItemIcon] = {
     if (nodeSeq.isEmpty) None
-    else Some(new ItemIcon(
-      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      state = makeItemIconStates(nodeSeq \ "state"),
-      href = getString(nodeSeq \ "href")))
+    else {
+      val test =Some(new ItemIcon(
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        state = makeItemIconStates(nodeSeq \ "state"),
+        href = getString(nodeSeq \ "href")))
+      test
+    }
   }
 
   def makeItemIconStates(nodeSeq: NodeSeq): Seq[ItemIconState] = {
@@ -559,7 +562,7 @@ object KmlFromXml extends KmlExtractor {
         case Some(modeOption) =>
           modeOption match {
             case x if (x.isEmpty) => Seq.empty
-            case modeString => ((modeString split "s+").map(x => ItemIconState.fromString(x)).toSeq)
+            case stateString => (stateString split "\\s+").map(x => {ItemIconState.fromString(x.trim)}).toSeq
           }
         case _ => Seq.empty
       }
