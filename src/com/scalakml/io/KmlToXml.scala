@@ -286,7 +286,12 @@ object KmlToXml extends XmlExtractor {
     def toXml(iconStyleOption: Option[IconStyle]): NodeSeq = {
       iconStyleOption match {
         case Some(iconStyle) => <IconStyle id={if (iconStyle.id.isDefined) iconStyle.id.get else null} targetId={if (iconStyle.targetId.isDefined) iconStyle.targetId.get else null}>
-          {getNodeFromFieldName("scale", iconStyleOption)}{getNodeFromFieldName("heading", iconStyleOption)}{getXmlFrom(iconStyle.color)}{getNodeFromFieldName("colorMode", iconStyleOption)}{getXmlFrom(iconStyle.icon)}
+          {getNodeFromFieldName("scale", iconStyleOption)}
+          {getNodeFromFieldName("heading", iconStyleOption)}
+          {getXmlFrom(iconStyle.color)}
+          {getNodeFromFieldName("colorMode", iconStyleOption)}
+          {getXmlFrom(iconStyle.icon)}
+          {makeXmlNode("hotSpot", iconStyle.hotSpot)}
         </IconStyle>
         case None => NodeSeq.Empty
       }
