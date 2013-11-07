@@ -672,6 +672,8 @@ object KmlFromXml extends KmlExtractor {
       west = getDouble(nodeSeq \ "west")))
   }
 
+  // makeCoordinates
+
   /**
    * Creates a snippet from the given snippet NodeSeq
    *
@@ -1084,6 +1086,7 @@ object KmlFromXml extends KmlExtractor {
         altitude = getDouble(nodeSeq \ "altitude"),
         altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
         latLonBox = makeLatLonBox(nodeSeq \ "LatLonBox"),
+        latLonQuad = makeLatLonQuad(nodeSeq \ "LatLonQuad"),
         color = makeColor(nodeSeq \ "color"),
         drawOrder = getInt(nodeSeq \ "drawOrder"),
         icon = makeIcon(nodeSeq \ "Icon"),
@@ -1195,6 +1198,13 @@ object KmlFromXml extends KmlExtractor {
     else Some(new TourControl(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       playMode = makeMode[PlayMode](nodeSeq \ "playMode", PlayMode)))
+  }
+
+  def makeLatLonQuad(nodeSeq: NodeSeq): Option[LatLonQuad] = {
+    if (nodeSeq.isEmpty) None
+    else Some(new LatLonQuad(
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      coordinates = makeCoordinates(nodeSeq)))
   }
 
 }

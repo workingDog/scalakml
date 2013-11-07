@@ -32,6 +32,7 @@ package com.scalakml.kml
 
 import com.scalakml.atom._
 import com.scalaxal.xAL.AddressDetails
+import com.scalakml.gx.LatLonQuad
 
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
@@ -2511,6 +2512,7 @@ case class Alias(targetHref: Option[String] = None,
 case class GroundOverlay(altitude: Option[Double] = None,
   altitudeMode: Option[AltitudeMode] = None,
   latLonBox: Option[LatLonBox] = None,
+  latLonQuad: Option[LatLonQuad] = None,
   featurePart: FeaturePart = new FeaturePart(),
   color: Option[HexColor] = None,
   drawOrder: Option[Int] = None,
@@ -2523,17 +2525,17 @@ case class GroundOverlay(altitude: Option[Double] = None,
   overlayObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Overlay {
 
-  def this(name: String, altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox) =
-    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(name = Option(name)))
+  def this(name: String, altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, latLonQuad: LatLonQuad) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), Option(latLonQuad), new FeaturePart(name = Option(name)))
 
-  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox) =
-    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart())
+  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, latLonQuad: LatLonQuad) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), Option(latLonQuad), new FeaturePart())
 
-  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, color: HexColor, drawOrder: Int, icon: Icon) =
-    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(), Option(color), Option(drawOrder), Option(icon))
+  def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, latLonQuad: LatLonQuad, color: HexColor, drawOrder: Int, icon: Icon) =
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), Option(latLonQuad), new FeaturePart(), Option(color), Option(drawOrder), Option(icon))
 
   def this(altitude: Double, altitudeMode: AltitudeMode, latLonBox: LatLonBox, icon: Icon) =
-    this(Option(altitude),Option(altitudeMode),Option(latLonBox), new FeaturePart(), None, None, Option(icon))
+    this(Option(altitude),Option(altitudeMode),Option(latLonBox), None, new FeaturePart(), None, None, Option(icon))
 
 //  lazy val name = featurePart.name
 //  lazy val visibility = featurePart.visibility
