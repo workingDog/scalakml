@@ -518,19 +518,30 @@ object KmlToXml extends XmlExtractor {
   implicit object SchemaDataToXml extends KmlToXml[Option[SchemaData]] {
     def toXml(schemaDataOption: Option[SchemaData]): NodeSeq = {
       schemaDataOption match {
-        case Some(schemaData) => <SchemaData id={if (schemaData.id.isDefined) schemaData.id.get else null} targetId={if (schemaData.targetId.isDefined) schemaData.targetId.get else null}>
-          {if (schemaData.simpleData != Nil) for (x <- schemaData.simpleData) yield getXmlFrom(Option(x))}{getNodeFromFieldName("schemaUrl", schemaDataOption)}
+        case Some(schemaData) => <SchemaData schemaUrl={if (schemaData.schemaUrl.isDefined) schemaData.schemaUrl.get else null} id={if (schemaData.id.isDefined) schemaData.id.get else null} targetId={if (schemaData.targetId.isDefined) schemaData.targetId.get else null}>
+          {if (schemaData.simpleData != Nil) for (x <- schemaData.simpleData) yield getXmlFrom(Option(x))}
         </SchemaData>
         case None => NodeSeq.Empty
       }
     }
   }
 
+//  implicit object SimpleDataToXml extends KmlToXml[Option[SimpleData]] {
+//    def toXml(simpleDataOption: Option[SimpleData]): NodeSeq = {
+//      simpleDataOption match {
+//        case Some(simpleData) => <simpleData>
+//          {for (field <- simpleData.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, simpleDataOption)}
+//        </simpleData>
+//        case None => NodeSeq.Empty
+//      }
+//    }
+//  }
+
   implicit object SimpleDataToXml extends KmlToXml[Option[SimpleData]] {
     def toXml(simpleDataOption: Option[SimpleData]): NodeSeq = {
       simpleDataOption match {
-        case Some(simpleData) => <simpleData>
-          {for (field <- simpleData.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, simpleDataOption)}
+        case Some(simpleData) => <simpleData name={if (simpleData.name.isDefined) simpleData.name.get else null}    >
+          {if (simpleData.value.isDefined) simpleData.value.get else null}
         </simpleData>
         case None => NodeSeq.Empty
       }

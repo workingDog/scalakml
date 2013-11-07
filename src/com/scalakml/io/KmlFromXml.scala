@@ -732,7 +732,7 @@ object KmlFromXml extends KmlExtractor {
   def makeSimpleData(nodeSeq: NodeSeq): Option[SimpleData] = {
     if (nodeSeq.isEmpty) None
     else Some(new SimpleData(name = getString(nodeSeq \ "@name"),
-      value = getString(nodeSeq \ "value")))
+      value = getString(nodeSeq)))
   }
 
   def makeSimpleDataSet(nodeSeq: NodeSeq): Seq[SimpleData] = {
@@ -746,8 +746,8 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new SchemaData(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      simpleData = makeSimpleDataSet(nodeSeq \ "SimpleData"),
-      schemaUrl = getString(nodeSeq \ "schemaUrl")))
+      schemaUrl = getString(nodeSeq \ "@schemaUrl"),
+      simpleData = makeSimpleDataSet(nodeSeq \ "SimpleData")))
   }
 
   def makeSchemaDataSet(nodeSeq: NodeSeq): Seq[SchemaData] = {
