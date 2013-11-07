@@ -193,7 +193,23 @@ object KmlToXml extends XmlExtractor {
     def toXml(networkLinkControlOption: Option[NetworkLinkControl]): NodeSeq = {
       networkLinkControlOption match {
         case Some(networkLinkControl) => <NetworkLinkControl>
-          {getNodeFromFieldName("minRefreshPeriod", networkLinkControlOption)}{getNodeFromFieldName("maxSessionLength", networkLinkControlOption)}{getNodeFromFieldName("cookie", networkLinkControlOption)}{getNodeFromFieldName("message", networkLinkControlOption)}{getNodeFromFieldName("linkName", networkLinkControlOption)}{getNodeFromFieldName("linkDescription", networkLinkControlOption)}{getNodeFromFieldName("expires", networkLinkControlOption)}{getXmlFrom(networkLinkControl.linkSnippet)}{getXmlFrom(networkLinkControl.update)}{getXmlFrom(networkLinkControl.abstractView)}
+          {getNodeFromFieldName("minRefreshPeriod", networkLinkControlOption)}
+          {getNodeFromFieldName("maxSessionLength", networkLinkControlOption)}
+          {getNodeFromFieldName("cookie", networkLinkControlOption)}
+          {getNodeFromFieldName("message", networkLinkControlOption)}
+          {getNodeFromFieldName("linkName", networkLinkControlOption)}
+          {getNodeFromFieldName("linkDescription", networkLinkControlOption)}
+          {getNodeFromFieldName("expires", networkLinkControlOption)}
+
+          {if (networkLinkControl.linkSnippet.isDefined)
+            <linkSnippet>
+              {if (networkLinkControl.linkSnippet.get.value != null && !networkLinkControl.linkSnippet.get.value.equalsIgnoreCase("")) "value="+networkLinkControl.linkSnippet.get.value else null}
+              {if (networkLinkControl.linkSnippet.get.maxLines != null && networkLinkControl.linkSnippet.get.maxLines != 0) "maxLines="+networkLinkControl.linkSnippet.get.maxLines else null}
+            </linkSnippet>
+          else null}
+
+          {getXmlFrom(networkLinkControl.update)}
+          {getXmlFrom(networkLinkControl.abstractView)}
         </NetworkLinkControl>
         case None => NodeSeq.Empty
       }
