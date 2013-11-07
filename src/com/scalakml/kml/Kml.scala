@@ -817,7 +817,7 @@ object KmlObjectTypes extends Enumeration {
   type KmlObjectTypes = Value
   val Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay, Tour,
   Camera, LookAt, Data, SchemaData, MultiGeometry, Point, LineString, LinearRing,
-  Polygon, Model, Style, StyleMap, TimeStamp, TimeSpan, Region, LatLonAltBox, Lod,
+  Polygon, Model, Style, StyleMap, TimeStamp, TimeSpan, Region, LatLonAltBox, LatLonBox, Lod,
   Icon, Link, Location, Orientation, Scale, ResourceMap, Alias, ViewVolume,
   ImagePyramid, Pair, LineStyle, PolyStyle, IconStyle, LabelStyle, BalloonStyle,
   ListStyle, ItemIcon = Value

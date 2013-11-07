@@ -171,17 +171,18 @@ object KmlFromXml extends KmlExtractor {
   def makeChange(nodeSeq: NodeSeq): Option[UpdateOption] =
     if (nodeSeq.isEmpty) None else Some(new Change(objectChangeSet = makeKmlObjectSet(nodeSeq)))
 
-  def makeContainers(nodeSeq: NodeSeq, containerType: ContainerTypes): Seq[Option[Container]] =
+  def makeContainers(nodeSeq: NodeSeq, containerType: ContainerTypes): Seq[Option[Container]] = {
     (nodeSeq collect {
       case x => makeContainer(x, containerType)
     }) filter (_ != None)
+  }
 
   def makeContainer(nodeSeq: NodeSeq, containerType: ContainerTypes): Option[Container] = {
     if (nodeSeq.isEmpty) None
     else
       containerType match {
-        case ContainerTypes.Document => makeDocument(nodeSeq \ "Document")
-        case ContainerTypes.Folder => makeFolder(nodeSeq \ "Folder")
+        case ContainerTypes.Document => makeDocument(nodeSeq)
+        case ContainerTypes.Folder => makeFolder(nodeSeq)
         case _ => None
       }
   }
@@ -294,6 +295,7 @@ object KmlFromXml extends KmlExtractor {
         case KmlObjectTypes.TimeSpan => makeTimeSpan(nodeSeq)
         case KmlObjectTypes.Region => makeRegion(nodeSeq)
         case KmlObjectTypes.LatLonAltBox => makeLatLonAltBox(nodeSeq)
+        case KmlObjectTypes.LatLonBox => makeLatLonBox(nodeSeq)
         case KmlObjectTypes.Lod => makeCamera(nodeSeq)
         case KmlObjectTypes.Icon => makeIcon(nodeSeq)
         case KmlObjectTypes.Link => makeLinkFromNode(nodeSeq)
@@ -664,12 +666,12 @@ object KmlFromXml extends KmlExtractor {
   def makeLatLonBox(nodeSeq: NodeSeq): Option[LatLonBox] = {
     if (nodeSeq.isEmpty) None
     else Some(new LatLonBox(
-      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      rotation = getDouble(nodeSeq \ "rotation"),
-      north = getDouble(nodeSeq \ "north"),
-      south = getDouble(nodeSeq \ "south"),
-      east = getDouble(nodeSeq \ "east"),
-      west = getDouble(nodeSeq \ "west")))
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        rotation = getDouble(nodeSeq \ "rotation"),
+        north = getDouble(nodeSeq \ "north"),
+        south = getDouble(nodeSeq \ "south"),
+        east = getDouble(nodeSeq \ "east"),
+        west = getDouble(nodeSeq \ "west")))
   }
 
   // makeCoordinates
@@ -876,9 +878,9 @@ object KmlFromXml extends KmlExtractor {
   def makeFolder(nodeSeq: NodeSeq): Option[Folder] = {
     if (nodeSeq.isEmpty) None
     else Some(new Folder(
-      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      features = makeFeatureSet(nodeSeq),
-      featurePart = makeFeaturePart(nodeSeq)))
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        features = makeFeatureSet(nodeSeq),
+        featurePart = makeFeaturePart(nodeSeq)))
   }
 
   def makePoint(nodeSeq: NodeSeq): Option[Point] = {

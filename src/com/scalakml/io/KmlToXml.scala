@@ -79,7 +79,8 @@ object KmlToXml extends XmlExtractor {
   implicit object UpdateToXml extends KmlToXml[Option[Update]] {
     def toXml(updateOption: Option[Update]): NodeSeq = {
       updateOption match {
-        case Some(update) => <Update targetHref={if (update.targetHref.isDefined) update.targetHref.get else null}>
+        case Some(update) => <Update>
+          {getNodeFromFieldName("targetHref", updateOption)}
           {getXmlSeqFrom(Option(update.updateOption))}
         </Update>
         case None => NodeSeq.Empty
@@ -143,6 +144,7 @@ object KmlToXml extends XmlExtractor {
           case timePrimitive: TimePrimitive => getXmlFrom(Option(timePrimitive))
           case region: Region => getXmlFrom(Option(region))
           case latLonAltBox: LatLonAltBox => getXmlFrom(Option(latLonAltBox))
+          case latLonBox: LatLonBox => getXmlFrom(Option(latLonBox))
           case lod: Lod => getXmlFrom(Option(lod))
           case icon: Icon => getXmlFrom(Option(icon))
           case link: Link => getXmlFrom(Option(link))
@@ -200,14 +202,11 @@ object KmlToXml extends XmlExtractor {
           {getNodeFromFieldName("linkName", networkLinkControlOption)}
           {getNodeFromFieldName("linkDescription", networkLinkControlOption)}
           {getNodeFromFieldName("expires", networkLinkControlOption)}
-
           {if (networkLinkControl.linkSnippet.isDefined)
-            <linkSnippet>
-              {if (networkLinkControl.linkSnippet.get.value != null && !networkLinkControl.linkSnippet.get.value.equalsIgnoreCase("")) "value="+networkLinkControl.linkSnippet.get.value else null}
-              {if (networkLinkControl.linkSnippet.get.maxLines != null && networkLinkControl.linkSnippet.get.maxLines != 0) "maxLines="+networkLinkControl.linkSnippet.get.maxLines else null}
+            <linkSnippet maxLines={if (networkLinkControl.linkSnippet.get.maxLines > 0) networkLinkControl.linkSnippet.get.maxLines.toString else null}>
+              {if ((networkLinkControl.linkSnippet.get.value != null) && (!networkLinkControl.linkSnippet.get.value.isEmpty)) networkLinkControl.linkSnippet.get.value else null}
             </linkSnippet>
           else null}
-
           {getXmlFrom(networkLinkControl.update)}
           {getXmlFrom(networkLinkControl.abstractView)}
         </NetworkLinkControl>
@@ -817,12 +816,18 @@ object KmlToXml extends XmlExtractor {
 
           case polygon: Polygon =>
             <Polygon id={if (polygon.id.isDefined) polygon.id.get else null} targetId={if (polygon.targetId.isDefined) polygon.targetId.get else null}>
-              {getNodeFromFieldName("extrude", Option(polygon))}{getNodeFromFieldName("tessellate", Option(polygon))}{getNodeFromFieldName("altitudeMode", Option(polygon))}{if (polygon.outerBoundaryIs.isDefined)
+              {getNodeFromFieldName("extrude", Option(polygon))}{getNodeFromFieldName("tessellate", Option(polygon))}{getNodeFromFieldName("altitudeMode", Option(polygon))}
+              {if (polygon.outerBoundaryIs.isDefined)
               <outerBoundaryIs>
-                {getXmlFrom(Option(polygon.outerBoundaryIs.get.linearRing.get.asInstanceOf[Geometry]))}
-              </outerBoundaryIs>}{if (polygon.innerBoundaryIs != Nil)
+                { if (polygon.outerBoundaryIs.get.linearRing.isDefined)
+                getXmlFrom(Option(polygon.outerBoundaryIs.get.linearRing.get.asInstanceOf[Geometry]))
+              else null
+                }
+              </outerBoundaryIs>}
+              {if (polygon.innerBoundaryIs != Nil)
               <innerBoundaryIs>
-                {for (s <- polygon.innerBoundaryIs) yield getXmlFrom(Option(s.linearRing.get.asInstanceOf[Geometry]))}
+              {for (s <- polygon.innerBoundaryIs) yield
+                if (s.linearRing.isDefined) getXmlFrom(Option(s.linearRing.get.asInstanceOf[Geometry]))}
               </innerBoundaryIs>}
             </Polygon>
 
