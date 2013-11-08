@@ -344,9 +344,7 @@ object KmlToXml extends XmlExtractor {
   implicit object IconStateToXml extends KmlToXml[Option[ItemIconState]] {
     def toXml(iconStateOption: Option[ItemIconState]): NodeSeq = {
       iconStateOption match {
-        case Some(iconState) => <state>
-          {iconState}
-        </state>
+        case Some(iconState) => <state> {iconState} </state>
         case None => NodeSeq.Empty
       }
     }
@@ -550,17 +548,6 @@ object KmlToXml extends XmlExtractor {
       }
     }
   }
-
-//  implicit object SimpleDataToXml extends KmlToXml[Option[SimpleData]] {
-//    def toXml(simpleDataOption: Option[SimpleData]): NodeSeq = {
-//      simpleDataOption match {
-//        case Some(simpleData) => <simpleData>
-//          {for (field <- simpleData.getClass.getDeclaredFields) yield getNodeFromFieldName(field.getName, simpleDataOption)}
-//        </simpleData>
-//        case None => NodeSeq.Empty
-//      }
-//    }
-//  }
 
   implicit object SimpleDataToXml extends KmlToXml[Option[SimpleData]] {
     def toXml(simpleDataOption: Option[SimpleData]): NodeSeq = {
@@ -801,11 +788,10 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
-  // TODO check the default value
   implicit object SnippetToXml extends KmlToXml[Option[Snippet]] {
     def toXml(snippetOption: Option[Snippet]): NodeSeq = {
       snippetOption match {
-        case Some(snippet) => <snippet maxLines={if (snippet.maxLines > 0) snippet.maxLines.toString else null}>
+        case Some(snippet) => <snippet maxLines={if (snippet.maxLines >= 0) snippet.maxLines.toString else null}>
           {if ((snippet.value != null) && (!snippet.value.isEmpty)) snippet.value else null}
         </snippet>
         case None => NodeSeq.Empty
