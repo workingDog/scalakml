@@ -2,7 +2,7 @@ package com.scalakml.example
 
 import com.scalakml.io.{KmlPrintWriter, KmlFileReader}
 import xml.{XML, PrettyPrinter}
-
+import com.scalakml.io._
 /**
  * author: Ringo Wathelet
  * Date: 23/01/13 
@@ -12,6 +12,7 @@ import xml.{XML, PrettyPrinter}
 object ReadWriteExample1 {
   def main(args: Array[String]) {
     println("....ReadWriteExample1 start...\n")
+
     // read a kml file into a kml root object
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/example-no-cdata.kml")
 

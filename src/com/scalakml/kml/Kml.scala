@@ -2299,6 +2299,8 @@ object Location {
     }
   }
 
+//  def fromTuple(t: Tuple3[String,String,String]) = fromStringArray(Array(t._1.toString,t._2.toString,t._3.toString))
+
   /**
    * get a location from a comma separated string of lon, lat, alt (optional)
    * @param coordString a comma separated string
@@ -2310,7 +2312,7 @@ object Location {
    * @param coordString a blank separated string
    * @return a Location with lon, lat, alt (optional)
    */
-  def fromBsString(coordString: String) = fromStringArray(coordString split "s+")
+  def fromBsString(coordString: String) = fromStringArray(coordString split "\\s+")
 
 //  def fromMGRS(coord: String) = {
 //    // TODO
