@@ -1077,9 +1077,9 @@ case class Placemark(
  * maximum number of lines to display.
  *
  * @param value a short text description of the feature
- * @param maxLines maximum number of lines to display
+ * @param maxLines maximum number of lines to display, default 2
  */
-case class Snippet(value: String = "", maxLines: Int = 0)
+case class Snippet(value: String = "", maxLines: Int = 2)
 
 /**
  * This is an abstract element and cannot be used directly in a KML file.
