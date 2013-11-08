@@ -275,7 +275,10 @@ object KmlToXml extends XmlExtractor {
     def toXml(balloonStyleOption: Option[BalloonStyle]): NodeSeq = {
       balloonStyleOption match {
         case Some(balloonStyle) => <BalloonStyle id={if (balloonStyle.id.isDefined) balloonStyle.id.get else null} targetId={if (balloonStyle.targetId.isDefined) balloonStyle.targetId.get else null}>
-          {getXmlFrom(balloonStyle.bgColor)}{getXmlFrom(balloonStyle.textColor)}{getNodeFromFieldName("displayMode", balloonStyleOption)}{getNodeFromFieldName("text", balloonStyleOption)}
+          {makeXmlNode("bgColor", balloonStyle.bgColor)}
+          {makeXmlNode("textColor", balloonStyle.textColor)}
+          {getNodeFromFieldName("displayMode", balloonStyleOption)}
+          {getNodeFromFieldName("text", balloonStyleOption)}
         </BalloonStyle>
         case None => NodeSeq.Empty
       }
@@ -302,7 +305,9 @@ object KmlToXml extends XmlExtractor {
     def toXml(labelStyleOption: Option[LabelStyle]): NodeSeq = {
       labelStyleOption match {
         case Some(labelStyle) => <LabelStyle id={if (labelStyle.id.isDefined) labelStyle.id.get else null} targetId={if (labelStyle.targetId.isDefined) labelStyle.targetId.get else null}>
-          {getNodeFromFieldName("scale", labelStyleOption)}{getXmlFrom(labelStyle.color)}{getNodeFromFieldName("colorMode", labelStyleOption)}
+          {getNodeFromFieldName("scale", labelStyleOption)}
+          {getXmlFrom(labelStyle.color)}
+          {getNodeFromFieldName("colorMode", labelStyleOption)}
         </LabelStyle>
         case None => NodeSeq.Empty
       }
@@ -328,9 +333,7 @@ object KmlToXml extends XmlExtractor {
         case Some(listStyle) => <ListStyle id={if (listStyle.id.isDefined) listStyle.id.get else null} targetId={if (listStyle.targetId.isDefined) listStyle.targetId.get else null}>
           {getNodeFromFieldName("listItemType", listStyleOption)}
           {getXmlSeqFrom(Option(listStyle.itemIcon))}
-          <bgColor>
-            {if (listStyle.bgColor.isDefined) listStyle.bgColor.get.hexString else null}
-          </bgColor>
+          {makeXmlNode("bgColor", listStyle.bgColor)}
           {getNodeFromFieldName("maxSnippetLines", listStyleOption)}
         </ListStyle>
         case None => NodeSeq.Empty
@@ -659,7 +662,10 @@ object KmlToXml extends XmlExtractor {
     def toXml(overlayOption: Option[PhotoOverlay]): NodeSeq = {
       overlayOption match {
         case Some(overlay) => <PhotoOverlay id={if (overlay.id.isDefined) overlay.id.get else null} targetId={if (overlay.targetId.isDefined) overlay.targetId.get else null}>
-          {getXmlSeqFrom(Option(overlay.featurePart))}{getNodeFromFieldName("rotation", overlayOption)}{getXmlFrom(overlay.viewVolume)}{getXmlFrom(overlay.imagePyramid)}{getXmlFrom(overlay.point.asInstanceOf[Option[Geometry]])}{getNodeFromFieldName("shape", overlayOption)}{getXmlFrom(overlay.color)}{getNodeFromFieldName("drawOrder", overlayOption)}{getXmlFrom(overlay.icon)}
+          {getXmlSeqFrom(Option(overlay.featurePart))}{getNodeFromFieldName("rotation", overlayOption)}{getXmlFrom(overlay.viewVolume)}{getXmlFrom(overlay.imagePyramid)}{getXmlFrom(overlay.point.asInstanceOf[Option[Geometry]])}{getNodeFromFieldName("shape", overlayOption)}
+          {getXmlFrom(overlay.color)}
+          {getNodeFromFieldName("drawOrder", overlayOption)}
+          {getXmlFrom(overlay.icon)}
         </PhotoOverlay>
         case None => NodeSeq.Empty
       }
@@ -670,7 +676,10 @@ object KmlToXml extends XmlExtractor {
     def toXml(overlayOption: Option[ScreenOverlay]): NodeSeq = {
       overlayOption match {
         case Some(overlay) => <ScreenOverlay id={if (overlay.id.isDefined) overlay.id.get else null} targetId={if (overlay.targetId.isDefined) overlay.targetId.get else null}>
-          {getXmlSeqFrom(Option(overlay.featurePart))}{getNodeFromFieldName("overlayXY", overlayOption)}{getNodeFromFieldName("screenXY", overlayOption)}{getNodeFromFieldName("rotationXY", overlayOption)}{getNodeFromFieldName("size", overlayOption)}{getNodeFromFieldName("rotation", overlayOption)}{getXmlFrom(overlay.color)}{getNodeFromFieldName("drawOrder", overlayOption)}{getXmlFrom(overlay.icon)}
+          {getXmlSeqFrom(Option(overlay.featurePart))}{getNodeFromFieldName("overlayXY", overlayOption)}{getNodeFromFieldName("screenXY", overlayOption)}{getNodeFromFieldName("rotationXY", overlayOption)}{getNodeFromFieldName("size", overlayOption)}{getNodeFromFieldName("rotation", overlayOption)}
+          {getXmlFrom(overlay.color)}
+          {getNodeFromFieldName("drawOrder", overlayOption)}
+          {getXmlFrom(overlay.icon)}
         </ScreenOverlay>
         case None => NodeSeq.Empty
       }
@@ -796,7 +805,7 @@ object KmlToXml extends XmlExtractor {
   implicit object SnippetToXml extends KmlToXml[Option[Snippet]] {
     def toXml(snippetOption: Option[Snippet]): NodeSeq = {
       snippetOption match {
-        case Some(snippet) => <snippet maxLines={if (snippet.maxLines >= 0) snippet.maxLines.toString else null}>
+        case Some(snippet) => <snippet maxLines={if (snippet.maxLines > 0) snippet.maxLines.toString else null}>
           {if ((snippet.value != null) && (!snippet.value.isEmpty)) snippet.value else null}
         </snippet>
         case None => NodeSeq.Empty
@@ -1033,13 +1042,20 @@ object KmlToXml extends XmlExtractor {
   def makeXmlNode[_](name: String, valueOption: Option[_]): NodeSeq = {
     valueOption match {
       case Some(value) => value match {
+
         case bool: Boolean => <a>
           {if (bool) "1" else "0"}
         </a>.copy(label = name)
+
         case vec2: Vec2 => {
           val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
           theNode.copy(label = name)
         }
+
+        case hColor: HexColor => <a>
+          {hColor.hexString}
+        </a>.copy(label = name)
+
         case _ => <a>
           {value}
         </a>.copy(label = name)

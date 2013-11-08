@@ -701,7 +701,7 @@ object KmlFromXml extends KmlExtractor {
   def makeSnippet(nodeSeq: NodeSeq): Option[Snippet] = {
     // pick the first node with something in it
     for (x <- List("snippet", "Snippet")) {
-      // reference is snippet, but lots of Snippet around
+      // reference 1 is snippet, but reference 2 is Snippet
       val node = (nodeSeq \ x)
       if (!node.isEmpty) return makeSnippetFromNode(node)
     }
