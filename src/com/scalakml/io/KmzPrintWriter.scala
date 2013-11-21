@@ -34,6 +34,7 @@ import java.io._
 import xml.{dtd, XML, PrettyPrinter}
 import java.util.zip.{ZipEntry, ZipOutputStream}
 import scala.Some
+import scala.language.postfixOps
 
 /**
  * @author Ringo Wathelet

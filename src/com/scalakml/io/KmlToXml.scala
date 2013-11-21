@@ -38,6 +38,8 @@ import com.scalakml.atom.Author
 import com.scalaxal.xAL.AddressDetails
 import com.scalaxal.io.XalToXml
 import com.scalakml.kml.Document
+import scala.language.implicitConversions
+import scala.language.postfixOps
 
 /**
  * @author Ringo Wathelet
