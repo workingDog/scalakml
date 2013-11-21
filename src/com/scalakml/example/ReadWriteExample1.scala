@@ -10,6 +10,7 @@ import com.scalakml.io._
  */
 
 object ReadWriteExample1 {
+
   def main(args: Array[String]) {
     println("....ReadWriteExample1 start...\n")
 

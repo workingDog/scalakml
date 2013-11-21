@@ -158,7 +158,7 @@ object KmlFromXml extends KmlExtractor {
             case _ => None
           }
       }
-      (theSeq flatMap (x => x) toSeq)
+      (theSeq.flatten toSeq)
     }
   }
 
@@ -190,7 +190,7 @@ object KmlFromXml extends KmlExtractor {
   def makeContainerSet(nodeSeq: NodeSeq): Seq[Container] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      (ContainerTypes.values.flatMap(x => makeContainers(nodeSeq \ x.toString, x)).toSeq.flatten)
+      ContainerTypes.values.flatMap(x => makeContainers(nodeSeq \ x.toString, x)).toSeq.flatten
   }
 
   /**
@@ -204,9 +204,9 @@ object KmlFromXml extends KmlExtractor {
   def makeFeatures(nodeSeq: NodeSeq, featureType: FeatureTypes): Seq[Option[Feature]] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      ((nodeSeq collect {
+      (nodeSeq collect {
         case x => makeFeature(x, featureType)
-      }) filter (_ != None))
+      }) filter (_ != None)
   }
 
   /**
@@ -241,12 +241,12 @@ object KmlFromXml extends KmlExtractor {
   def makeFeatureSet(nodeSeq: NodeSeq): Seq[Feature] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      (FeatureTypes.values.flatMap(x => makeFeatures(nodeSeq \ x.toString, x)).toSeq.flatten)
+      FeatureTypes.values.flatMap(x => makeFeatures(nodeSeq \ x.toString, x)).toSeq.flatten
   }
 
   def makeKmlObjectSet(nodeSeq: NodeSeq): Seq[KmlObject] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (KmlObjectTypes.values.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten)
+    else KmlObjectTypes.values.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten
   }
 
   def makeKmlObjects(nodeSeq: NodeSeq, kmlObjectType: KmlObjectTypes): Seq[Option[KmlObject]] = {
@@ -317,26 +317,13 @@ object KmlFromXml extends KmlExtractor {
       roll = getDouble(nodeSeq \ "roll")))
   }
 
-  type ModeType[A] = {def fromString(value: String): A}
-
-  /**
-   * create a Mode object such as AltitudeMode, ColorMode, GridOrigin, ItemIconState, RefreshMode etc..
-   * @param nodeSeq the node sequence to create the Mode from
-   * @param mode the Mode object to create
-   * @tparam A the Mode type
-   * @return an option of Mode of type A object
-   */
-  def makeMode[A](nodeSeq: NodeSeq, mode: ModeType[A]): Option[A] = {
-    (getString(nodeSeq)).map(mode.fromString(_))
-  }
-
   def makeLinkFromNode(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
     if (nodeSeq.isEmpty) None
     else Some(new com.scalakml.kml.Link(id = getString(nodeSeq \ "@id"),
       targetId = getString(nodeSeq \ "@targetId"),
-      refreshMode = makeMode[RefreshMode](nodeSeq \ "refreshMode", RefreshMode),
+      refreshMode = getString(nodeSeq \ "refreshMode").map(RefreshMode.fromString(_)),
       refreshInterval = getDouble(nodeSeq \ "refreshInterval"),
-      viewRefreshMode = makeMode[ViewRefreshMode](nodeSeq \ "viewRefreshMode", ViewRefreshMode),
+      viewRefreshMode = getString(nodeSeq \ "viewRefreshMode").map(ViewRefreshMode.fromString(_)),
       viewRefreshTime = getDouble(nodeSeq \ "viewRefreshTime"),
       viewBoundScale = getDouble(nodeSeq \ "viewBoundScale"),
       viewFormat = getString(nodeSeq \ "viewFormat"),
@@ -361,9 +348,9 @@ object KmlFromXml extends KmlExtractor {
     else Some(new Icon(href = getString(nodeSeq \ "href"),
       id = getString(nodeSeq \ "@id"),
       targetId = getString(nodeSeq \ "@targetId"),
-      refreshMode = makeMode[RefreshMode](nodeSeq \ "refreshMode", RefreshMode),
+      refreshMode = getString(nodeSeq \ "refreshMode").map(RefreshMode.fromString(_)),
       refreshInterval = getDouble(nodeSeq \ "refreshInterval"),
-      viewRefreshMode = makeMode[ViewRefreshMode](nodeSeq \ "viewRefreshMode", ViewRefreshMode),
+      viewRefreshMode = getString(nodeSeq \ "viewRefreshMode").map(ViewRefreshMode.fromString(_)),
       viewRefreshTime = getDouble(nodeSeq \ "viewRefreshTime"),
       viewBoundScale = getDouble(nodeSeq \ "viewBoundScale"),
       viewFormat = getString(nodeSeq \ "viewFormat"),
@@ -486,7 +473,7 @@ object KmlFromXml extends KmlExtractor {
       icon = makeIcon(nodeSeq \ "Icon"),
       hotSpot = makeVec2(nodeSeq \ "hotSpot"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = makeMode[ColorMode](nodeSeq \ "colorMode", ColorMode)))
+      colorMode = getString(nodeSeq \ "colorMode").map(ColorMode.fromString(_))))
   }
 
   def makeLineStyle(nodeSeq: NodeSeq): Option[LineStyle] = {
@@ -495,7 +482,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       width = getDouble(nodeSeq \ "width"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = makeMode[ColorMode](nodeSeq \ "colorMode", ColorMode)))
+      colorMode = getString(nodeSeq \ "colorMode").map(ColorMode.fromString(_))))
   }
 
   def makeLabelStyle(nodeSeq: NodeSeq): Option[LabelStyle] = {
@@ -504,7 +491,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       scale = getDouble(nodeSeq \ "scale"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = makeMode[ColorMode](nodeSeq \ "colorMode", ColorMode)))
+      colorMode = getString(nodeSeq \ "colorMode").map(ColorMode.fromString(_))))
   }
 
   def makePolyStyle(nodeSeq: NodeSeq): Option[PolyStyle] = {
@@ -514,7 +501,7 @@ object KmlFromXml extends KmlExtractor {
       fill = getBoolean(nodeSeq \ "fill"),
       outline = getBoolean(nodeSeq \ "outline"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = makeMode[ColorMode](nodeSeq \ "colorMode", ColorMode)))
+      colorMode = getString(nodeSeq \ "colorMode").map(ColorMode.fromString(_))))
   }
 
   def makeBalloonStyle(nodeSeq: NodeSeq): Option[BalloonStyle] = {
@@ -524,14 +511,14 @@ object KmlFromXml extends KmlExtractor {
       bgColor = makeColor(nodeSeq \ "bgColor"),
       textColor = makeColor(nodeSeq \ "textColor"),
       text = getString(nodeSeq \ "text"),
-      displayMode = makeMode[DisplayMode](nodeSeq \ "displayMode", DisplayMode)))
+      displayMode = getString(nodeSeq \ "displayMode").map(DisplayMode.fromString(_))))
   }
 
   def makeListStyle(nodeSeq: NodeSeq): Option[ListStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new ListStyle(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      listItemType = makeMode[ListItemType](nodeSeq \ "listItemType", ListItemType),
+      listItemType = getString(nodeSeq \ "listItemType").map(ListItemType.fromString(_)),
       bgColor = makeColor(nodeSeq \ "bgColor"),
       itemIcon = makeItemIconSet(nodeSeq \ "ItemIcon"),
       maxSnippetLines = getInt(nodeSeq \ "maxSnippetLines")))
@@ -539,9 +526,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeItemIconSet(nodeSeq: NodeSeq): Seq[ItemIcon] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeItemIcon(x)
-    } flatten)
+    } flatten
   }
 
   def makeItemIcon(nodeSeq: NodeSeq): Option[ItemIcon] = {
@@ -581,16 +568,16 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new Pair(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      key = makeMode[StyleState](nodeSeq \ "key", StyleState),
+      key = getString(nodeSeq \ "key").map(StyleState.fromString(_)),
       styleUrl = getString(nodeSeq \ "styleUrl"),
       styleSelector = makeStyleSelector(nodeSeq))) // <----
   }
 
   def makePairSet(nodeSeq: NodeSeq): Seq[Pair] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makePair(x)
-    } flatten)
+    } flatten
   }
 
   /**
@@ -659,7 +646,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       minAltitude = getDouble(nodeSeq \ "minAltitude"),
       maxAltitude = getDouble(nodeSeq \ "maxAltitude"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
       north = getDouble(nodeSeq \ "north"),
       south = getDouble(nodeSeq \ "south"),
       east = getDouble(nodeSeq \ "east"),
@@ -676,8 +663,6 @@ object KmlFromXml extends KmlExtractor {
         east = getDouble(nodeSeq \ "east"),
         west = getDouble(nodeSeq \ "west")))
   }
-
-  // makeCoordinates
 
   /**
    * Creates a snippet from the given snippet NodeSeq
@@ -702,7 +687,7 @@ object KmlFromXml extends KmlExtractor {
     // pick the first node with something in it
     for (x <- List("snippet", "Snippet")) {
       // reference 1 is snippet, but reference 2 is Snippet
-      val node = (nodeSeq \ x)
+      val node = nodeSeq \ x
       if (!node.isEmpty) return makeSnippetFromNode(node)
     }
     None
@@ -727,9 +712,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeDataSet(nodeSeq: NodeSeq): Seq[Data] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeData(x)
-    } flatten)
+    } flatten
   }
 
   def makeSimpleData(nodeSeq: NodeSeq): Option[SimpleData] = {
@@ -740,9 +725,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSimpleDataSet(nodeSeq: NodeSeq): Seq[SimpleData] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeSimpleData(x)
-    } flatten)
+    } flatten
   }
 
   def makeSchemaData(nodeSeq: NodeSeq): Option[SchemaData] = {
@@ -755,9 +740,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSchemaDataSet(nodeSeq: NodeSeq): Seq[SchemaData] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeSchemaData(x)
-    } flatten)
+    } flatten
   }
 
   // either a TimeSpan or a TimeStamp or None
@@ -815,7 +800,7 @@ object KmlFromXml extends KmlExtractor {
       altitude = getDouble(nodeSeq \ "altitude"),
       heading = getDouble(nodeSeq \ "heading"),
       tilt = getDouble(nodeSeq \ "tilt"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode)))
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_))))
   }
 
   def makeLookAt(nodeSeq: NodeSeq): Option[LookAt] = {
@@ -828,7 +813,7 @@ object KmlFromXml extends KmlExtractor {
       altitude = getDouble(nodeSeq \ "altitude"),
       heading = getDouble(nodeSeq \ "heading"),
       tilt = getDouble(nodeSeq \ "tilt"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode)))
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_))))
   }
 
   def makePlacemark(nodeSeq: NodeSeq): Option[Placemark] = {
@@ -850,9 +835,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSchemaSet(nodeSeq: NodeSeq): Seq[Schema] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeSchema(x)
-    } flatten)
+    } flatten
   }
 
   def makeSchema(nodeSeq: NodeSeq): Option[Schema] = {
@@ -873,9 +858,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSimpleFieldSet(nodeSeq: NodeSeq): Seq[SimpleField] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeSimpleField(x)
-    } flatten)
+    } flatten
   }
 
   def makeFolder(nodeSeq: NodeSeq): Option[Folder] = {
@@ -892,13 +877,13 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       coordinates = makeCoordinates(nodeSeq \ "coordinates"),
       extrude = getBoolean(nodeSeq \ "extrude"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode)))
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_))))
   }
 
   def makeCoordinates(nodeSeq: NodeSeq): Option[Seq[Location]] = {
     if (nodeSeq.isEmpty) None
     else
-      Some((nodeSeq.text.trim split "\\s+").map(x => com.scalakml.kml.Location.fromCsString(x)) flatMap (x => x) toSeq)
+      Some((nodeSeq.text.trim split "\\s+").map(x => com.scalakml.kml.Location.fromCsString(x)).flatten toSeq)
   }
 
   def makeLocation(nodeSeq: NodeSeq): Option[Location] = {
@@ -916,7 +901,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       extrude = getBoolean(nodeSeq \ "extrude"),
       tessellate = getBoolean(nodeSeq \ "tessellate"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
       coordinates = makeCoordinates(nodeSeq \ "coordinates")))
   }
 
@@ -926,7 +911,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       extrude = getBoolean(nodeSeq \ "extrude"),
       tessellate = getBoolean(nodeSeq \ "tessellate"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
       coordinates = makeCoordinates(nodeSeq \ "coordinates")))
   }
 
@@ -936,9 +921,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeBoundaries(nodeSeq: NodeSeq): Seq[Boundary] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeBoundary(x)
-    } flatten)
+    } flatten
   }
 
   def makePolygon(nodeSeq: NodeSeq): Option[Polygon] = {
@@ -947,7 +932,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       extrude = getBoolean(nodeSeq \ "extrude"),
       tessellate = getBoolean(nodeSeq \ "tessellate"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
       outerBoundaryIs = makeBoundary(nodeSeq \ "outerBoundaryIs"),
       innerBoundaryIs = makeBoundaries(nodeSeq \ "innerBoundaryIs")))
   }
@@ -963,7 +948,7 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new Model(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+      altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
       location = makeLocation(nodeSeq \ "Location"),
       scale = makeScale(nodeSeq \ "Scale"),
       link = makeLink(nodeSeq),
@@ -979,9 +964,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeAliasSet(nodeSeq: NodeSeq): Seq[Alias] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect {
+    else nodeSeq collect {
       case x => makeAlias(x)
-    } flatten)
+    } flatten
   }
 
   def makeAlias(nodeSeq: NodeSeq): Option[Alias] = {
@@ -1033,7 +1018,7 @@ object KmlFromXml extends KmlExtractor {
   def makeGeometrySet(nodeSeq: NodeSeq): Seq[Geometry] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      (GeometryTypes.values.flatMap(x => makeGeometries(nodeSeq \ x.toString, x)).toSeq.flatten)
+      GeometryTypes.values.flatMap(x => makeGeometries(nodeSeq \ x.toString, x)).toSeq.flatten
   }
 
   def makeGeometries(nodeSeq: NodeSeq, geometryTypes: GeometryTypes): Seq[Option[Geometry]] = {
@@ -1062,11 +1047,11 @@ object KmlFromXml extends KmlExtractor {
         tileSize = getInt(nodeSeq \ "tileSize"),
         maxWidth = getInt(nodeSeq \ "maxWidth"),
         maxHeight = getInt(nodeSeq \ "maxHeight"),
-        gridOrigin = makeMode[GridOrigin](nodeSeq \ "gridOrigin", GridOrigin)))
+        gridOrigin = getString(nodeSeq \ "gridOrigin").map(GridOrigin.fromString(_))))
   }
 
   def makeColor(nodeSeq: NodeSeq): Option[HexColor] = {
-    if (nodeSeq.isEmpty) None else (getString(nodeSeq)).map(x => new HexColor(hexString = x))
+    if (nodeSeq.isEmpty) None else getString(nodeSeq).map(x => new HexColor(hexString = x))
   }
 
   def makePhotoOverlay(nodeSeq: NodeSeq): Option[PhotoOverlay] = {
@@ -1077,7 +1062,7 @@ object KmlFromXml extends KmlExtractor {
         viewVolume = makeViewVolume(nodeSeq \ "ViewVolume"),
         imagePyramid = makeImagePyramid(nodeSeq \ "ImagePyramid"),
         point = makePoint(nodeSeq \ "Point"),
-        shape = makeMode[Shape](nodeSeq \ "shape", Shape),
+        shape = getString(nodeSeq \ "shape").map(Shape.fromString(_)),
         color = makeColor(nodeSeq \ "color"),
         drawOrder = getInt(nodeSeq \ "drawOrder"),
         icon = makeIcon(nodeSeq \ "Icon"),
@@ -1089,7 +1074,7 @@ object KmlFromXml extends KmlExtractor {
     else
       Some(new GroundOverlay(id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
         altitude = getDouble(nodeSeq \ "altitude"),
-        altitudeMode = makeMode[AltitudeMode](nodeSeq \ "altitudeMode", AltitudeMode),
+        altitudeMode = getString(nodeSeq \ "altitudeMode").map(AltitudeMode.fromString(_)),
         latLonBox = makeLatLonBox(nodeSeq \ "LatLonBox"),
         latLonQuad = makeLatLonQuad(nodeSeq \ "LatLonQuad"),
         color = makeColor(nodeSeq \ "color"),
@@ -1103,8 +1088,8 @@ object KmlFromXml extends KmlExtractor {
     else Some(new Vec2(
       x = getDouble(nodeSeq \ "@x").getOrElse(0.0),
       y = getDouble(nodeSeq \ "@y").getOrElse(0.0),
-      xunits = makeMode[Units](nodeSeq \ "@xunits", Units).getOrElse(Fraction),
-      yunits = makeMode[Units](nodeSeq \ "@yunits", Units).getOrElse(Fraction)))
+      xunits = getString(nodeSeq \ "@xunits").map(Units.fromString(_)).getOrElse(Fraction),
+      yunits = getString(nodeSeq \ "@yunits").map(Units.fromString(_)).getOrElse(Fraction)))
   }
 
   def makeScreenOverlay(nodeSeq: NodeSeq): Option[ScreenOverlay] = {
@@ -1144,7 +1129,7 @@ object KmlFromXml extends KmlExtractor {
   def makeTourPrimitiveSet(nodeSeq: NodeSeq): Seq[TourPrimitive] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      (TourPrimitiveTypes.values.flatMap(x => makeTourPrimitives(nodeSeq \ x.toString, x)).toSeq.flatten)
+      TourPrimitiveTypes.values.flatMap(x => makeTourPrimitives(nodeSeq \ x.toString, x)).toSeq.flatten
   }
 
   def makeTourPrimitives(nodeSeq: NodeSeq, tourPrimitiveType: TourPrimitiveTypes): Seq[Option[TourPrimitive]] = {
@@ -1180,7 +1165,7 @@ object KmlFromXml extends KmlExtractor {
     else Some(new FlyTo(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       duration = getDouble(nodeSeq \ "duration"),
-      flyToMode = makeMode[FlyToMode](nodeSeq \ "flyToMode", FlyToMode),
+      flyToMode = getString(nodeSeq \ "flyToMode").map(FlyToMode.fromString(_)),
       abstractView = makeAbstractView(nodeSeq)))
   }
 
@@ -1202,7 +1187,7 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new TourControl(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      playMode = makeMode[PlayMode](nodeSeq \ "playMode", PlayMode)))
+      playMode = getString(nodeSeq \ "playMode").map(PlayMode.fromString(_))))
   }
 
   def makeLatLonQuad(nodeSeq: NodeSeq): Option[LatLonQuad] = {
