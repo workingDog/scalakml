@@ -88,14 +88,14 @@ object KmlFromXml extends KmlExtractor {
   def makeNetworkLinkControl(nodeSeq: NodeSeq): Option[NetworkLinkControl] = {
     if (nodeSeq.isEmpty) None
     else Some(new NetworkLinkControl(
-      minRefreshPeriod = getFromNode[Double](nodeSeq \ "minRefreshPeriod"),
-      maxSessionLength = getFromNode[Double](nodeSeq \ "maxSessionLength"),
-      cookie = getFromNode[String](nodeSeq \ "cookie"),
-      message = getFromNode[String](nodeSeq \ "message"),
-      linkName = getFromNode[String](nodeSeq \ "linkName"),
-      linkDescription = getFromNode[String](nodeSeq \ "linkDescription"),
+      minRefreshPeriod = getDouble(nodeSeq \ "minRefreshPeriod"),
+      maxSessionLength = getDouble(nodeSeq \ "maxSessionLength"),
+      cookie = getString(nodeSeq \ "cookie"),
+      message = getString(nodeSeq \ "message"),
+      linkName = getString(nodeSeq \ "linkName"),
+      linkDescription = getString(nodeSeq \ "linkDescription"),
       linkSnippet = makeSnippetFromNode(nodeSeq \ "linkSnippet"),
-      expires = getFromNode[String](nodeSeq \ "expires"),
+      expires = getString(nodeSeq \ "expires"),
       update = makeUpdate(nodeSeq \ "Update"),
       abstractView = makeAbstractView(nodeSeq)))
   }
@@ -107,7 +107,7 @@ object KmlFromXml extends KmlExtractor {
    * @return an Hint attribute
    */
   def makeHint(nodeSeq: NodeSeq): Option[String] =
-    if (nodeSeq.isEmpty) None else getFromNode[String](nodeSeq \ "@hint")
+    if (nodeSeq.isEmpty) None else getString(nodeSeq \ "@hint")
 
   /**
    * Creates a "main" feature (for a Kml root element object) from the NodeSeq.
@@ -136,7 +136,7 @@ object KmlFromXml extends KmlExtractor {
    */
   def makeUpdate(nodeSeq: NodeSeq): Option[Update] = {
     if (nodeSeq.isEmpty) None
-    else Some(new Update(targetHref = getFromNode[String](nodeSeq \ "targetHref"), updateOption = makeUpdateOptions(nodeSeq)))
+    else Some(new Update(targetHref = getString(nodeSeq \ "targetHref"), updateOption = makeUpdateOptions(nodeSeq)))
   }
 
   // TODO this does not check that there must be only one of the different types
@@ -308,25 +308,25 @@ object KmlFromXml extends KmlExtractor {
   def makeOrientation(nodeSeq: NodeSeq): Option[Orientation] = {
     if (nodeSeq.isEmpty) None
     else Some(new Orientation(
-      id = getFromNode[String](nodeSeq \ "@id"),
-      targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      heading = getFromNode[Double](nodeSeq \ "heading"),
-      tilt = getFromNode[Double](nodeSeq \ "tilt"),
-      roll = getFromNode[Double](nodeSeq \ "roll")))
+      id = getString(nodeSeq \ "@id"),
+      targetId = getString(nodeSeq \ "@targetId"),
+      heading = getDouble(nodeSeq \ "heading"),
+      tilt = getDouble(nodeSeq \ "tilt"),
+      roll = getDouble(nodeSeq \ "roll")))
   }
 
   def makeLinkFromNode(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
     if (nodeSeq.isEmpty) None
-    else Some(new com.scalakml.kml.Link(id = getFromNode[String](nodeSeq \ "@id"),
-      targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      refreshMode = getFromNode[String](nodeSeq \ "refreshMode") map(RefreshMode.fromString(_)),
-      refreshInterval = getFromNode[Double](nodeSeq \ "refreshInterval"),
-      viewRefreshMode = getFromNode[String](nodeSeq \ "viewRefreshMode") map(ViewRefreshMode.fromString(_)),
-      viewRefreshTime = getFromNode[Double](nodeSeq \ "viewRefreshTime"),
-      viewBoundScale = getFromNode[Double](nodeSeq \ "viewBoundScale"),
-      viewFormat = getFromNode[String](nodeSeq \ "viewFormat"),
-      httpQuery = getFromNode[String](nodeSeq \ "httpQuery"),
-      href = getFromNode[String](nodeSeq \ "href")))
+    else Some(new com.scalakml.kml.Link(id = getString(nodeSeq \ "@id"),
+      targetId = getString(nodeSeq \ "@targetId"),
+      refreshMode = getString(nodeSeq \ "refreshMode") map(RefreshMode.fromString(_)),
+      refreshInterval = getDouble(nodeSeq \ "refreshInterval"),
+      viewRefreshMode = getString(nodeSeq \ "viewRefreshMode") map(ViewRefreshMode.fromString(_)),
+      viewRefreshTime = getDouble(nodeSeq \ "viewRefreshTime"),
+      viewBoundScale = getDouble(nodeSeq \ "viewBoundScale"),
+      viewFormat = getString(nodeSeq \ "viewFormat"),
+      httpQuery = getString(nodeSeq \ "httpQuery"),
+      href = getString(nodeSeq \ "href")))
   }
 
   def makeLink(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
@@ -343,100 +343,119 @@ object KmlFromXml extends KmlExtractor {
 
   def makeIcon(nodeSeq: NodeSeq): Option[Icon] = {
     if (nodeSeq.isEmpty) None
-    else Some(new Icon(href = getFromNode[String](nodeSeq \ "href"),
-      id = getFromNode[String](nodeSeq \ "@id"),
-      targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      refreshMode = getFromNode[String](nodeSeq \ "refreshMode") map(RefreshMode.fromString(_)),
-      refreshInterval = getFromNode[Double](nodeSeq \ "refreshInterval"),
-      viewRefreshMode = getFromNode[String](nodeSeq \ "viewRefreshMode") map(ViewRefreshMode.fromString(_)),
-      viewRefreshTime = getFromNode[Double](nodeSeq \ "viewRefreshTime"),
-      viewBoundScale = getFromNode[Double](nodeSeq \ "viewBoundScale"),
-      viewFormat = getFromNode[String](nodeSeq \ "viewFormat"),
-      httpQuery = getFromNode[String](nodeSeq \ "httpQuery")))
+    else Some(new Icon(href = getString(nodeSeq \ "href"),
+      id = getString(nodeSeq \ "@id"),
+      targetId = getString(nodeSeq \ "@targetId"),
+      refreshMode = getString(nodeSeq \ "refreshMode") map(RefreshMode.fromString(_)),
+      refreshInterval = getDouble(nodeSeq \ "refreshInterval"),
+      viewRefreshMode = getString(nodeSeq \ "viewRefreshMode") map(ViewRefreshMode.fromString(_)),
+      viewRefreshTime = getDouble(nodeSeq \ "viewRefreshTime"),
+      viewBoundScale = getDouble(nodeSeq \ "viewBoundScale"),
+      viewFormat = getString(nodeSeq \ "viewFormat"),
+      httpQuery = getString(nodeSeq \ "httpQuery")))
   }
 
   def makeNetworkLink(nodeSeq: NodeSeq): Option[NetworkLink] = {
     if (nodeSeq.isEmpty) None
-    else Some(new NetworkLink(id = getFromNode[String](nodeSeq \ "@id"),
-      targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      refreshVisibility = getFromNode[Boolean](nodeSeq \ "refreshVisibility"),
-      flyToView = getFromNode[Boolean](nodeSeq \ "flyToView"),
+    else Some(new NetworkLink(id = getString(nodeSeq \ "@id"),
+      targetId = getString(nodeSeq \ "@targetId"),
+      refreshVisibility = getBoolean(nodeSeq \ "refreshVisibility"),
+      flyToView = getBoolean(nodeSeq \ "flyToView"),
       link = makeLink(nodeSeq),
       featurePart = makeFeaturePart(nodeSeq)))
   }
 
-  def getFromNode[A: TypeTag](nodeSeq: NodeSeq): Option[A] = {
+  def getString(nodeSeq: NodeSeq): Option[String] = {
     if (nodeSeq.isEmpty) None
     else {
       val node = nodeSeq.text.trim
       if (node.isEmpty) None
-      else
-        typeOf[A] match {
-          case x if x == typeOf[String] => Some(node).asInstanceOf[Option[A]]
-          case x if x == typeOf[Double] => try {
-            Some(node.toDouble).asInstanceOf[Option[A]]
-          } catch {
-            case _: Throwable => None
-          }
-          case x if x == typeOf[Int] => try {
-            Some(node.toInt).asInstanceOf[Option[A]]
-          } catch {
-            case _: Throwable => None
-          }
-          // TODO is this correct use of 1 and 0 or should it be true and false
-          case x if x == typeOf[Boolean] => node.toLowerCase match {
-            case "1" | "true" => Some(true).asInstanceOf[Option[A]]
-            case "0" | "false" => Some(false).asInstanceOf[Option[A]]
-            case _ => None
-          }
-          case _ => None
-        }
+      else Some(node).asInstanceOf[Option[String]]
+    }
+  }
+
+  def getDouble(nodeSeq: NodeSeq): Option[Double] = {
+    if (nodeSeq.isEmpty) None
+    else {
+      val node = nodeSeq.text.trim
+      if (node.isEmpty) None
+      else try {
+        Some(node.toDouble).asInstanceOf[Option[Double]]
+      } catch {
+        case _: Throwable => None
+      }
+    }
+  }
+
+  def getInt(nodeSeq: NodeSeq): Option[Int] = {
+    if (nodeSeq.isEmpty) None
+    else {
+      val node = nodeSeq.text.trim
+      if (node.isEmpty) None
+      else try {
+        Some(node.toInt).asInstanceOf[Option[Int]]
+      } catch {
+        case _: Throwable => None
+      }
+    }
+  }
+
+  def getBoolean(nodeSeq: NodeSeq): Option[Boolean] = {
+    if (nodeSeq.isEmpty) None
+    else {
+      val node = nodeSeq.text.trim
+      if (node.isEmpty) None
+      else node.toLowerCase match {
+        case "1" | "true" => Some(true).asInstanceOf[Option[Boolean]]
+        case "0" | "false" => Some(false).asInstanceOf[Option[Boolean]]
+        case _ => None
+      }
     }
   }
 
   def makeAtomLink(nodeSeq: NodeSeq): Option[com.scalakml.atom.Link] = {
     if (nodeSeq.isEmpty) None
     else Some(new com.scalakml.atom.Link(
-      href = getFromNode[String](nodeSeq \ "@href"),
-      rel = getFromNode[String](nodeSeq \ "@rel"),
-      typeValue = getFromNode[String](nodeSeq \ "@type"),
-      hrefLang = getFromNode[String](nodeSeq \ "@hrefLang"),
-      title = getFromNode[String](nodeSeq \ "@title"),
-      length = getFromNode[String](nodeSeq \ "@length")))
+      href = getString(nodeSeq \ "@href"),
+      rel = getString(nodeSeq \ "@rel"),
+      typeValue = getString(nodeSeq \ "@type"),
+      hrefLang = getString(nodeSeq \ "@hrefLang"),
+      title = getString(nodeSeq \ "@title"),
+      length = getString(nodeSeq \ "@length")))
   }
 
   def makeAtomAuthor(nodeSeq: NodeSeq): Option[com.scalakml.atom.Author] = {
     if (nodeSeq.isEmpty) None
     else Some(new com.scalakml.atom.Author(
-      name = getFromNode[String](nodeSeq \ "name"),
-      uri = getFromNode[String](nodeSeq \ "uri"),
-      email = getFromNode[String](nodeSeq \ "email")))
+      name = getString(nodeSeq \ "name"),
+      uri = getString(nodeSeq \ "uri"),
+      email = getString(nodeSeq \ "email")))
   }
 
   def makeFeaturePart(nodeSeq: NodeSeq): FeaturePart =
     if (nodeSeq.isEmpty) new FeaturePart()
     else new FeaturePart(
-      name = getFromNode[String](nodeSeq \ "name"),
-      visibility = getFromNode[Boolean](nodeSeq \ "visibility"),
-      open = getFromNode[Boolean](nodeSeq \ "open"),
+      name = getString(nodeSeq \ "name"),
+      visibility = getBoolean(nodeSeq \ "visibility"),
+      open = getBoolean(nodeSeq \ "open"),
       atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
       atomLink = makeAtomLink(nodeSeq \ "link"),
-      address = getFromNode[String](nodeSeq \ "address"),
+      address = getString(nodeSeq \ "address"),
       addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
-      phoneNumber = getFromNode[String](nodeSeq \ "phoneNumber"),
+      phoneNumber = getString(nodeSeq \ "phoneNumber"),
       extendedData = makeExtendedData(nodeSeq \ "ExtendedData"),
-      description = getFromNode[String](nodeSeq \ "description"),
+      description = getString(nodeSeq \ "description"),
       snippet = makeSnippet(nodeSeq),
       abstractView = makeAbstractView(nodeSeq),
       timePrimitive = makeTimePrimitive(nodeSeq),
-      styleUrl = getFromNode[String](nodeSeq \ "styleUrl"),
+      styleUrl = getString(nodeSeq \ "styleUrl"),
       styleSelector = makeStyleSet(nodeSeq),
       region = makeRegion(nodeSeq \ "Region"))
 
   def makeStyle(nodeSeq: NodeSeq): Option[StyleSelector] = {
     if (nodeSeq.isEmpty) None
     else Some(new Style(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       iconStyle = makeIconStyle(nodeSeq \ "IconStyle"),
       labelStyle = makeLabelStyle(nodeSeq \ "LabelStyle"),
       lineStyle = makeLineStyle(nodeSeq \ "LineStyle"),
@@ -448,61 +467,61 @@ object KmlFromXml extends KmlExtractor {
   def makeIconStyle(nodeSeq: NodeSeq): Option[IconStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new IconStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      scale = getFromNode[Double](nodeSeq \ "scale"),
-      heading = getFromNode[Double](nodeSeq \ "heading"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      scale = getDouble(nodeSeq \ "scale"),
+      heading = getDouble(nodeSeq \ "heading"),
       icon = makeIcon(nodeSeq \ "Icon"),
       hotSpot = makeVec2(nodeSeq \ "hotSpot"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = getFromNode[String](nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
+      colorMode = getString(nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
   }
 
   def makeLineStyle(nodeSeq: NodeSeq): Option[LineStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new LineStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      width = getFromNode[Double](nodeSeq \ "width"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      width = getDouble(nodeSeq \ "width"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = getFromNode[String](nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
+      colorMode = getString(nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
   }
 
   def makeLabelStyle(nodeSeq: NodeSeq): Option[LabelStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new LabelStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      scale = getFromNode[Double](nodeSeq \ "scale"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      scale = getDouble(nodeSeq \ "scale"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = getFromNode[String](nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
+      colorMode = getString(nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
   }
 
   def makePolyStyle(nodeSeq: NodeSeq): Option[PolyStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new PolyStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      fill = getFromNode[Boolean](nodeSeq \ "fill"),
-      outline = getFromNode[Boolean](nodeSeq \ "outline"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      fill = getBoolean(nodeSeq \ "fill"),
+      outline = getBoolean(nodeSeq \ "outline"),
       color = makeColor(nodeSeq \ "color"),
-      colorMode = getFromNode[String](nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
+      colorMode = getString(nodeSeq \ "colorMode") map(ColorMode.fromString(_))))
   }
 
   def makeBalloonStyle(nodeSeq: NodeSeq): Option[BalloonStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new BalloonStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       bgColor = makeColor(nodeSeq \ "bgColor"),
       textColor = makeColor(nodeSeq \ "textColor"),
-      text = getFromNode[String](nodeSeq \ "text"),
-      displayMode = getFromNode[String](nodeSeq \ "displayMode") map(DisplayMode.fromString(_))))
+      text = getString(nodeSeq \ "text"),
+      displayMode = getString(nodeSeq \ "displayMode") map(DisplayMode.fromString(_))))
   }
 
   def makeListStyle(nodeSeq: NodeSeq): Option[ListStyle] = {
     if (nodeSeq.isEmpty) None
     else Some(new ListStyle(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      listItemType = getFromNode[String](nodeSeq \ "listItemType") map(ListItemType.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      listItemType = getString(nodeSeq \ "listItemType") map(ListItemType.fromString(_)),
       bgColor = makeColor(nodeSeq \ "bgColor"),
       itemIcon = makeItemIconSet(nodeSeq \ "ItemIcon"),
-      maxSnippetLines = getFromNode[Int](nodeSeq \ "maxSnippetLines")))
+      maxSnippetLines = getInt(nodeSeq \ "maxSnippetLines")))
   }
 
   def makeItemIconSet(nodeSeq: NodeSeq): Seq[ItemIcon] = {
@@ -516,9 +535,9 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else {
       val test =Some(new ItemIcon(
-        id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
         state = makeItemIconStates(nodeSeq \ "state"),
-        href = getFromNode[String](nodeSeq \ "href")))
+        href = getString(nodeSeq \ "href")))
       test
     }
   }
@@ -526,7 +545,7 @@ object KmlFromXml extends KmlExtractor {
   def makeItemIconStates(nodeSeq: NodeSeq): Seq[ItemIconState] = {
     if (nodeSeq.isEmpty) Seq.empty
     else
-      getFromNode[String](nodeSeq) match {
+      getString(nodeSeq) match {
         case Some(modeOption) =>
           modeOption match {
             case x if (x.isEmpty) => Seq.empty
@@ -539,7 +558,7 @@ object KmlFromXml extends KmlExtractor {
   def makeStyleMap(nodeSeq: NodeSeq): Option[StyleSelector] = {
     if (nodeSeq.isEmpty) None
     else Some(new StyleMap(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       pair = makePairSet(nodeSeq \ "Pair")))
   }
 
@@ -547,9 +566,9 @@ object KmlFromXml extends KmlExtractor {
   def makePair(nodeSeq: NodeSeq): Option[Pair] = {
     if (nodeSeq.isEmpty) None
     else Some(new Pair(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      key = getFromNode[String](nodeSeq \ "key") map(StyleState.fromString(_)),
-      styleUrl = getFromNode[String](nodeSeq \ "styleUrl"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      key = getString(nodeSeq \ "key") map(StyleState.fromString(_)),
+      styleUrl = getString(nodeSeq \ "styleUrl"),
       styleSelector = makeStyleSelector(nodeSeq))) // <----
   }
 
@@ -605,17 +624,17 @@ object KmlFromXml extends KmlExtractor {
   def makeLod(nodeSeq: NodeSeq): Option[Lod] = {
     if (nodeSeq.isEmpty) None
     else Some(new Lod(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      minLodPixels = getFromNode[Double](nodeSeq \ "minLodPixels"),
-      maxLodPixels = getFromNode[Double](nodeSeq \ "maxLodPixels"),
-      minFadeExtent = getFromNode[Double](nodeSeq \ "minFadeExtent"),
-      maxFadeExtent = getFromNode[Double](nodeSeq \ "maxFadeExtent")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      minLodPixels = getDouble(nodeSeq \ "minLodPixels"),
+      maxLodPixels = getDouble(nodeSeq \ "maxLodPixels"),
+      minFadeExtent = getDouble(nodeSeq \ "minFadeExtent"),
+      maxFadeExtent = getDouble(nodeSeq \ "maxFadeExtent")))
   }
 
   def makeRegion(nodeSeq: NodeSeq): Option[Region] = {
     if (nodeSeq.isEmpty) None
     else Some(new Region(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       latLonAltBox = makeLatLonAltBox(nodeSeq \ "LatLonAltBox"),
       lod = makeLod(nodeSeq \ "Lod")))
   }
@@ -623,25 +642,25 @@ object KmlFromXml extends KmlExtractor {
   def makeLatLonAltBox(nodeSeq: NodeSeq): Option[LatLonAltBox] = {
     if (nodeSeq.isEmpty) None
     else Some(new LatLonAltBox(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      minAltitude = getFromNode[Double](nodeSeq \ "minAltitude"),
-      maxAltitude = getFromNode[Double](nodeSeq \ "maxAltitude"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
-      north = getFromNode[Double](nodeSeq \ "north"),
-      south = getFromNode[Double](nodeSeq \ "south"),
-      east = getFromNode[Double](nodeSeq \ "east"),
-      west = getFromNode[Double](nodeSeq \ "west")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      minAltitude = getDouble(nodeSeq \ "minAltitude"),
+      maxAltitude = getDouble(nodeSeq \ "maxAltitude"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      north = getDouble(nodeSeq \ "north"),
+      south = getDouble(nodeSeq \ "south"),
+      east = getDouble(nodeSeq \ "east"),
+      west = getDouble(nodeSeq \ "west")))
   }
 
   def makeLatLonBox(nodeSeq: NodeSeq): Option[LatLonBox] = {
     if (nodeSeq.isEmpty) None
     else Some(new LatLonBox(
-        id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-        rotation = getFromNode[Double](nodeSeq \ "rotation"),
-        north = getFromNode[Double](nodeSeq \ "north"),
-        south = getFromNode[Double](nodeSeq \ "south"),
-        east = getFromNode[Double](nodeSeq \ "east"),
-        west = getFromNode[Double](nodeSeq \ "west")))
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        rotation = getDouble(nodeSeq \ "rotation"),
+        north = getDouble(nodeSeq \ "north"),
+        south = getDouble(nodeSeq \ "south"),
+        east = getDouble(nodeSeq \ "east"),
+        west = getDouble(nodeSeq \ "west")))
   }
 
   /**
@@ -653,8 +672,8 @@ object KmlFromXml extends KmlExtractor {
   def makeSnippetFromNode(nodeSeq: NodeSeq): Option[Snippet] = {
     if (nodeSeq.isEmpty) None
     else Some(new Snippet(
-      value = getFromNode[String](nodeSeq).getOrElse(""),
-      maxLines = getFromNode[Int](nodeSeq \ "@maxLines").getOrElse(0)))
+      value = getString(nodeSeq).getOrElse(""),
+      maxLines = getInt(nodeSeq \ "@maxLines").getOrElse(0)))
   }
 
   /**
@@ -684,10 +703,10 @@ object KmlFromXml extends KmlExtractor {
 
   def makeData(nodeSeq: NodeSeq): Option[Data] = {
     if (nodeSeq.isEmpty) None
-    else Some(new Data(name = getFromNode[String](nodeSeq \ "@name"),
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      displayName = getFromNode[String](nodeSeq \ "displayName"),
-      value = getFromNode[String](nodeSeq \ "value")))
+    else Some(new Data(name = getString(nodeSeq \ "@name"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      displayName = getString(nodeSeq \ "displayName"),
+      value = getString(nodeSeq \ "value")))
   }
 
   def makeDataSet(nodeSeq: NodeSeq): Seq[Data] = {
@@ -699,8 +718,8 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSimpleData(nodeSeq: NodeSeq): Option[SimpleData] = {
     if (nodeSeq.isEmpty) None
-    else Some(new SimpleData(name = getFromNode[String](nodeSeq \ "@name"),
-      value = getFromNode[String](nodeSeq)))
+    else Some(new SimpleData(name = getString(nodeSeq \ "@name"),
+      value = getString(nodeSeq)))
   }
 
   def makeSimpleDataSet(nodeSeq: NodeSeq): Seq[SimpleData] = {
@@ -713,8 +732,8 @@ object KmlFromXml extends KmlExtractor {
   def makeSchemaData(nodeSeq: NodeSeq): Option[SchemaData] = {
     if (nodeSeq.isEmpty) None
     else Some(new SchemaData(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      schemaUrl = getFromNode[String](nodeSeq \ "@schemaUrl"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      schemaUrl = getString(nodeSeq \ "@schemaUrl"),
       simpleData = makeSimpleDataSet(nodeSeq \ "SimpleData")))
   }
 
@@ -743,16 +762,16 @@ object KmlFromXml extends KmlExtractor {
   def makeTimeStamp(nodeSeq: NodeSeq): Option[TimePrimitive] = {
     if (nodeSeq.isEmpty) None
     else Some(new TimeStamp(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      when = getFromNode[String](nodeSeq \ "when")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      when = getString(nodeSeq \ "when")))
   }
 
   def makeTimeSpan(nodeSeq: NodeSeq): Option[TimePrimitive] = {
     if (nodeSeq.isEmpty) None
     else Some(new TimeSpan(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      begin = getFromNode[String](nodeSeq \ "begin"),
-      end = getFromNode[String](nodeSeq \ "end")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      begin = getString(nodeSeq \ "begin"),
+      end = getString(nodeSeq \ "end")))
   }
 
   // either a Camera or a LookAt or None
@@ -773,33 +792,33 @@ object KmlFromXml extends KmlExtractor {
   def makeCamera(nodeSeq: NodeSeq): Option[Camera] = {
     if (nodeSeq.isEmpty) None
     else Some(new Camera(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      roll = getFromNode[Double](nodeSeq \ "roll"),
-      longitude = getFromNode[Double](nodeSeq \ "longitude"),
-      latitude = getFromNode[Double](nodeSeq \ "latitude"),
-      altitude = getFromNode[Double](nodeSeq \ "altitude"),
-      heading = getFromNode[Double](nodeSeq \ "heading"),
-      tilt = getFromNode[Double](nodeSeq \ "tilt"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      roll = getDouble(nodeSeq \ "roll"),
+      longitude = getDouble(nodeSeq \ "longitude"),
+      latitude = getDouble(nodeSeq \ "latitude"),
+      altitude = getDouble(nodeSeq \ "altitude"),
+      heading = getDouble(nodeSeq \ "heading"),
+      tilt = getDouble(nodeSeq \ "tilt"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
   }
 
   def makeLookAt(nodeSeq: NodeSeq): Option[LookAt] = {
     if (nodeSeq.isEmpty) None
     else Some(new LookAt(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      range = getFromNode[Double](nodeSeq \ "range"),
-      longitude = getFromNode[Double](nodeSeq \ "longitude"),
-      latitude = getFromNode[Double](nodeSeq \ "latitude"),
-      altitude = getFromNode[Double](nodeSeq \ "altitude"),
-      heading = getFromNode[Double](nodeSeq \ "heading"),
-      tilt = getFromNode[Double](nodeSeq \ "tilt"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      range = getDouble(nodeSeq \ "range"),
+      longitude = getDouble(nodeSeq \ "longitude"),
+      latitude = getDouble(nodeSeq \ "latitude"),
+      altitude = getDouble(nodeSeq \ "altitude"),
+      heading = getDouble(nodeSeq \ "heading"),
+      tilt = getDouble(nodeSeq \ "tilt"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
   }
 
   def makePlacemark(nodeSeq: NodeSeq): Option[Placemark] = {
     if (nodeSeq.isEmpty) None
     else Some(new Placemark(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       geometry = makeGeometry(nodeSeq),
       featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -807,7 +826,7 @@ object KmlFromXml extends KmlExtractor {
   def makeDocument(nodeSeq: NodeSeq): Option[com.scalakml.kml.Document] = {
     if (nodeSeq.isEmpty) None
     else Some(new com.scalakml.kml.Document(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       schemas = makeSchemaSet(nodeSeq \ "Schema"),
       features = makeFeatureSet(nodeSeq),
       featurePart = makeFeaturePart(nodeSeq)))
@@ -824,16 +843,16 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new Schema(
       simpleField = makeSimpleFieldSet(nodeSeq \ "SimpleField"),
-      name = getFromNode[String](nodeSeq \ "@name"),
-      id = getFromNode[String](nodeSeq \ "@id")))
+      name = getString(nodeSeq \ "@name"),
+      id = getString(nodeSeq \ "@id")))
   }
 
   def makeSimpleField(nodeSeq: NodeSeq): Option[SimpleField] = {
     if (nodeSeq.isEmpty) None
     else Some(new SimpleField(
-      name = getFromNode[String](nodeSeq \ "@name"),
-      typeValue = getFromNode[String](nodeSeq \ "@type"),
-      displayName = getFromNode[String](nodeSeq \ "displayName")))
+      name = getString(nodeSeq \ "@name"),
+      typeValue = getString(nodeSeq \ "@type"),
+      displayName = getString(nodeSeq \ "displayName")))
   }
 
   def makeSimpleFieldSet(nodeSeq: NodeSeq): Seq[SimpleField] = {
@@ -846,7 +865,7 @@ object KmlFromXml extends KmlExtractor {
   def makeFolder(nodeSeq: NodeSeq): Option[Folder] = {
     if (nodeSeq.isEmpty) None
     else Some(new Folder(
-        id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+        id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
         features = makeFeatureSet(nodeSeq),
         featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -854,10 +873,10 @@ object KmlFromXml extends KmlExtractor {
   def makePoint(nodeSeq: NodeSeq): Option[Point] = {
     if (nodeSeq.isEmpty) None
     else Some(new Point(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       coordinates = makeCoordinates(nodeSeq \ "coordinates"),
-      extrude = getFromNode[Boolean](nodeSeq \ "extrude"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
+      extrude = getBoolean(nodeSeq \ "extrude"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
   }
 
   def makeCoordinates(nodeSeq: NodeSeq): Option[Seq[Location]] = {
@@ -869,29 +888,29 @@ object KmlFromXml extends KmlExtractor {
   def makeLocation(nodeSeq: NodeSeq): Option[Location] = {
     if (nodeSeq.isEmpty) None
     else Some(new Location(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      longitude = getFromNode[Double](nodeSeq \ "longitude"),
-      latitude = getFromNode[Double](nodeSeq \ "latitude"),
-      altitude = getFromNode[Double](nodeSeq \ "altitude")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      longitude = getDouble(nodeSeq \ "longitude"),
+      latitude = getDouble(nodeSeq \ "latitude"),
+      altitude = getDouble(nodeSeq \ "altitude")))
   }
 
   def makeLineString(nodeSeq: NodeSeq): Option[LineString] = {
     if (nodeSeq.isEmpty) None
     else Some(new LineString(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      extrude = getFromNode[Boolean](nodeSeq \ "extrude"),
-      tessellate = getFromNode[Boolean](nodeSeq \ "tessellate"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      extrude = getBoolean(nodeSeq \ "extrude"),
+      tessellate = getBoolean(nodeSeq \ "tessellate"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
       coordinates = makeCoordinates(nodeSeq \ "coordinates")))
   }
 
   def makeLinearRing(nodeSeq: NodeSeq): Option[LinearRing] = {
     if (nodeSeq.isEmpty) None
     else Some(new LinearRing(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      extrude = getFromNode[Boolean](nodeSeq \ "extrude"),
-      tessellate = getFromNode[Boolean](nodeSeq \ "tessellate"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      extrude = getBoolean(nodeSeq \ "extrude"),
+      tessellate = getBoolean(nodeSeq \ "tessellate"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
       coordinates = makeCoordinates(nodeSeq \ "coordinates")))
   }
 
@@ -909,10 +928,10 @@ object KmlFromXml extends KmlExtractor {
   def makePolygon(nodeSeq: NodeSeq): Option[Polygon] = {
     if (nodeSeq.isEmpty) None
     else Some(new Polygon(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      extrude = getFromNode[Boolean](nodeSeq \ "extrude"),
-      tessellate = getFromNode[Boolean](nodeSeq \ "tessellate"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      extrude = getBoolean(nodeSeq \ "extrude"),
+      tessellate = getBoolean(nodeSeq \ "tessellate"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
       outerBoundaryIs = makeBoundary(nodeSeq \ "outerBoundaryIs"),
       innerBoundaryIs = makeBoundaries(nodeSeq \ "innerBoundaryIs")))
   }
@@ -920,15 +939,15 @@ object KmlFromXml extends KmlExtractor {
   def makeMultiGeometry(nodeSeq: NodeSeq): Option[MultiGeometry] = {
     if (nodeSeq.isEmpty) None
     else Some(new MultiGeometry(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       geometries = makeGeometrySet(nodeSeq)))
   }
 
   def makeModel(nodeSeq: NodeSeq): Option[Model] = {
     if (nodeSeq.isEmpty) None
     else Some(new Model(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
       location = makeLocation(nodeSeq \ "Location"),
       scale = makeScale(nodeSeq \ "Scale"),
       link = makeLink(nodeSeq),
@@ -938,7 +957,7 @@ object KmlFromXml extends KmlExtractor {
   def makeResourceMap(nodeSeq: NodeSeq): Option[ResourceMap] = {
     if (nodeSeq.isEmpty) None
     else Some(new ResourceMap(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       alias = makeAliasSet(nodeSeq \ "Alias")))
   }
 
@@ -952,18 +971,18 @@ object KmlFromXml extends KmlExtractor {
   def makeAlias(nodeSeq: NodeSeq): Option[Alias] = {
     if (nodeSeq.isEmpty) None
     else Some(new Alias(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      targetHref = getFromNode[String](nodeSeq \ "targetHref"),
-      sourceHref = getFromNode[String](nodeSeq \ "sourceHref")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      targetHref = getString(nodeSeq \ "targetHref"),
+      sourceHref = getString(nodeSeq \ "sourceHref")))
   }
 
   def makeScale(nodeSeq: NodeSeq): Option[Scale] = {
     if (nodeSeq.isEmpty) None
     else Some(new Scale(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      x = getFromNode[Double](nodeSeq \ "x"),
-      y = getFromNode[Double](nodeSeq \ "y"),
-      z = getFromNode[Double](nodeSeq \ "z")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      x = getDouble(nodeSeq \ "x"),
+      y = getDouble(nodeSeq \ "y"),
+      z = getDouble(nodeSeq \ "z")))
   }
 
   def makeGeometry(nodeSeq: NodeSeq, geomType: GeometryTypes): Option[Geometry] = {
@@ -1011,39 +1030,39 @@ object KmlFromXml extends KmlExtractor {
   def makeViewVolume(nodeSeq: NodeSeq): Option[ViewVolume] = {
     if (nodeSeq.isEmpty) None
     else
-      Some(new ViewVolume(id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-        leftFov = getFromNode[Double](nodeSeq \ "leftFov"),
-        rightFov = getFromNode[Double](nodeSeq \ "rightFov"),
-        bottomFov = getFromNode[Double](nodeSeq \ "bottomFov"),
-        topFov = getFromNode[Double](nodeSeq \ "topFov"),
-        near = getFromNode[Double](nodeSeq \ "near")))
+      Some(new ViewVolume(id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        leftFov = getDouble(nodeSeq \ "leftFov"),
+        rightFov = getDouble(nodeSeq \ "rightFov"),
+        bottomFov = getDouble(nodeSeq \ "bottomFov"),
+        topFov = getDouble(nodeSeq \ "topFov"),
+        near = getDouble(nodeSeq \ "near")))
   }
 
   def makeImagePyramid(nodeSeq: NodeSeq): Option[ImagePyramid] = {
     if (nodeSeq.isEmpty) None
     else
-      Some(new ImagePyramid(id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-        tileSize = getFromNode[Int](nodeSeq \ "tileSize"),
-        maxWidth = getFromNode[Int](nodeSeq \ "maxWidth"),
-        maxHeight = getFromNode[Int](nodeSeq \ "maxHeight"),
-        gridOrigin = getFromNode[String](nodeSeq \ "gridOrigin") map(GridOrigin.fromString(_))))
+      Some(new ImagePyramid(id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        tileSize = getInt(nodeSeq \ "tileSize"),
+        maxWidth = getInt(nodeSeq \ "maxWidth"),
+        maxHeight = getInt(nodeSeq \ "maxHeight"),
+        gridOrigin = getString(nodeSeq \ "gridOrigin") map(GridOrigin.fromString(_))))
   }
 
   def makeColor(nodeSeq: NodeSeq): Option[HexColor] = {
-    if (nodeSeq.isEmpty) None else getFromNode[String](nodeSeq) map(x => new HexColor(hexString = x))
+    if (nodeSeq.isEmpty) None else getString(nodeSeq) map(x => new HexColor(hexString = x))
   }
 
   def makePhotoOverlay(nodeSeq: NodeSeq): Option[PhotoOverlay] = {
     if (nodeSeq.isEmpty) None
     else
-      Some(new PhotoOverlay(id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-        rotation = getFromNode[Double](nodeSeq \ "rotation"),
+      Some(new PhotoOverlay(id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        rotation = getDouble(nodeSeq \ "rotation"),
         viewVolume = makeViewVolume(nodeSeq \ "ViewVolume"),
         imagePyramid = makeImagePyramid(nodeSeq \ "ImagePyramid"),
         point = makePoint(nodeSeq \ "Point"),
-        shape = getFromNode[String](nodeSeq \ "shape") map(Shape.fromString(_)),
+        shape = getString(nodeSeq \ "shape") map(Shape.fromString(_)),
         color = makeColor(nodeSeq \ "color"),
-        drawOrder = getFromNode[Int](nodeSeq \ "drawOrder"),
+        drawOrder = getInt(nodeSeq \ "drawOrder"),
         icon = makeIcon(nodeSeq \ "Icon"),
         featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -1051,13 +1070,13 @@ object KmlFromXml extends KmlExtractor {
   def makeGroundOverlay(nodeSeq: NodeSeq): Option[GroundOverlay] = {
     if (nodeSeq.isEmpty) None
     else
-      Some(new GroundOverlay(id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-        altitude = getFromNode[Double](nodeSeq \ "altitude"),
-        altitudeMode = getFromNode[String](nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
+      Some(new GroundOverlay(id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+        altitude = getDouble(nodeSeq \ "altitude"),
+        altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
         latLonBox = makeLatLonBox(nodeSeq \ "LatLonBox"),
         latLonQuad = makeLatLonQuad(nodeSeq \ "LatLonQuad"),
         color = makeColor(nodeSeq \ "color"),
-        drawOrder = getFromNode[Int](nodeSeq \ "drawOrder"),
+        drawOrder = getInt(nodeSeq \ "drawOrder"),
         icon = makeIcon(nodeSeq \ "Icon"),
         featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -1065,23 +1084,23 @@ object KmlFromXml extends KmlExtractor {
   def makeVec2(nodeSeq: NodeSeq): Option[Vec2] = {
     if (nodeSeq.isEmpty) None
     else Some(new Vec2(
-      x = getFromNode[Double](nodeSeq \ "@x").getOrElse(0.0),
-      y = getFromNode[Double](nodeSeq \ "@y").getOrElse(0.0),
-      xunits = getFromNode[String](nodeSeq \ "@xunits") map(Units.fromString(_)) getOrElse(Fraction),
-      yunits = getFromNode[String](nodeSeq \ "@yunits") map(Units.fromString(_)) getOrElse(Fraction)))
+      x = getDouble(nodeSeq \ "@x").getOrElse(0.0),
+      y = getDouble(nodeSeq \ "@y").getOrElse(0.0),
+      xunits = getString(nodeSeq \ "@xunits") map(Units.fromString(_)) getOrElse(Fraction),
+      yunits = getString(nodeSeq \ "@yunits") map(Units.fromString(_)) getOrElse(Fraction)))
   }
 
   def makeScreenOverlay(nodeSeq: NodeSeq): Option[ScreenOverlay] = {
     if (nodeSeq.isEmpty) None
     else Some(new ScreenOverlay(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       overlayXY = makeVec2(nodeSeq \ "overlayXY"),
       screenXY = makeVec2(nodeSeq \ "screenXY"),
       rotationXY = makeVec2(nodeSeq \ "rotationXY"),
       size = makeVec2(nodeSeq \ "size"),
-      rotation = getFromNode[Double](nodeSeq \ "rotation"),
+      rotation = getDouble(nodeSeq \ "rotation"),
       color = makeColor(nodeSeq \ "color"),
-      drawOrder = getFromNode[Int](nodeSeq \ "drawOrder"),
+      drawOrder = getInt(nodeSeq \ "drawOrder"),
       icon = makeIcon(nodeSeq \ "Icon"),
       featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -1093,14 +1112,14 @@ object KmlFromXml extends KmlExtractor {
   def makePlaylist(nodeSeq: NodeSeq): Option[Playlist] = {
     if (nodeSeq.isEmpty) None
     else Some(new Playlist(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       tourPrimitiveGroup = Some(makeTourPrimitiveSet(nodeSeq))))
   }
 
   def makeTour(nodeSeq: NodeSeq): Option[Tour] = {
     if (nodeSeq.isEmpty) None
     else Some(new Tour(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       playlist = makePlaylist(nodeSeq \ "Playlist"),
       featurePart = makeFeaturePart(nodeSeq)))
   }
@@ -1133,45 +1152,45 @@ object KmlFromXml extends KmlExtractor {
   def makeAnimatedUpdate(nodeSeq: NodeSeq): Option[AnimatedUpdate] = {
     if (nodeSeq.isEmpty) None
     else Some(new AnimatedUpdate(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      duration = getFromNode[Double](nodeSeq \ "duration"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      duration = getDouble(nodeSeq \ "duration"),
       update = makeUpdate(nodeSeq \ "Update")))
   }
 
   def makeFlyTo(nodeSeq: NodeSeq): Option[FlyTo] = {
     if (nodeSeq.isEmpty) None
     else Some(new FlyTo(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      duration = getFromNode[Double](nodeSeq \ "duration"),
-      flyToMode = getFromNode[String](nodeSeq \ "flyToMode") map(FlyToMode.fromString(_)),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      duration = getDouble(nodeSeq \ "duration"),
+      flyToMode = getString(nodeSeq \ "flyToMode") map(FlyToMode.fromString(_)),
       abstractView = makeAbstractView(nodeSeq)))
   }
 
   def makeSoundCue(nodeSeq: NodeSeq): Option[SoundCue] = {
     if (nodeSeq.isEmpty) None
     else Some(new SoundCue(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      href = getFromNode[String](nodeSeq \ "href")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      href = getString(nodeSeq \ "href")))
   }
 
   def makeWait(nodeSeq: NodeSeq): Option[Wait] = {
     if (nodeSeq.isEmpty) None
     else Some(new Wait(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      duration = getFromNode[Double](nodeSeq \ "duration")))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      duration = getDouble(nodeSeq \ "duration")))
   }
 
   def makeTourControl(nodeSeq: NodeSeq): Option[TourControl] = {
     if (nodeSeq.isEmpty) None
     else Some(new TourControl(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
-      playMode = getFromNode[String](nodeSeq \ "playMode") map(PlayMode.fromString(_))))
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
+      playMode = getString(nodeSeq \ "playMode") map(PlayMode.fromString(_))))
   }
 
   def makeLatLonQuad(nodeSeq: NodeSeq): Option[LatLonQuad] = {
     if (nodeSeq.isEmpty) None
     else Some(new LatLonQuad(
-      id = getFromNode[String](nodeSeq \ "@id"), targetId = getFromNode[String](nodeSeq \ "@targetId"),
+      id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       coordinates = makeCoordinates(nodeSeq)))
   }
 
