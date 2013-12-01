@@ -210,10 +210,7 @@ object KmlFromXml extends KmlExtractor {
    */
   def makeFeatures(nodeSeq: NodeSeq, featureType: FeatureTypes): Seq[Option[Feature]] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      (nodeSeq collect {
-        case x => makeFeature(x, featureType)
-      }) filter (_ != None)
+    else (nodeSeq collect { case x => makeFeature(x, featureType) }) filter (_ != None)
   }
 
   /**
