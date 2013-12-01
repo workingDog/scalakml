@@ -33,7 +33,6 @@ package com.scalakml.io
 import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
-import scala.reflect.runtime.universe._
 import com.scalaxal.io.XalFromXml._
 import scala.language.postfixOps
 import scala.language.implicitConversions
@@ -50,6 +49,14 @@ import scala.language.implicitConversions
  *         https://developers.google.com/kml/documentation/kmlreference
  *
  */
+
+
+/**
+ * the creation of a kml root element object from an xml node sequence
+ */
+trait KmlExtractor {
+  def makeKml(nodeSeq: NodeSeq): Option[Kml]
+}
 
 /** Factory for creating kml objects instances from scala xml NodeSeq */
 object KmlFromXml extends KmlExtractor {
@@ -74,7 +81,7 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else
       (nodeSeq \\ "kml") match {
-        case x if (x.isEmpty) => None
+        case x if x.isEmpty => None
         case x => Some(new Kml(makeNetworkLinkControl(x \ "NetworkLinkControl"), makeMainFeature(x), makeHint(x)))
       }
   }
@@ -525,9 +532,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeItemIconSet(nodeSeq: NodeSeq): Seq[ItemIcon] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeItemIcon(x)
-    } flatten
+    else nodeSeq collect { case x => makeItemIcon(x) } flatten
   }
 
   def makeItemIcon(nodeSeq: NodeSeq): Option[ItemIcon] = {
@@ -547,7 +552,7 @@ object KmlFromXml extends KmlExtractor {
       getString(nodeSeq) match {
         case Some(modeOption) =>
           modeOption match {
-            case x if (x.isEmpty) => Seq.empty
+            case x if x.isEmpty => Seq.empty
             case stateString => (stateString split "\\s+").map(x => {ItemIconState.fromString(x.trim)}).toSeq
           }
         case _ => Seq.empty
@@ -573,9 +578,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makePairSet(nodeSeq: NodeSeq): Seq[Pair] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makePair(x)
-    } flatten
+    else nodeSeq collect { case x => makePair(x) } flatten
   }
 
   /**
@@ -587,16 +590,15 @@ object KmlFromXml extends KmlExtractor {
   def makeStyleSelector(nodeSeq: NodeSeq): Option[StyleSelector] = {
     if (nodeSeq.isEmpty) None
     else {
-      val style = (nodeSeq \ "Style")
+      val style = nodeSeq \ "Style"
       style match {
-        case x if (!x.isEmpty) => makeStyle(style)
-        case _ => {
-          val styleMap = (nodeSeq \ "StyleMap")
+        case x if !x.isEmpty => makeStyle(style)
+        case _ =>
+          val styleMap = nodeSeq \ "StyleMap"
           styleMap match {
-            case x if (!x.isEmpty) => makeStyleMap(styleMap)
+            case x if !x.isEmpty => makeStyleMap(styleMap)
             case _ => None
           }
-        }
       }
     }
   }
@@ -605,18 +607,14 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) Seq.empty
     else {
       val styleList = (nodeSeq \ "Style") match {
-        case s if (!s.isEmpty) => (s collect {
-          case x => makeStyle(x)
-        } flatten)
+        case s if !s.isEmpty => s collect { case x => makeStyle(x) } flatten
         case _ => Seq.empty
       }
       val styleMapList = (nodeSeq \ "StyleMap") match {
-        case s if (!s.isEmpty) => (s collect {
-          case x => makeStyleMap(x)
-        } flatten)
+        case s if !s.isEmpty => s collect {case x => makeStyleMap(x) } flatten
         case _ => Seq.empty
       }
-      (styleList ++ styleMapList)
+      styleList ++ styleMapList
     }
   }
 
@@ -710,9 +708,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeDataSet(nodeSeq: NodeSeq): Seq[Data] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeData(x)
-    } flatten
+    else nodeSeq collect { case x => makeData(x) } flatten
   }
 
   def makeSimpleData(nodeSeq: NodeSeq): Option[SimpleData] = {
@@ -723,9 +719,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSimpleDataSet(nodeSeq: NodeSeq): Seq[SimpleData] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeSimpleData(x)
-    } flatten
+    else nodeSeq collect { case x => makeSimpleData(x) } flatten
   }
 
   def makeSchemaData(nodeSeq: NodeSeq): Option[SchemaData] = {
@@ -738,9 +732,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSchemaDataSet(nodeSeq: NodeSeq): Seq[SchemaData] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeSchemaData(x)
-    } flatten
+    else nodeSeq collect { case x => makeSchemaData(x) } flatten
   }
 
   // either a TimeSpan or a TimeStamp or None
@@ -748,10 +740,10 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else
       (nodeSeq \ "TimeSpan") match {
-        case x if (!x.isEmpty) => makeTimeSpan(x)
+        case x if !x.isEmpty => makeTimeSpan(x)
         case _ => {
           (nodeSeq \ "TimeStamp") match {
-            case x if (!x.isEmpty) => makeTimeStamp(x)
+            case x if !x.isEmpty => makeTimeStamp(x)
             case _ => None
           }
         }
@@ -778,13 +770,12 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else
       (nodeSeq \ "Camera") match {
-        case x if (!x.isEmpty) => makeCamera(x)
-        case _ => {
+        case x if !x.isEmpty => makeCamera(x)
+        case _ =>
           (nodeSeq \ "LookAt") match {
-            case x if (!x.isEmpty) => makeLookAt(x)
+            case x if !x.isEmpty => makeLookAt(x)
             case _ => None
           }
-        }
       }
   }
 
@@ -833,9 +824,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSchemaSet(nodeSeq: NodeSeq): Seq[Schema] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeSchema(x)
-    } flatten
+    else nodeSeq collect { case x => makeSchema(x) } flatten
   }
 
   def makeSchema(nodeSeq: NodeSeq): Option[Schema] = {
@@ -856,9 +845,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeSimpleFieldSet(nodeSeq: NodeSeq): Seq[SimpleField] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeSimpleField(x)
-    } flatten
+    else nodeSeq collect { case x => makeSimpleField(x) } flatten
   }
 
   def makeFolder(nodeSeq: NodeSeq): Option[Folder] = {
@@ -919,9 +906,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeBoundaries(nodeSeq: NodeSeq): Seq[Boundary] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeBoundary(x)
-    } flatten
+    else nodeSeq collect { case x => makeBoundary(x) } flatten
   }
 
   def makePolygon(nodeSeq: NodeSeq): Option[Polygon] = {
@@ -962,9 +947,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeAliasSet(nodeSeq: NodeSeq): Seq[Alias] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect {
-      case x => makeAlias(x)
-    } flatten
+    else nodeSeq collect { case x => makeAlias(x) } flatten
   }
 
   def makeAlias(nodeSeq: NodeSeq): Option[Alias] = {

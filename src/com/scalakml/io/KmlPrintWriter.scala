@@ -31,7 +31,7 @@
 package com.scalakml.io
 
 import java.io._
-import xml.{NodeSeq, dtd, XML, PrettyPrinter}
+import xml.{dtd, XML, PrettyPrinter}
 import scala.Some
 
 /**
@@ -40,12 +40,6 @@ import scala.Some
  * Version: 1
  */
 
-/**
- * represents the extraction of an xml node sequence from a kml root element
- */
-trait XmlExtractor {
-  def getXmlFrom[A: KmlToXml](kml: A): NodeSeq
-}
 
 /**
  * writes the kml element object to xml representation
@@ -75,14 +69,14 @@ class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.o
   def write[A: KmlToXml](value: A, pretty: PrettyPrinter = null) = {
     if (writer.isDefined) {
       xmlExtractor match {
-        case Some(extractor) => {
+        case Some(extractor) =>
           if (pretty == null)
             extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, x, encoding, xmlDecl, doctype))
           else
             extractor.getXmlFrom(value).foreach(x => XML.write(writer.get, XML.loadString(pretty.format(x)), encoding, xmlDecl, doctype))
 
           writer.get.flush()
-        }
+
         case None => Unit
       }
     }

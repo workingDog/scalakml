@@ -47,6 +47,13 @@ import scala.language.postfixOps
  *         Version: 1
  */
 
+/**
+ * represents the extraction of an xml node sequence from a kml element
+ */
+trait XmlExtractor {
+  def getXmlFrom[A: KmlToXml](kml: A): NodeSeq
+}
+
 trait KmlToXml[A] {
   def toXml(value: A): NodeSeq
 }

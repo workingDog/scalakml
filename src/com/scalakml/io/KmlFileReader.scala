@@ -33,23 +33,16 @@ package com.scalakml.io
 import com.scalakml.kml._
 import org.xml.sax.InputSource
 import scala.xml.XML._
-import scala.xml.{NodeSeq, XML}
 import java.io.{ File, FileDescriptor }
 import scala.xml.Source._
 import scala.language.postfixOps
+import scala.xml.XML
+
 /**
  * @author Ringo Wathelet
  * Date: 12/12/12
  * Version: 1
  */
-
-/**
- * the extraction/creation of a kml root element object from an xml node sequence
- * Specifically getting a kml root object from <kml> ... </kml> nodeSeq
- */
-trait KmlExtractor {
-  def makeKml(nodeSeq: NodeSeq): Option[Kml]
-}
 
 /**
  * Reads into a kml root element (Kml) from various file, string and NodeSeq input sources
