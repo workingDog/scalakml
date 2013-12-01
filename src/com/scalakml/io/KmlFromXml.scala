@@ -332,8 +332,7 @@ object KmlFromXml extends KmlExtractor {
   def makeLink(nodeSeq: NodeSeq): Option[com.scalakml.kml.Link] = {
     if (nodeSeq.isEmpty) None
     else {
-      for (x <- List("Link", "Url")) {
-        // <--- possible labels, "Url" is not part of the formal reference
+      for (x <- List("Link", "Url")) { // <--- possible labels, "Url" is not part of the formal reference
         val link = makeLinkFromNode(nodeSeq \ x)
         if (link.isDefined) return link
       }
@@ -367,20 +366,20 @@ object KmlFromXml extends KmlExtractor {
 
   def getString(nodeSeq: NodeSeq): Option[String] = {
     if (nodeSeq.isEmpty) None
-    else {
-      val node = nodeSeq.text.trim
-      if (node.isEmpty) None
-      else Some(node).asInstanceOf[Option[String]]
-    }
+    else
+      nodeSeq.text.trim match {
+        case text if text.isEmpty => None
+        case text => Some(text).asInstanceOf[Option[String]]
+      }
   }
 
   def getDouble(nodeSeq: NodeSeq): Option[Double] = {
     if (nodeSeq.isEmpty) None
-    else {
-      val node = nodeSeq.text.trim
-      if (node.isEmpty) None
-      else try {
-        Some(node.toDouble).asInstanceOf[Option[Double]]
+    else
+      nodeSeq.text.trim match {
+        case text if text.isEmpty => None
+        case text => try {
+          Some(text.toDouble).asInstanceOf[Option[Double]]
       } catch {
         case _: Throwable => None
       }
@@ -389,11 +388,11 @@ object KmlFromXml extends KmlExtractor {
 
   def getInt(nodeSeq: NodeSeq): Option[Int] = {
     if (nodeSeq.isEmpty) None
-    else {
-      val node = nodeSeq.text.trim
-      if (node.isEmpty) None
-      else try {
-        Some(node.toInt).asInstanceOf[Option[Int]]
+    else
+      nodeSeq.text.trim match {
+        case text if text.isEmpty => None
+        case text => try {
+        Some(text.toInt).asInstanceOf[Option[Int]]
       } catch {
         case _: Throwable => None
       }
@@ -402,15 +401,15 @@ object KmlFromXml extends KmlExtractor {
 
   def getBoolean(nodeSeq: NodeSeq): Option[Boolean] = {
     if (nodeSeq.isEmpty) None
-    else {
-      val node = nodeSeq.text.trim
-      if (node.isEmpty) None
-      else node.toLowerCase match {
-        case "1" | "true" => Some(true).asInstanceOf[Option[Boolean]]
-        case "0" | "false" => Some(false).asInstanceOf[Option[Boolean]]
-        case _ => None
+    else
+      nodeSeq.text.trim match {
+        case text if text.isEmpty => None
+        case text => text.toLowerCase match {
+          case "1" | "true" => Some(true).asInstanceOf[Option[Boolean]]
+          case "0" | "false" => Some(false).asInstanceOf[Option[Boolean]]
+          case _ => None
+        }
       }
-    }
   }
 
   def makeAtomLink(nodeSeq: NodeSeq): Option[com.scalakml.atom.Link] = {

@@ -59,7 +59,7 @@ trait KmlToXmlSeq[A] {
 object KmlToXml extends XmlExtractor {
 
   // ------------------------------------------------------------    
-  // -----------------------implicit-----------------------------  
+  // -----------------------implicits----------------------------
   // ------------------------------------------------------------  
 
   implicit def StringToXmlText(valueOption: Option[String]): Option[xml.Text] = {
@@ -828,11 +828,11 @@ object KmlToXml extends XmlExtractor {
       geometryOption match {
         case Some(geometry) => geometry match {
 
-          case point: Point => {
+          case point: Point =>
             <Point id={if (point.id.isDefined) point.id.get else null} targetId={if (point.targetId.isDefined) point.targetId.get else null}>
               {getNodeFromFieldName("extrude", Option(point))}{getNodeFromFieldName("altitudeMode", Option(point))}{getXmlFrom(point.coordinates)}
             </Point>
-          }
+
 
           case lineString: LineString =>
             <LineString id={if (lineString.id.isDefined) lineString.id.get else null} targetId={if (lineString.targetId.isDefined) lineString.targetId.get else null}>
@@ -916,9 +916,9 @@ object KmlToXml extends XmlExtractor {
   implicit object StyleSelectorSeqToXml extends KmlToXmlSeq[Option[Seq[StyleSelector]]] {
     def toXml(styleSet: Option[Seq[StyleSelector]]): Seq[NodeSeq] = {
       styleSet match {
-        case Some(styles) => (styles collect {
+        case Some(styles) => styles collect {
           case x => getXmlFrom(Option(x.asInstanceOf[StyleSelector]))
-        } filter (x => (x != null) && (x != None)) toSeq)
+        } filter (x => (x != null) && (x != None)) toSeq
         case None => Seq.empty
       }
     }
@@ -927,9 +927,9 @@ object KmlToXml extends XmlExtractor {
   implicit object PairSeqToXml extends KmlToXmlSeq[Option[Seq[Pair]]] {
     def toXml(pairSet: Option[Seq[Pair]]): Seq[NodeSeq] = {
       pairSet match {
-        case Some(pSet) => (pSet collect {
+        case Some(pSet) => pSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[Pair]))
-        } filter (x => (x != null) && (x != None)) toSeq)
+        } filter (x => (x != null) && (x != None)) toSeq
         case None => Seq.empty
       }
     }
@@ -949,9 +949,9 @@ object KmlToXml extends XmlExtractor {
   implicit object ItemIconSeqToXml extends KmlToXmlSeq[Option[Seq[ItemIcon]]] {
     def toXml(itemIconSet: Option[Seq[ItemIcon]]): Seq[NodeSeq] = {
       itemIconSet match {
-        case Some(iSet) => (iSet collect {
+        case Some(iSet) => iSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[ItemIcon]))
-        } filter (x => (x != null) && (x != None)) toSeq)
+        } filter (x => (x != null) && (x != None)) toSeq
         case None => Seq.empty
       }
     }
@@ -960,9 +960,9 @@ object KmlToXml extends XmlExtractor {
   implicit object IconStateSeqToXml extends KmlToXmlSeq[Option[Seq[ItemIconState]]] {
     def toXml(itemIconStateSet: Option[Seq[ItemIconState]]): Seq[NodeSeq] = {
       itemIconStateSet match {
-        case Some(iSet) => (iSet collect {
+        case Some(iSet) => iSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[ItemIconState]))
-        } filter (x => (x != null) && (x != None)) toSeq)
+        } filter (x => (x != null) && (x != None)) toSeq
         case None => Seq.empty
       }
     }
@@ -991,7 +991,7 @@ object KmlToXml extends XmlExtractor {
         list ++= getXmlSeqFrom(Option(featurePart.get.styleSelector))
         list += getXmlFrom(featurePart.get.abstractView)
 
-        (list filter (x => (x != null) && (x != None)) toSeq)
+        list filter (x => (x != null) && (x != None)) toSeq
       }
     }
   }
@@ -1008,7 +1008,7 @@ object KmlToXml extends XmlExtractor {
   def getNodeFromFieldName(name: String, objOption: Option[Any]): NodeSeq = {
     val baseName = if (name.startsWith("gx:")) name.substring(3) else name
     objOption match {
-      case Some(obj) => {
+      case Some(obj) =>
         if (!obj.getClass.getDeclaredFields.exists(field => field.getName.equals(baseName)))
           NodeSeq.Empty
         else {
@@ -1022,7 +1022,6 @@ object KmlToXml extends XmlExtractor {
             case _ => NodeSeq.Empty
           }
         }
-      }
       case None => NodeSeq.Empty
     }
   }
@@ -1035,10 +1034,10 @@ object KmlToXml extends XmlExtractor {
           {if (bool) "1" else "0"}
         </a>.copy(label = name)
 
-        case vec2: Vec2 => {
+        case vec2: Vec2 =>
           val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
           theNode.copy(label = name)
-        }
+
 
         case hColor: HexColor => <a>
           {hColor.hexString}
