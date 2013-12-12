@@ -7,6 +7,8 @@ From reference 1, "KML is an XML language focused on geographic visualization, i
 
 Specifically KML is used in Goole Earth to display various geographic elements.
 
+The scalakml library provides the KML elements as scala classes. 
+
 ## References
  
 1) OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at http://www.opengeospatial.org/standards/kml
