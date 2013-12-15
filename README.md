@@ -70,6 +70,8 @@ the CDATA elements (example-no-cdata.kml) is also included.
 
 ## Usage
 
+To use the library in your project simply include the scalakml.jar file provided in the bin directory.
+
     object WriteExample4 {
       def main(args: Array[String])  {
         // create a scala Kml object with a Placemark that contains a Point
