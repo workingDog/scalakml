@@ -70,7 +70,8 @@ the CDATA elements (example-no-cdata.kml) is also included.
 
 ## Usage
 
-To use the library in your project simply include the scalakml.jar file provided in the bin directory.
+To use the library in your project simply include the scalakml.jar file provided in the bin directory, and 
+the scalaxal.jar from the lib directory.
 
     object WriteExample4 {
       def main(args: Array[String])  {
