@@ -3,6 +3,7 @@ package com.scalakml.example
 import com.scalakml.io.{KmlPrintWriter, KmlFileReader}
 import xml.{XML, PrettyPrinter}
 import com.scalakml.io._
+
 /**
  * author: Ringo Wathelet
  * Date: 23/01/13 
