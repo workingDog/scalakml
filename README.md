@@ -93,7 +93,7 @@ This scalakml library needs a bit more testing and a bit more documentation.
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
+Currently using scala 2.10.3 and java 1.7 SDK, with IntelliJ IDEA 13.
 
 To generate a new jar file from the source using sbt, type: sbt package
 
