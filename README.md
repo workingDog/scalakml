@@ -95,5 +95,8 @@ it does not include some of the gx: elements from Google listed in reference 2.
 
 I've used scala 2.10.0 and java 1.7 SDK, with IntelliJ IDEA 12.
 
+To generate a new jar file from the source using sbt, type: sbt package
+To generate the scaladoc, type: sbt doc
+
 
 Ringo Wathelet
