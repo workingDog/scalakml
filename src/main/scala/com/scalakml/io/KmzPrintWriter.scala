@@ -38,8 +38,8 @@ import scala.language.postfixOps
 
 /**
  * @author Ringo Wathelet
- * Date: 14/02/13
- * Version: 1
+ *         Date: 14/02/13
+ *         Version: 1
  */
 
 /**
@@ -54,7 +54,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
                      xmlExtractor: Option[XmlExtractor] = Some(KmlToXml),
                      encoding: String = "UTF-8",
                      xmlDecl: Boolean = true,
-                     doctype: dtd.DocType = null)  {
+                     doctype: dtd.DocType = null) {
 
   private val resourcesFiles = collection.mutable.Map.empty[String, FileInputStream]
   private val kmzFile = if (kmzFileName.isDefined) Some(new ZipOutputStream(new FileOutputStream(kmzFileName.get))) else None
@@ -72,7 +72,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param filenameInKmzFile the name the resource file will have in the kmz file
    * @param resourceFilename the name of the file containing the resource
    */
-  def addResourceFile(filenameInKmzFile: String, resourceFilename: String)  {
+  def addResourceFile(filenameInKmzFile: String, resourceFilename: String) {
     resourcesFiles += (filenameInKmzFile -> new FileInputStream(resourceFilename))
   }
 
@@ -93,13 +93,13 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param pretty the optional pretty printer to use
    */
   def writeToKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
-      kmzFileName match {
-        case Some(fileName) => {
-          val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length-4) else fileName
-          writeAllToKmz(Map(baseName+".kml" -> kml), pretty)
-        }
-        case None => Unit
+    kmzFileName match {
+      case Some(fileName) => {
+        val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length - 4) else fileName
+        writeAllToKmz(Map(baseName + ".kml" -> kml), pretty)
       }
+      case None => Unit
+    }
   }
 
   /**
@@ -114,28 +114,28 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param pretty the optional pretty printer to use
    */
   def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, Option[A]], pretty: PrettyPrinter = null) {
-  if ((kmzFileName.isDefined) && (kmzFile.isDefined)) {
-    xmlExtractor match {
-      case Some(extractor) => {
-        for (kmlObj <- kmlMap) {
-          val outputStream = new ByteArrayOutputStream()
-          val tempWriter = new PrintWriter(outputStream)
+    if ((kmzFileName.isDefined) && (kmzFile.isDefined)) {
+      xmlExtractor match {
+        case Some(extractor) => {
+          for (kmlObj <- kmlMap) {
+            val outputStream = new ByteArrayOutputStream()
+            val tempWriter = new PrintWriter(outputStream)
 
-          if (pretty == null)
-            extractor.getXmlFrom(kmlObj._2).foreach(x => XML.write(tempWriter, x, encoding, xmlDecl, doctype))
-          else
-            extractor.getXmlFrom(kmlObj._2).foreach(x => XML.write(tempWriter, XML.loadString(pretty.format(x)), encoding, xmlDecl, doctype))
+            if (pretty == null)
+              extractor.getXmlFrom(kmlObj._2).foreach(x => XML.write(tempWriter, x, encoding, xmlDecl, doctype))
+            else
+              extractor.getXmlFrom(kmlObj._2).foreach(x => XML.write(tempWriter, XML.loadString(pretty.format(x)), encoding, xmlDecl, doctype))
 
-          tempWriter.flush()
-          tempWriter.close()
-          outputStream.close()
+            tempWriter.flush()
+            tempWriter.close()
+            outputStream.close()
 
-          addToKmz(kmlObj._1, outputStream)
+            addToKmz(kmlObj._1, outputStream)
+          }
+          addResourceFilesToKmz()
+          kmzFile.get.close()
         }
-        addResourceFilesToKmz()
-        kmzFile.get.close()
-      }
-      case None => Unit
+        case None => Unit
       }
     }
   }
@@ -171,6 +171,8 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
             in.close()
           }
           zip.closeEntry()
+        } catch {
+          case e: Exception => Unit
         }
       }
       case None => Unit
