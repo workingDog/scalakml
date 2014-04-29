@@ -33,6 +33,7 @@ package com.scalakml.kml
 import com.scalakml.atom._
 import com.scalaxal.xAL.AddressDetails
 import com.scalakml.gx.LatLonQuad
+import scala.collection.mutable
 
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
@@ -1006,8 +1007,8 @@ case class FeaturePart(
 
   /**
    * returns a new object with value added to the sequence
-   * @param value to add
-   * @return a new object with value added to the sequence
+   * @param value to add to styleSelector
+   * @return a new FeaturePart with value added to the sequence of styleSelector
    */
   def addToStyleSelector(value: StyleSelector) = {
     this.copy(styleSelector = if (styleSelector == Nil) (Seq.empty :+ value) else (styleSelector :+ value))
@@ -1063,6 +1064,9 @@ case class Placemark(
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Feature {
 
   def this(geom: Geometry) = this(Option(geom))
+  def this(geom: Geometry, featurePart: FeaturePart) = this(Option(geom), featurePart)
+  def this(geom: Geometry, featurePart: FeaturePart, id: String) = this(Option(geom), featurePart, Option(id))
+  def this(geom: Geometry, featurePart: FeaturePart, id: String, targetId: String) = this(Option(geom), featurePart, Option(id), Option(targetId))
   def this(name: String) = this(None, new FeaturePart(name = Option(name)))
   def this(name: String, geom: Geometry) = this(Option(geom), new FeaturePart(name = Option(name)))
   def this(name: String, geom: Geometry, id: String) = this(Option(geom), new FeaturePart(name = Option(name)), Option(id))
@@ -1460,7 +1464,8 @@ case class Document(featurePart: FeaturePart = new FeaturePart(),
 
   def this(feature: Feature) = this(new FeaturePart(), Nil, (Seq.empty :+ feature))
   def this(name: String, feature: Feature) = this(new FeaturePart(name = Option(name)), Nil, (Seq.empty :+ feature))
-  def this(name: String, feature: Feature, schema: Schema) =
+  def this(name: String, schema: Schema) = this(new FeaturePart(name = Option(name)), (Seq.empty :+ schema), Nil)
+  def this(name: String, schema: Schema, feature: Feature) =
     this(new FeaturePart(name = Option(name)), (Seq.empty :+ schema), (Seq.empty :+ feature))
 
   /**

@@ -33,6 +33,7 @@ package com.scalakml.io
 import java.io._
 import xml.{dtd, XML, PrettyPrinter}
 import scala.Some
+import com.scalakml.kml.Kml
 
 /**
  * @author Ringo Wathelet
@@ -82,6 +83,22 @@ class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.o
     }
   }
 
+  /**
+   * convenience method
+   * @param value the Kml element
+   * @param pretty the pretty printer to use
+   */
+  def write(value: Kml, pretty: PrettyPrinter) = write[Option[Kml]](Option(value), pretty)
+
+  /**
+   * convenience method
+   * @param value the Kml element
+   */
+  def write(value: Kml) = write[Option[Kml]](Option(value))
+
+  /**
+   * close the writer
+   */
   def close() = if (writer.isDefined) writer.get.close()
 
 }

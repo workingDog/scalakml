@@ -36,6 +36,7 @@ import scala.xml._
 import com.scalaxal.io.XalFromXml._
 import scala.language.postfixOps
 import scala.language.implicitConversions
+import scala.collection.mutable
 
 /**
  * @author Ringo Wathelet
