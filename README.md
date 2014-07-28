@@ -5,7 +5,7 @@
 
 From reference 1, "KML is an XML language focused on geographic visualization, including annotation of maps and images. Geographic visualization includes not only the presentation of graphical data on the globe, but also the control of the user's navigation in the sense of where to go and where to look."
 
-Specifically KML is used in Goole Earth to display various geographic elements, such as; images, 
+Specifically KML is used in Google Earth to display various geographic elements, such as; images, 
 place marks, polygon shapes, 3D models, etc...
 
 The scalakml library provides the KML elements as scala classes. 
@@ -82,18 +82,12 @@ the scalaxal.jar from the lib directory.
       }
     }
 
-## Issues
-  One current issue is, scala xml does not preserve CDATA,
-  such that angle brackets and ampersands in CDATA elements are corrupted, Google Earth for example does not like that.
-
 ## Status
-
-This scalakml library needs a bit more testing and a bit more documentation.
 
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-Currently using scala 2.10.3 and java 1.7 SDK, with IntelliJ IDEA 13.
+Using scala 2.11.2 and java 1.7 SDK, with IntelliJ IDEA 13.
 
 To generate a new jar file from the source using sbt, type: sbt package
 
