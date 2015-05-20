@@ -1,8 +1,7 @@
 package com.scalakml.example
 
 
-import com.scalakml.io.{KmlToXml, KmlFromXml, KmlPrintWriter, KmlFileReader}
-import xml.{XML, PrettyPrinter}
+import com.scalakml.io.KmlFileReader
 import com.scalakml.kml.{Point, Placemark}
 
 /**

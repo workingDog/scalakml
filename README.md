@@ -16,27 +16,12 @@ The scalakml library provides the KML elements as scala classes.
 
 2) Google developers KML Reference, at https://developers.google.com/kml/documentation/kmlreference
 
-## History
-
-Scalakml is an exercise I'm doing to learn the basics of scala, the result of which may be useful to others.
-After reading a book on scala I wanted to learn it by coding something. So I decided to write 
-a KML 2.2 library in scala. I quickly found a way to produce such a library without any coding, 
-by using the excellent scalaxb, the XML data-binding tool for Scala, see http://scalaxb.org/. 
-
-However after looking at the generated class names and the way they would have to be used,
-I decided to make a number of changes to the generated code.
-I renamed a lot of the classes to be more like reference 2. 
-As a result of the changes I broke the generated reading and writing of kml. 
-
-To pursue the original idea of coding something to learn scala, I started coding (longhand) the reading and writing of the kml objects.
-From this I learned a lot about scala (and cutting and pasting of code).
-
 ## Packages
 
 The scalakml library consists of 4 major packages:
 - 1) com.scalakml.kml, the set of KML classes
 - 2) com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd
-- 3) com.scalakml.io, the simple reading and writing of kml from/to xml
+- 3) com.scalakml.io, the reading and writing of kml elements
 - 4) com.scalakml.atom, the Atom classes
 
 ## Dependencies
@@ -77,17 +62,19 @@ the scalaxal.jar from the lib directory.
       def main(args: Array[String])  {
         // create a scala Kml object with a Placemark that contains a Point
         val kml = new Kml(new Placemark("Sydney", new Point(RelativeToGround, 151.21037, -33.8526, 12345.0)))
-        // write the kml object to System.out as xml
-        new KmlPrintWriter().write(Option(kml), new PrettyPrinter(80, 3))
+        // write the kml object to System.out 
+        new KmlPrintWriter().write(kml, new PrettyPrinter(80, 3))
       }
     }
 
 ## Status
 
+Stable.
+
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-Using scala 2.11.2 and java 1.7 SDK, with IntelliJ IDEA 13.
+Using scala 2.11.6 and java 8 SDK, with IntelliJ IDEA 14.
 
 To generate a new jar file from the source using sbt, type: sbt package
 
