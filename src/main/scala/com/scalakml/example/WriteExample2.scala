@@ -26,7 +26,7 @@ object WriteExample2 {
     // create a kml root object with the placemark as feature
     val kml = Kml().copy(feature = Option(placemark))
     // write the kml to the output file
-    new KmlPrintWriter("./kml-files/Sydney-oz2.kml").write(Option(kml), new PrettyPrinter(80, 3))
+    new KmlPrintWriter("./kml-files/Sydney-oz2.kml").write(kml, new PrettyPrinter(80, 3))
     println("\n....WriteExample2 done...")
   }
 }

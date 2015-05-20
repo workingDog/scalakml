@@ -1,12 +1,11 @@
 package com.scalakml.example
 
-import com.scalakml.kml._
+
 import com.scalakml.kml.FeaturePart
-import com.scalakml.kml.Point
 import com.scalakml.kml.Placemark
-import com.scalakml.io.KmlPrintWriter
-import scala.Some
 import xml.PrettyPrinter
+import com.scalakml.io.KmlPrintWriter
+import com.scalakml.kml._
 
 /**
  * Author: Ringo Wathelet
