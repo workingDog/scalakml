@@ -32,7 +32,6 @@ package com.scalakml.io
 
 import java.io._
 import xml.{dtd, XML, PrettyPrinter}
-import scala.Some
 import com.scalakml.kml.Kml
 
 /**
