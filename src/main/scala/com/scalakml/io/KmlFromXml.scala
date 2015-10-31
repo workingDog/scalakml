@@ -858,15 +858,21 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else Some(new Point(
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
-      coordinates = makeCoordinates(nodeSeq \ "coordinates"),
+      coordinates = makeCoordinate(nodeSeq \ "coordinates"),
       extrude = getBoolean(nodeSeq \ "extrude"),
       altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_))))
   }
 
-  def makeCoordinates(nodeSeq: NodeSeq): Option[Seq[Location]] = {
+  def makeCoordinate(nodeSeq: NodeSeq): Option[Coordinate] = {
     if (nodeSeq.isEmpty) None
     else
-      Some((nodeSeq.text.trim split "\\s+").map(x => com.scalakml.kml.Location.fromCsString(x)).flatten toSeq)
+      Coordinate.fromCsString(nodeSeq.text.trim)
+  }
+
+  def makeCoordinates(nodeSeq: NodeSeq): Option[Seq[Coordinate]] = {
+    if (nodeSeq.isEmpty) None
+    else
+      Some((nodeSeq.text.trim split "\\s+").map(x => Coordinate.fromCsString(x)).flatten toSeq)
   }
 
   def makeLocation(nodeSeq: NodeSeq): Option[Location] = {

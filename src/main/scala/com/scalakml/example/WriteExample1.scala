@@ -19,7 +19,7 @@ object WriteExample1 {
     println("....WriteExample1 start...\n")
 
     // create a Point at a location
-    val point = Point(coordinates = Option(Seq.empty :+ new Location(151.21037, -33.8526)))
+    val point = Point(coordinates = Option(new Coordinate(151.21037, -33.8526)))
     // create a Placemark with the point, and a name
     val placemark = Placemark(Option(point), FeaturePart(name = Option("Sydney")))
     // create a kml root object with the placemark

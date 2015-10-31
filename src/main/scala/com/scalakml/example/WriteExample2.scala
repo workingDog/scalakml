@@ -15,12 +15,11 @@ import xml.PrettyPrinter
  * Version: 1
  */
 
-
 object WriteExample2 {
   def main(args: Array[String])  {
     println("....WriteExample2 start...\n")
     // create a Point at a location
-    val point = Point() addToCoordinates (new Location(151.21037, -33.8526))
+    val point = new Point(new Coordinate(151.21037, -33.8526))
     // create a Placemark with the point as geometry
     val placemark = Placemark().copy(geometry = Option(point))
     // create a kml root object with the placemark as feature

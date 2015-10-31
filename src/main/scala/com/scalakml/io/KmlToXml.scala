@@ -770,7 +770,7 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
-  implicit object CoordinatesToXml extends KmlToXml[Option[Seq[Location]]] {
+  implicit object LocationsToXml extends KmlToXml[Option[Seq[Location]]] {
     def toXml(coordsOption: Option[Seq[Location]]): NodeSeq = {
       coordsOption match {
         case Some(coords) =>
@@ -780,6 +780,38 @@ object KmlToXml extends XmlExtractor {
               x.longitude.get.toString + "," + x.latitude.get.toString + (if (x.altitude.isDefined) "," + x.altitude.get.toString else "") + " \n"
             }
           }}
+          </coordinates>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
+  implicit object CoordinatesToXml extends KmlToXml[Option[Seq[Coordinate]]] {
+    def toXml(coordsOption: Option[Seq[Coordinate]]): NodeSeq = {
+      coordsOption match {
+        case Some(coords) =>
+          <coordinates>
+            {for (x <- coords) yield {
+            if (x.longitude.isDefined && x.latitude.isDefined) {
+              x.longitude.get.toString + "," + x.latitude.get.toString + (if (x.altitude.isDefined) "," + x.altitude.get.toString else "") + " \n"
+            }
+          }}
+          </coordinates>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
+  implicit object CoordinateToXml extends KmlToXml[Option[Coordinate]] {
+    def toXml(coordsOption: Option[Coordinate]): NodeSeq = {
+      coordsOption match {
+        case Some(coord) =>
+          <coordinates>
+            {
+            if (coord.longitude.isDefined && coord.latitude.isDefined) {
+              coord.longitude.get.toString + "," + coord.latitude.get.toString + (if (coord.altitude.isDefined) "," + coord.altitude.get.toString else "") + " \n"
+            }
+          }
           </coordinates>
         case None => NodeSeq.Empty
       }

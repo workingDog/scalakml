@@ -2007,7 +2007,7 @@ Do not include spaces between the three values that describe a coordinate
  */
 case class Point(extrude: Option[Boolean] = None,
   altitudeMode: Option[AltitudeMode] = None,
-  coordinates: Option[Seq[Location]] = None,
+  coordinates: Option[Coordinate] = None,
   id: Option[String] = None,
   targetId: Option[String] = None,
   pointSimpleExtensionGroup: Seq[Any] = Nil,
@@ -2016,26 +2016,12 @@ case class Point(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this(lon: Double, lat: Double) = this(None, None, Option(Seq.empty :+ new Location(lon, lat)))
-  def this(lon: Double, lat: Double, alt: Double) = this(None, None, Option(Seq.empty :+ new Location(lon, lat, alt)))
-  def this(location: Location) = this(None, None, Option(Seq.empty :+ location))
-  def this(altMode: AltitudeMode, lon: Double, lat: Double, alt: Double) = this(None, Option(altMode), Option(Seq.empty :+ new Location(lon, lat, alt)))
-  def this(coordinates: Seq[Location]) = this(None, None, Option(coordinates))
-  def this(altMode: AltitudeMode, locations: Seq[Location]) = this(None,  Option(altMode), Option(locations))
-  def this(extrude: Boolean, altMode: AltitudeMode, coordinates: Seq[Location]) = this(Option(extrude),  Option(altMode), Option(coordinates))
-
-  /**
-   * returns a new object with a new Location added to the sequence of coordinates
-   * @param value the new Location to add
-   * @return a new object with a new Location added to the sequence of coordinates
-   */
-  def addToCoordinates(value: Location) = {
-    this.copy(coordinates =
-      coordinates match {
-        case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
-        case None => Option(Seq.empty :+ value)
-      })
-  }
+  def this(lon: Double, lat: Double) = this(None, None, Option(new Coordinate(lon, lat)))
+  def this(lon: Double, lat: Double, alt: Double) = this(None, None, Option(new Coordinate(lon, lat, alt)))
+  def this(altMode: AltitudeMode, lon: Double, lat: Double, alt: Double) = this(None, Option(altMode), Option(new Coordinate(lon, lat, alt)))
+  def this(coordinates: Coordinate) = this(None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, coordinates: Coordinate) = this(None,  Option(altMode), Option(coordinates))
+  def this(extrude: Boolean, altMode: AltitudeMode, coordinates: Coordinate) = this(Option(extrude),  Option(altMode), Option(coordinates))
 
 }
 
@@ -2060,7 +2046,7 @@ absolute - Sets the altitude of the coordinate relative to sea level, regardless
 case class LineString(extrude: Option[Boolean] = None,
   tessellate: Option[Boolean] = None,
   altitudeMode: Option[AltitudeMode] = None,
-  coordinates: Option[Seq[Location]] = None,
+  coordinates: Option[Seq[Coordinate]] = None,
   id: Option[String] = None,
   targetId: Option[String] = None,
   lineStringSimpleExtensionGroup: Seq[Any] = Nil,
@@ -2069,22 +2055,22 @@ case class LineString(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this(coordinates: Seq[Location]) = this(None, None, None, Option(coordinates))
-  def this(altMode: AltitudeMode, coordinates: Seq[Location]) = this(None, None, Option(altMode), Option(coordinates))
-  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Location]) = this(Option(extrude),  None, Option(altMode), Option(locations))
+  def this(coordinates: Seq[Coordinate]) = this(None, None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, coordinates: Seq[Coordinate]) = this(None, None, Option(altMode), Option(coordinates))
+  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Coordinate]) = this(Option(extrude),  None, Option(altMode), Option(locations))
 
-  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location]) =
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Coordinate]) =
     this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates))
 
-  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Coordinate], id: String) =
     this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates), Option(id))
 
   /**
-   * returns a new object with a new Location added to the sequence of coordinates
-   * @param value the new Location to add
-   * @return a new object with a new Location added to the sequence of coordinates
+   * returns a new object with a new Coordinate added to the sequence of coordinates
+   * @param value the new Coordinate to add
+   * @return a new object with a new Coordinate added to the sequence of coordinates
    */
-  def addToCoordinates(value: Location) = {
+  def addToCoordinates(value: Coordinate) = {
     this.copy(coordinates =
       coordinates match {
         case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
@@ -2114,7 +2100,7 @@ absolute - Sets the altitude of the coordinate relative to sea level, regardless
 case class LinearRing(extrude: Option[Boolean] = None,
   tessellate: Option[Boolean] = None,
   altitudeMode: Option[AltitudeMode] = None,
-  coordinates: Option[Seq[Location]] = None,
+  coordinates: Option[Seq[Coordinate]] = None,
   id: Option[String] = None,
   targetId: Option[String] = None,
   linearRingSimpleExtensionGroup: Seq[Any] = Nil,
@@ -2123,22 +2109,22 @@ case class LinearRing(extrude: Option[Boolean] = None,
   geometryObjectExtensionGroup: Seq[Any] = Nil,
   objectSimpleExtensionGroup: Seq[Any] = Nil) extends Geometry {
 
-  def this(coordinates: Seq[Location]) = this(None, None, None, Option(coordinates))
-  def this(altMode: AltitudeMode, coordinates: Seq[Location]) = this(None, None, Option(altMode), Option(coordinates))
-  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Location]) = this(Option(extrude),  None, Option(altMode), Option(locations))
+  def this(coordinates: Seq[Coordinate]) = this(None, None, None, Option(coordinates))
+  def this(altMode: AltitudeMode, coordinates: Seq[Coordinate]) = this(None, None, Option(altMode), Option(coordinates))
+  def this(extrude: Boolean, altMode: AltitudeMode, locations: Seq[Coordinate]) = this(Option(extrude),  None, Option(altMode), Option(locations))
 
-  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location]) =
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Coordinate]) =
     this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates))
 
-  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Location], id: String) =
+  def this(extrude: Boolean, tessellate: Boolean, altitudeMode: AltitudeMode, coordinates: Seq[Coordinate], id: String) =
     this(Option(extrude), Option(tessellate), Option(altitudeMode), Option(coordinates), Option(id))
 
   /**
-   * returns a new object with a new Location added to the sequence of coordinates
-   * @param value the new Location to add
-   * @return a new object with a new Location added to the sequence of coordinates
+   * returns a new object with a new Coordinate added to the sequence of coordinates
+   * @param value the new Coordinate to add
+   * @return a new object with a new Coordinate added to the sequence of coordinates
    */
-  def addToCoordinates(value: Location) = {
+  def addToCoordinates(value: Coordinate) = {
     this.copy(coordinates =
       coordinates match {
         case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)
@@ -2271,69 +2257,6 @@ case class Model(altitudeMode: Option[AltitudeMode] = None,
 }
 
 /**
- * Specifies the exact coordinates of the Model's origin in latitude, longitude, and altitude.
- * Latitude and longitude measurements are standard lat-lon projection with WGS84 datum.
- * Altitude is distance above the earth's surface, in meters, and is interpreted according
- * to <altitudeMode> or <gx:altitudeMode>.
- *
- */
-object Location {
-
-  private def fromStringArray(lonLatAlt: Array[String]) = {
-    if (lonLatAlt.length < 2) None
-    else {
-      val lon = if (lonLatAlt.isDefinedAt(0)) getOptionDouble(lonLatAlt(0)) else None
-      val lat = if (lonLatAlt.isDefinedAt(1)) getOptionDouble(lonLatAlt(1)) else None
-      var alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
-      if (!lon.isDefined || !lat.isDefined) None
-      else {
-        if (!alt.isDefined) alt = Option(0.0)
-        Option(Location(lon, lat, alt))
-      }
-    }
-  }
-
-  private def getOptionDouble(s: String): Option[Double] = {
-    if (s == null) None
-    else
-    if (s.trim.isEmpty) None
-    else try {
-      Option(s.trim.toDouble)
-    } catch {
-      case _: Throwable => None
-    }
-  }
-
-//  def fromTuple(t: Tuple3[String,String,String]) = fromStringArray(Array(t._1.toString,t._2.toString,t._3.toString))
-
-  /**
-   * get a location from a comma separated string of lon, lat, alt (optional)
-   * @param coordString a comma separated string
-   * @return a Location with lon, lat, alt (optional)
-   */
-  def fromCsString(coordString: String) = fromStringArray(coordString split ",")
-  /**
-   * get a location from a blank separated string of lon, lat, alt (optional)
-   * @param coordString a blank separated string
-   * @return a Location with lon, lat, alt (optional)
-   */
-  def fromBsString(coordString: String) = fromStringArray(coordString split "\\s+")
-
-//  def fromMGRS(coord: String) = {
-//    // TODO
-//  }
-//
-//  def fromUTM(coord: String) = {
-//    // TODO
-//  }
-//
-//  def fromECEF(coord: String) = {
-//    // TODO
-//  }
-
-}
-
-/**
  *
  * Specifies the exact coordinates of the Model's origin in latitude, longitude, and altitude.
  * Latitude and longitude measurements are standard lat-lon projection with WGS84 datum.
@@ -2366,6 +2289,76 @@ case class Location(longitude: Option[Double] = None,
 
   def llaToString() = this.longitude.getOrElse("") + "," + this.latitude.getOrElse("") + "," + this.altitude.getOrElse("")
 
+}
+
+object Coordinate {
+
+  private def fromStringArray(lonLatAlt: Array[String]) = {
+    if (lonLatAlt.length < 2) None
+    else {
+      val lon = if (lonLatAlt.isDefinedAt(0)) getOptionDouble(lonLatAlt(0)) else None
+      val lat = if (lonLatAlt.isDefinedAt(1)) getOptionDouble(lonLatAlt(1)) else None
+      var alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
+      if (!lon.isDefined || !lat.isDefined) None
+      else {
+        if (!alt.isDefined) alt = Option(0.0)
+        Option(Coordinate(lon, lat, alt))
+      }
+    }
+  }
+
+  private def getOptionDouble(s: String): Option[Double] = {
+    if (s == null) None
+    else
+    if (s.trim.isEmpty) None
+    else try {
+      Option(s.trim.toDouble)
+    } catch {
+      case _: Throwable => None
+    }
+  }
+
+  /**
+    * get a Coordinate from a comma separated string of lon, lat, alt (optional)
+    * @param coordString a comma separated string
+    * @return a Coordinate with lon, lat, alt (optional)
+    */
+  def fromCsString(coordString: String) = fromStringArray(coordString split ",")
+  /**
+    * get a Coordinate from a blank separated string of lon, lat, alt (optional)
+    * @param coordString a blank separated string
+    * @return a Coordinate with lon, lat, alt (optional)
+    */
+  def fromBsString(coordString: String) = fromStringArray(coordString split "\\s+")
+
+  //  def fromMGRS(coord: String) = {
+  //    // TODO
+  //  }
+  //
+  //  def fromUTM(coord: String) = {
+  //    // TODO
+  //  }
+  //
+  //  def fromECEF(coord: String) = {
+  //    // TODO
+  //  }
+
+}
+/**
+  *
+  * A coordinate in latitude, longitude, and altitude.
+  * Latitude and longitude measurements are standard lat-lon projection with WGS84 datum.
+  * Altitude is distance above the earth's surface, in meters, and is interpreted according
+  * to <altitudeMode> or <gx:altitudeMode>.
+  *
+  * @param longitude in decimal degrees
+  * @param latitude in decimal degrees
+  * @param altitude is distance above the earth's surface, in meters, and is interpreted according to <altitudeMode> or <gx:altitudeMode>.
+  */
+case class Coordinate(longitude: Option[Double] = None, latitude: Option[Double] = None, altitude: Option[Double] = None) {
+
+  def this(longitude: Double, latitude: Double, altitude: Double) = this(Option(longitude), Option(latitude), Option(altitude))
+  def this(longitude: Double, latitude: Double) = this(Option(longitude), Option(latitude))
 }
 
 /**

@@ -185,19 +185,19 @@ case class Wait(duration: Option[Double] = None,
 
 }
 
-case class LatLonQuad(coordinates: Option[Seq[Location]] = None,
+case class LatLonQuad(coordinates: Option[Seq[Coordinate]] = None,
                       id: Option[String] = None,
                       targetId: Option[String] = None,
                       objectSimpleExtensionGroup: Seq[Any] = Nil) extends KmlObject {
 
-  def this(coordinates: Seq[Location]) = this(Option(coordinates))
+  def this(coordinates: Seq[Coordinate]) = this(Option(coordinates))
 
   /**
    * returns a new object with a new Location added to the sequence of coordinates
    * @param value the new Location to add
    * @return a new object with a new Location added to the sequence of coordinates
    */
-  def addToCoordinates(value: Location) = {
+  def addToCoordinates(value: Coordinate) = {
     this.copy(coordinates =
       coordinates match {
         case Some(x) => if (x == Nil) Option(Seq.empty :+ value) else Option(x :+ value)

@@ -20,7 +20,7 @@ object ReadExample2 {
     // get the placemark point
     val point = placemark.geometry.get.asInstanceOf[Point]
     // print the point coordinates
-    for (x <- point.coordinates.get) println("coordinate: " + x.llaToString)
+    println("coordinate: " + point.coordinates)
 
     println("\n....ReadExample2 done...")
   }
