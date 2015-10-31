@@ -74,7 +74,7 @@ Stable.
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-Using scala 2.11.6 and java 8 SDK, with IntelliJ IDEA 14.
+Using scala 2.11.7 and java 8 SDK
 
 To generate a new jar file from the source using sbt, type: sbt package
 
