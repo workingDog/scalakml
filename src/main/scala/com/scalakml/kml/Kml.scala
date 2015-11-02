@@ -2287,7 +2287,7 @@ case class Location(longitude: Option[Double] = None,
 
   def this(longitude: Double, latitude: Double) = this(Option(longitude), Option(latitude))
 
-  def llaToString() = this.longitude.getOrElse("") + "," + this.latitude.getOrElse("") + "," + this.altitude.getOrElse("")
+  def llaToString() = this.longitude.getOrElse("") + "," + this.latitude.getOrElse("") + (if (this.altitude.isDefined) "," + this.altitude.get else "")
 
 }
 
@@ -2301,8 +2301,7 @@ object Coordinate {
       var alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
       if (!lon.isDefined || !lat.isDefined) None
       else {
-        if (!alt.isDefined) alt = Option(0.0)
-        Option(Coordinate(lon, lat, alt))
+        if (alt.isDefined) Option(Coordinate(lon, lat, alt)) else Option(Coordinate(lon, lat))
       }
     }
   }

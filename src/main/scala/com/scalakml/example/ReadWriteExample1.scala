@@ -19,7 +19,7 @@ object ReadWriteExample1 {
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/example-no-cdata.kml")
 
     // write the kml to an output file.
-//    if (kml.isDefined) new KmlPrintWriter("./kml-files/scalakml_KML_Samples.kml").write(kml, new PrettyPrinter(80, 3))
+//    if (kml.isDefined) new KmlPrintWriter("./kml-files/KML_Samples.kml").write(kml, new PrettyPrinter(80, 3))
 
     // write the kml to System.out
     if (kml.isDefined) new KmlPrintWriter().write(kml, new PrettyPrinter(80, 3))
