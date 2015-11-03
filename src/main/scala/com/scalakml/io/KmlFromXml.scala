@@ -182,7 +182,7 @@ object KmlFromXml extends KmlExtractor {
   def makeContainers(nodeSeq: NodeSeq, containerType: ContainerTypes): Seq[Option[Container]] = {
     (nodeSeq collect {
       case x => makeContainer(x, containerType)
-    }) filter (_ != None)
+    }) filter (_.isDefined)
   }
 
   def makeContainer(nodeSeq: NodeSeq, containerType: ContainerTypes): Option[Container] = {
@@ -211,7 +211,7 @@ object KmlFromXml extends KmlExtractor {
    */
   def makeFeatures(nodeSeq: NodeSeq, featureType: FeatureTypes): Seq[Option[Feature]] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (nodeSeq collect { case x => makeFeature(x, featureType) }) filter (_ != None)
+    else (nodeSeq collect { case x => makeFeature(x, featureType) }) filter (_.isDefined)
   }
 
   /**
@@ -256,7 +256,7 @@ object KmlFromXml extends KmlExtractor {
   def makeKmlObjects(nodeSeq: NodeSeq, kmlObjectType: KmlObjectTypes): Seq[Option[KmlObject]] = {
     (nodeSeq collect {
       case x => makeKmlObject(x, kmlObjectType)
-    }) filter (_ != None)
+    }) filter (_.isDefined)
   }
 
   def makeKmlObject(nodeSeq: NodeSeq, kmlObjectType: KmlObjectTypes): Option[KmlObject] = {
@@ -590,11 +590,11 @@ object KmlFromXml extends KmlExtractor {
     else {
       val style = nodeSeq \ "Style"
       style match {
-        case x if !x.isEmpty => makeStyle(style)
+        case x if x.nonEmpty => makeStyle(style)
         case _ =>
           val styleMap = nodeSeq \ "StyleMap"
           styleMap match {
-            case x if !x.isEmpty => makeStyleMap(styleMap)
+            case x if x.nonEmpty => makeStyleMap(styleMap)
             case _ => None
           }
       }
@@ -738,10 +738,10 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else
       (nodeSeq \ "TimeSpan") match {
-        case x if !x.isEmpty => makeTimeSpan(x)
+        case x if x.nonEmpty => makeTimeSpan(x)
         case _ => {
           (nodeSeq \ "TimeStamp") match {
-            case x if !x.isEmpty => makeTimeStamp(x)
+            case x if x.nonEmpty => makeTimeStamp(x)
             case _ => None
           }
         }
@@ -768,10 +768,10 @@ object KmlFromXml extends KmlExtractor {
     if (nodeSeq.isEmpty) None
     else
       (nodeSeq \ "Camera") match {
-        case x if !x.isEmpty => makeCamera(x)
+        case x if x.nonEmpty => makeCamera(x)
         case _ =>
           (nodeSeq \ "LookAt") match {
-            case x if !x.isEmpty => makeLookAt(x)
+            case x if x.nonEmpty => makeLookAt(x)
             case _ => None
           }
       }
@@ -872,7 +872,7 @@ object KmlFromXml extends KmlExtractor {
   def makeCoordinates(nodeSeq: NodeSeq): Option[Seq[Coordinate]] = {
     if (nodeSeq.isEmpty) None
     else
-      Some((nodeSeq.text.trim split "\\s+").map(x => Coordinate.fromCsString(x)).flatten toSeq)
+      Some((nodeSeq.text.trim split "\\s+").flatMap(x => Coordinate.fromCsString(x)) toSeq)
   }
 
   def makeLocation(nodeSeq: NodeSeq): Option[Location] = {
@@ -910,7 +910,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeBoundaries(nodeSeq: NodeSeq): Seq[Boundary] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else (for(x <- nodeSeq \ "LinearRing") yield Some(new Boundary(linearRing = makeLinearRing(x)))) flatten
+    else nodeSeq \ "LinearRing" collect { case x => Some(new Boundary(linearRing = makeLinearRing(x))) } flatten
   }
 
   def makePolygon(nodeSeq: NodeSeq): Option[Polygon] = {
@@ -1010,7 +1010,7 @@ object KmlFromXml extends KmlExtractor {
     else
       (nodeSeq collect {
         case x => makeGeometry(x, geometryTypes)
-      }) filter (_ != None)
+      }) filter (_.isDefined)
   }
 
   def makeViewVolume(nodeSeq: NodeSeq): Option[ViewVolume] = {
@@ -1119,7 +1119,7 @@ object KmlFromXml extends KmlExtractor {
   def makeTourPrimitives(nodeSeq: NodeSeq, tourPrimitiveType: TourPrimitiveTypes): Seq[Option[TourPrimitive]] = {
     (nodeSeq collect {
       case x => makeTourPrimitive(x, tourPrimitiveType)
-    }) filter (_ != None)
+    }) filter (_.isDefined)
   }
 
   def makeTourPrimitive(nodeSeq: NodeSeq, tourPrimitiveType: TourPrimitiveTypes): Option[TourPrimitive] = {
