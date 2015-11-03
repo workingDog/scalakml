@@ -910,7 +910,7 @@ object KmlFromXml extends KmlExtractor {
 
   def makeBoundaries(nodeSeq: NodeSeq): Seq[Boundary] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else nodeSeq collect { case x => makeBoundary(x) } flatten
+    else (for(x <- nodeSeq \ "LinearRing") yield Some(new Boundary(linearRing = makeLinearRing(x)))) flatten
   }
 
   def makePolygon(nodeSeq: NodeSeq): Option[Polygon] = {
