@@ -835,7 +835,7 @@ object KmlObjectTypes extends Enumeration {
  *
  * @see Object Units and <hotSpot> in <IconStyle>, <ScreenOverlay>
  */
-case class Vec2(val x: Double, val y: Double, val xunits: Units, val yunits: Units) {
+case class Vec2(x: Double, y: Double, xunits: Units, yunits: Units) {
   def this() = this(0.0, 0.0, Fraction, Fraction)
 }
 
@@ -2293,6 +2293,20 @@ case class Location(longitude: Option[Double] = None,
 
 object Coordinate {
 
+  /**
+    * get a Coordinate from a comma separated string of lon, lat, alt (optional)
+    * @param coordString a comma separated string
+    * @return a Coordinate with lon, lat, alt (optional)
+    */
+  def fromCsString(coordString: String) = fromStringArray(coordString split ",")
+
+  /**
+    * get a Coordinate from a blank separated string of lon, lat, alt (optional)
+    * @param coordString a blank separated string
+    * @return a Coordinate with lon, lat, alt (optional)
+    */
+  def fromBsString(coordString: String) = fromStringArray(coordString split "\\s+")
+
   private def fromStringArray(lonLatAlt: Array[String]) = {
     if (lonLatAlt.length < 2) None
     else {
@@ -2316,19 +2330,6 @@ object Coordinate {
       case _: Throwable => None
     }
   }
-
-  /**
-    * get a Coordinate from a comma separated string of lon, lat, alt (optional)
-    * @param coordString a comma separated string
-    * @return a Coordinate with lon, lat, alt (optional)
-    */
-  def fromCsString(coordString: String) = fromStringArray(coordString split ",")
-  /**
-    * get a Coordinate from a blank separated string of lon, lat, alt (optional)
-    * @param coordString a blank separated string
-    * @return a Coordinate with lon, lat, alt (optional)
-    */
-  def fromBsString(coordString: String) = fromStringArray(coordString split "\\s+")
 
   //  def fromMGRS(coord: String) = {
   //    // TODO
