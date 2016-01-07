@@ -5,7 +5,7 @@ import com.scalaxal.xAL.{AddressLine, AddressLines, Address, AddressDetails}
 
 
 /**
-  * a set of implicits. Use sparingly.
+  * a set of implicits. Use with care.
   *
   */
 object KmlImplicits {
