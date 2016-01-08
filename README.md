@@ -8,7 +8,7 @@ From reference 1, "KML is an XML language focused on geographic visualization, i
 Specifically KML is used in Google Earth to display various geographic elements, such as; images, 
 place marks, polygon shapes, 3D models, etc...
 
-The scalakml library provides the KML elements as scala classes. 
+The **scalakml** library provides the KML elements as scala classes. 
 
 ## References
  
@@ -18,18 +18,21 @@ The scalakml library provides the KML elements as scala classes.
 
 ## Packages
 
-The scalakml library consists of 4 major packages:
+The **scalakml** library consists of 4 major packages:
 - 1) com.scalakml.kml, the set of KML classes
 - 2) com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd
 - 3) com.scalakml.io, the reading and writing of kml elements
 - 4) com.scalakml.atom, the Atom classes
 
+To generate a new jar file from the source using sbt, type: sbt package. 
+The generated jar will be in: "./target/scala-2.11/sbt-0.13/scalakml-1.0.jar"
+To generate the scaladoc, type: sbt doc
+
 ## Dependencies
 
-scalakml depends on a companion library called scalaxal. This library has the xAL classes 
-needed for the AddressDetails. scalaxal is developed in 
-another repository, see https://github.com/workingDog/scalaxal. 
-The scalaxal.jar is included here in the lib directory.
+**scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal).
+This library has the xAL classes needed for the AddressDetails. 
+For convenience, the **scalaxal-1.0.jar** is included here in the lib directory.
 
 ## Documentation
 
@@ -49,14 +52,13 @@ The following (Feature) classes use FeaturePart:
 Document, Folder, Placemark, NetworkLink, PhotoOverlay, ScreenOverlay, GroundOverlay and Tour.
 A FeaturePart can be created and is typically added as an element to: Document, Folder, Placemark, etc...
 
-Example kml files from http://code.google.com/p/kml-samples/ are included in the kml-files directory.
+Example [kml files] (http://code.google.com/p/kml-samples/) are included in the kml-files directory.
 The file KML_Samples.kml contains CDATA elements. The same file without
 the CDATA elements (example-no-cdata.kml) is also included.
 
 ## Usage
 
-To use the library in your project simply include the scalakml.jar file provided in the bin directory, and 
-the scalaxal.jar from the lib directory.
+To use the library in your project simply include the scalakml-1.0.jar and the scalaxal-1.0.jar.
 
     object WriteExample4 {
       def main(args: Array[String])  {
@@ -75,10 +77,6 @@ The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
 Using scala 2.11.7 and java 8 SDK
-
-To generate a new jar file from the source using sbt, type: sbt package
-
-To generate the scaladoc, type: sbt doc
 
 
 Ringo Wathelet
