@@ -38,7 +38,7 @@ See also build.sbt for the scala xml module dependency.
 ## Documentation
 
 See reference 1 and 2 for the full documentation of kml.
-I've copied and pasted most of the documentations from the references into the classes.
+Most of the kml documentation are included the code documentation.
 
 Most kml elements described in the references have been implemented with the same or similar class name.
 There is one exception, and that is the FeaturePart.
