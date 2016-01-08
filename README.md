@@ -33,11 +33,12 @@ The generated jar will be in: "./target/scala-2.11/sbt-0.13/scalakml-1.0.jar"
 This library has the xAL classes needed for the AddressDetails. 
 For convenience, the **scalaxal-1.0.jar** is included here in the lib directory.
 
+See also build.sbt for the scala xml module dependency.
+
 ## Documentation
 
 See reference 1 and 2 for the full documentation of kml.
-I've copied and pasted most of the documentations from the references into the classes,
-but there is still a bit more to be done.
+I've copied and pasted most of the documentations from the references into the classes.
 
 Most kml elements described in the references have been implemented with the same or similar class name.
 There is one exception, and that is the FeaturePart.
