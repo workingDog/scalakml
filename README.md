@@ -26,7 +26,6 @@ The **scalakml** library consists of 4 major packages:
 
 To generate a new jar file from the source using sbt, type: sbt package. 
 The generated jar will be in: "./target/scala-2.11/sbt-0.13/scalakml-1.0.jar"
-To generate the scaladoc, type: sbt doc
 
 ## Dependencies
 
@@ -55,6 +54,8 @@ A FeaturePart can be created and is typically added as an element to: Document, 
 Example [kml files] (http://code.google.com/p/kml-samples/) are included in the kml-files directory.
 The file KML_Samples.kml contains CDATA elements. The same file without
 the CDATA elements (example-no-cdata.kml) is also included.
+
+To generate the scaladoc, type: sbt doc
 
 ## Usage
 
