@@ -1,5 +1,7 @@
 package com.scalakml
 
+import java.io.Writer
+
 import com.scalakml.kml._
 import com.scalaxal.xAL.{AddressLine, AddressLines, Address, AddressDetails}
 
@@ -138,4 +140,7 @@ object KmlImplicits {
   implicit def SchemaDataToSchemaDataOp(value: SchemaData): Option[SchemaData] = Option(value)
 
   implicit def DataToDataOp(value: Data): Option[Data] = Option(value)
+
+  implicit def WriterToWriterOp(value: Writer): Option[Writer] = Option(value)
+
 }

@@ -44,21 +44,45 @@ import com.scalakml.kml.Kml
 /**
  * writes the kml element object to xml representation
  *
- * @param writer the PrintWriter to use
- * @param encoding the encoding
- * @param xmlDecl if true, write xml declaration
- * @param doctype if not null, write doctype declaration
+ * @param writer the Writer to use, e.g PrintWriter, StringWriter, ...default PrintWriter(System.out)
+ * @param encoding the encoding, default "UTF-8"
+ * @param xmlDecl if true, write xml declaration, default true
+ * @param doctype if not null, write doctype declaration, default null
  */
-class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.out)),
+class KmlPrintWriter(writer: Option[Writer] = Some(new PrintWriter(System.out)),
                      xmlExtractor: Option[XmlExtractor] = Some(KmlToXml),
                      encoding: String = "UTF-8",
                      xmlDecl: Boolean = true,
                      doctype: dtd.DocType = null) {
 
-// TODO maybe default should be to null device or None
+  /**
+    * writes the kml element object as xml to a file.
+    * Will write to System.out if fileName is not defined
+    *
+    * @param fileName the file name to write to
+    */
   def this(fileName: Option[String]) = this(Some(if (fileName.isDefined) new PrintWriter(new File(fileName.get)) else new PrintWriter(System.out)))
 
+  /**
+    * writes the kml element object as xml to a file.
+    * Will write to System.out if fileName is not defined
+    *
+    * @param fileName the file name to write to
+    */
   def this(fileName: String) = this(Option(fileName))
+
+  /**
+   * convenience method
+   * @param value the Kml element
+   * @param pretty the pretty printer to use
+   */
+  def write(value: Kml, pretty: PrettyPrinter) = write[Option[Kml]](Option(value), pretty)
+
+  /**
+   * convenience method
+   * @param value the Kml element
+   */
+  def write(value: Kml) = write[Option[Kml]](Option(value))
 
   /**
    * writes the Kml element to xml
@@ -81,19 +105,6 @@ class KmlPrintWriter(writer: Option[PrintWriter] = Some(new PrintWriter(System.o
       }
     }
   }
-
-  /**
-   * convenience method
-   * @param value the Kml element
-   * @param pretty the pretty printer to use
-   */
-  def write(value: Kml, pretty: PrettyPrinter) = write[Option[Kml]](Option(value), pretty)
-
-  /**
-   * convenience method
-   * @param value the Kml element
-   */
-  def write(value: Kml) = write[Option[Kml]](Option(value))
 
   /**
    * close the writer
