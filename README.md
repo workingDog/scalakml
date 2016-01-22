@@ -71,7 +71,6 @@ To use the library in your project simply include the scalakml-1.0.jar and the s
       }
     }
 
-
 Note, in some situations it maybe an overkill to depend on the **scalaxal** library just for the "addressDetails".
 It can sometimes be adequate to use just the "address" field.
 
@@ -87,7 +86,7 @@ in KmlFromXml.scala:
 
 in KmlToXml.scala:
 
-    comment out line 38, 39 and 1023 and the AddressDetailsToXml implicit starting at line 79
+    comment out line 38, 39 and 1022 and the AddressDetailsToXml implicit starting at line 79
 
 in KmlImplicits:
 
