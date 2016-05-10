@@ -12,9 +12,9 @@ The **scalakml** library provides the KML elements as scala classes.
 
 ## References
  
-1) OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson, at http://www.opengeospatial.org/standards/kml
+1) [OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson](http://www.opengeospatial.org/standards/kml)
 
-2) Google developers KML Reference, at https://developers.google.com/kml/documentation/kmlreference
+2) [Google developers KML Reference](https://developers.google.com/kml/documentation/kmlreference)
 
 ## Packages
 
@@ -24,16 +24,27 @@ The **scalakml** library consists of 4 major packages:
 - 3) com.scalakml.io, the reading and writing of kml elements
 - 4) com.scalakml.atom, the Atom classes
 
-To generate a new jar file from the source using sbt, type: sbt package. 
-The generated jar will be in: "./target/scala-2.11/sbt-0.13/scalakml-1.0.jar"
+## Installation
+
+Add the following dependency to build.sbt:
+
+    libraryDependencies += "com.github.workingDog" % "scalakml_2.11" % "1.0"
+
+To compile and generate a jar file from the source:
+
+    sbt package
+
+The jar file (scalakml-1.0.jar) will be in the "./target/scala-2.11/sbt-0.13" directory.
 
 ## Dependencies
 
 **scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal).
-This library has the xAL classes needed for the AddressDetails. 
+**scalaxal** has the xAL classes needed for the AddressDetails. 
 For convenience, the **scalaxal-1.0.jar** is included here in the lib directory.
 
-See also build.sbt for the scala xml module dependency.
+**scalakml** depends also on the [Scala XML library](https://github.com/scala/scala-xml).
+
+See also build.sbt.
 
 ## Documentation
 
@@ -59,8 +70,6 @@ the CDATA elements (example-no-cdata.kml) is also included.
 To generate the scaladoc, type: sbt doc
 
 ## Usage
-
-To use the library in your project simply include the scalakml-1.0.jar and the scalaxal-1.0.jar.
 
     object WriteExample4 {
       def main(args: Array[String])  {
@@ -100,7 +109,7 @@ Stable.
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-Using scala 2.11.7 and java 8 SDK
+Using scala 2.11.8 and java 8 
 
 
 Ringo Wathelet
