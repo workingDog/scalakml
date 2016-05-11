@@ -1,8 +1,10 @@
 package com.scalakml.example
 
-import com.scalakml.io.{KmlPrintWriter, KmlFileReader}
-import xml.{XML, PrettyPrinter}
+import com.scalakml.io.{KmlFileReader, KmlPrintWriter}
+
+import xml.{PrettyPrinter, XML}
 import com.scalakml.io._
+import com.scalaxal.io.{XalFileReader, XalPrintWriter}
 
 /**
  * author: Ringo Wathelet

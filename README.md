@@ -28,13 +28,13 @@ The **scalakml** library consists of 4 major packages:
 
 Add the following dependency to build.sbt:
 
-    libraryDependencies += "com.github.workingDog" % "scalakml_2.11" % "1.0"
+    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.0"
 
 To compile and generate a jar file from the source:
 
     sbt package
 
-The jar file (scalakml-1.0.jar) will be in the "./target/scala-2.11/sbt-0.13" directory.
+The jar file (scalakml-1.0.jar) will be in the "./target/scala-2.11" directory.
 
 ## Dependencies
 

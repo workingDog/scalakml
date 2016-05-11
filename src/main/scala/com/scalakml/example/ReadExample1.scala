@@ -2,7 +2,10 @@ package com.scalakml.example
 
 
 import com.scalakml.io.KmlFileReader
-import com.scalakml.kml.{Point, Placemark}
+import com.scalakml.kml.{Placemark, Point}
+import com.scalaxal.io.{XalFileReader, XalPrintWriter}
+
+import scala.xml.PrettyPrinter
 
 /**
  * Author: Ringo Wathelet
@@ -26,5 +29,7 @@ object ReadExample1 {
     println("coordinate: " + point.coordinates)
 
     println("\n....ReadExample1 done...")
+
   }
+
 }

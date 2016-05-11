@@ -1,4 +1,3 @@
-sbtPlugin := true
 
 name := "scalakml"
 
@@ -12,9 +11,17 @@ crossScalaVersions := Seq("2.11.8")
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.5",
-  "com.github.workingDog" % "scalaxal_2.11" % "1.0"
+  "com.github.workingDog" %% "scalaxal" % "1.0"
 )
 
 homepage := Some(url("https://github.com/workingDog/scalakml"))
 
 licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
+
+scalacOptions ++= Seq(
+  "-deprecation", // Emit warning and location for usages of deprecated APIs.
+  "-feature", // Emit warning and location for usages of features that should be imported explicitly.
+  "-unchecked", // Enable additional warnings where generated code depends on assumptions.
+  "-Xlint" // Enable recommended additional warnings.
+)
+

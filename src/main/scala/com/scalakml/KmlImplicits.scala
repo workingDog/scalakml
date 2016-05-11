@@ -5,6 +5,7 @@ import java.io.Writer
 import com.scalakml.kml._
 import com.scalaxal.xAL.{AddressLine, AddressLines, Address, AddressDetails}
 
+import scala.language.implicitConversions
 
 /**
   * a set of implicits. Use with care.
