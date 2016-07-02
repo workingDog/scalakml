@@ -66,7 +66,9 @@ Example [kml files] (http://code.google.com/p/kml-samples/) are included in the 
 The file KML_Samples.kml contains CDATA elements. The same file without
 the CDATA elements (example-no-cdata.kml) is also included.
 
-To generate the scaladoc, type: sbt doc
+To generate the scaladoc, type: 
+
+    sbt doc
 
 ## Usage
 
