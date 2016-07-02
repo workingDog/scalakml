@@ -38,9 +38,8 @@ The jar file (scalakml_2.11-1.0.jar) will be in the "./target/scala-2.11" direct
 
 ## Dependencies
 
-**scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal).
+**scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal). 
 **scalaxal** has the xAL classes needed for the AddressDetails. 
-For convenience, the **scalaxal-1.0.jar** is included here in the lib directory.
 
 **scalakml** depends also on the [Scala XML library](https://github.com/scala/scala-xml).
 
@@ -111,5 +110,3 @@ it does not include some of the gx: elements from Google listed in reference 2.
 
 Using scala 2.11.8 and java 8 
 
-
-Ringo Wathelet
