@@ -76,6 +76,57 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  /** this is the crux of getting xml from the kml objects */
+  def getXmlFrom[A: KmlToXml](kml: A) = implicitly[KmlToXml[A]].toXml(kml)
+
+  def getXmlSeqFrom[A: KmlToXmlSeq](kml: A) = implicitly[KmlToXmlSeq[A]].toXml(kml)
+
+  def getNodeFromFieldName(name: String, objOption: Option[Any]): NodeSeq = {
+    val baseName = if (name.startsWith("gx:")) name.substring(3) else name
+    objOption match {
+      case Some(obj) =>
+        if (!obj.getClass.getDeclaredFields.exists(field => field.getName.equals(baseName)))
+          NodeSeq.Empty
+        else {
+          Some(obj.getClass.getDeclaredField(baseName)) match {
+            case Some(field) => {
+              field.setAccessible(true)
+              val fieldValue = field.get(obj)
+              if (fieldValue == null || !fieldValue.isInstanceOf[Option[_]]) NodeSeq.Empty
+              else makeXmlNode(name, fieldValue.asInstanceOf[Option[_]])
+            }
+            case _ => NodeSeq.Empty
+          }
+        }
+      case None => NodeSeq.Empty
+    }
+  }
+
+  def makeXmlNode[_](name: String, valueOption: Option[_]): NodeSeq = {
+    valueOption match {
+      case Some(value) => value match {
+
+        case bool: Boolean => <a>
+          {if (bool) "1" else "0"}
+        </a>.copy(label = name)
+
+        case vec2: Vec2 =>
+          val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
+          theNode.copy(label = name)
+
+
+        case hColor: HexColor => <a>
+          {hColor.hexString}
+        </a>.copy(label = name)
+
+        case _ => <a>
+          {value}
+        </a>.copy(label = name)
+      }
+      case None => NodeSeq.Empty
+    }
+  }
+
   implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
     def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
       addressDetailsOption match {
@@ -561,9 +612,9 @@ object KmlToXml extends XmlExtractor {
   implicit object SimpleDataToXml extends KmlToXml[Option[SimpleData]] {
     def toXml(simpleDataOption: Option[SimpleData]): NodeSeq = {
       simpleDataOption match {
-        case Some(simpleData) => <simpleData name={if (simpleData.name.isDefined) simpleData.name.get else null}    >
+        case Some(simpleData) => <SimpleData name={if (simpleData.name.isDefined) simpleData.name.get else null}    >
           {if (simpleData.value.isDefined) simpleData.value.get else null}
-        </simpleData>
+        </SimpleData>
         case None => NodeSeq.Empty
       }
     }
@@ -974,6 +1025,10 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  // ------------------------------------------------------------
+  // -----------------------def----------------------------------  
+  // ------------------------------------------------------------  
+
   implicit object UpdateOptionSeqToXml extends KmlToXmlSeq[Option[Seq[UpdateOption]]] {
     def toXml(updateOptionSet: Option[Seq[UpdateOption]]): Seq[NodeSeq] = {
       updateOptionSet match {
@@ -1032,61 +1087,6 @@ object KmlToXml extends XmlExtractor {
 
         list filter (x => (x != null) && (x != None)) toSeq
       }
-    }
-  }
-
-  // ------------------------------------------------------------
-  // -----------------------def----------------------------------  
-  // ------------------------------------------------------------  
-
-  /** this is the crux of getting xml from the kml objects */
-  def getXmlFrom[A: KmlToXml](kml: A) = implicitly[KmlToXml[A]].toXml(kml)
-
-  def getXmlSeqFrom[A: KmlToXmlSeq](kml: A) = implicitly[KmlToXmlSeq[A]].toXml(kml)
-
-  def getNodeFromFieldName(name: String, objOption: Option[Any]): NodeSeq = {
-    val baseName = if (name.startsWith("gx:")) name.substring(3) else name
-    objOption match {
-      case Some(obj) =>
-        if (!obj.getClass.getDeclaredFields.exists(field => field.getName.equals(baseName)))
-          NodeSeq.Empty
-        else {
-          Some(obj.getClass.getDeclaredField(baseName)) match {
-            case Some(field) => {
-              field.setAccessible(true)
-              val fieldValue = field.get(obj)
-              if (fieldValue == null || !fieldValue.isInstanceOf[Option[_]]) NodeSeq.Empty
-              else makeXmlNode(name, fieldValue.asInstanceOf[Option[_]])
-            }
-            case _ => NodeSeq.Empty
-          }
-        }
-      case None => NodeSeq.Empty
-    }
-  }
-
-  def makeXmlNode[_](name: String, valueOption: Option[_]): NodeSeq = {
-    valueOption match {
-      case Some(value) => value match {
-
-        case bool: Boolean => <a>
-          {if (bool) "1" else "0"}
-        </a>.copy(label = name)
-
-        case vec2: Vec2 =>
-          val theNode = <a/> % Attribute(None, "x", Text(vec2.x.toString), Null) % Attribute(None, "y", Text(vec2.y.toString), Null) % Attribute(None, "xunits", Text(vec2.xunits.toString), Null) % Attribute(None, "yunits", Text(vec2.yunits.toString), Null)
-          theNode.copy(label = name)
-
-
-        case hColor: HexColor => <a>
-          {hColor.hexString}
-        </a>.copy(label = name)
-
-        case _ => <a>
-          {value}
-        </a>.copy(label = name)
-      }
-      case None => NodeSeq.Empty
     }
   }
 
