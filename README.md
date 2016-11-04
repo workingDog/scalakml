@@ -28,13 +28,13 @@ The **scalakml** library consists of 4 major packages:
 
 Add the following dependency to build.sbt:
 
-    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.0"
+    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.1"
 
 To compile and generate a jar file from the source:
 
     sbt package
 
-The jar file (scalakml_2.11-1.1-SNAPSHOT.jar) will be in the "./target/scala-2.11" directory.
+The jar file (scalakml_2.11-1.2-SNAPSHOT.jar) will be in the "./target/scala-2.11" directory.
 
 ## Dependencies
 
@@ -79,28 +79,6 @@ To generate the scaladoc, type:
         new KmlPrintWriter().write(kml, new PrettyPrinter(80, 3))
       }
     }
-
-Note, in some situations it maybe an overkill to depend on the **scalaxal** library just for the "addressDetails".
-It can sometimes be adequate to use just the "address" field.
-
-To remove the dependency on **scalaxal** and hence remove the "addressDetails" field from the FeaturePart,
-
-in Kml.scala:
-
-    comment out line 34 and remove addressDetails field at line 983, 1000 and 1004
-
-in KmlFromXml.scala:
-
-    comment out line 36 and 448.
-
-in KmlToXml.scala:
-
-    comment out line 38, 39 and 1022 and the AddressDetailsToXml implicit starting at line 79
-
-in KmlImplicits:
-
-    comment out line 6 and the StringToAddressDetails and StringToAddressDetailsOp implicits.
-
 
 ## Status
 
