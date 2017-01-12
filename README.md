@@ -12,17 +12,21 @@ The **scalakml** library provides the KML elements as scala classes.
 
 ## References
  
-- 1) [OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson](http://www.opengeospatial.org/standards/kml)
+1) [OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson](http://www.opengeospatial.org/standards/kml)
 
-- 2) [Google developers KML Reference](https://developers.google.com/kml/documentation/kmlreference)
+2) [Google developers KML Reference](https://developers.google.com/kml/documentation/kmlreference)
 
 ## Packages
 
 The **scalakml** library consists of 4 major packages:
-- 1) com.scalakml.kml, the set of KML classes
-- 2) com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd
-- 3) com.scalakml.io, the reading and writing of kml elements
-- 4) com.scalakml.atom, the Atom classes
+
+1) com.scalakml.kml, the set of KML classes
+ 
+2) com.scalakml.gx, the Google's GX extensions classes derived from the official kml22gx.xsd
+ 
+3) com.scalakml.io, the reading and writing of kml elements
+ 
+4) com.scalakml.atom, the Atom classes
 
 ## Installation
 
@@ -34,7 +38,7 @@ To compile and generate a jar file from the source:
 
     sbt package
 
-The jar file (scalakml_2.12-1.2.jar) will be in the "./target/scala-2.12" directory.
+The jar file (scalakml_2.12-1.3-SNAPSHOT.jar) will be in the "./target/scala-2.12" directory.
 
 ## Dependencies
 
