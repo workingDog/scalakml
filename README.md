@@ -46,7 +46,7 @@ The jar file (scalakml_2.12-1.3-SNAPSHOT.jar) will be in the "./target/scala-2.1
 
 **scalakml** also depends on the [Scala XML library](https://github.com/scala/scala-xml).
 
-Version 1.2 and above, requires scala_2.12.1
+Version 1.2 and above, require scala_2.12.1
 
 See also build.sbt.
 
