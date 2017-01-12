@@ -12,9 +12,9 @@ The **scalakml** library provides the KML elements as scala classes.
 
 ## References
  
-1) [OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson](http://www.opengeospatial.org/standards/kml)
+- 1) [OGC 07-147r2 Version: 2.2.0, Category: OGC Standard, Editor: Tim Wilson](http://www.opengeospatial.org/standards/kml)
 
-2) [Google developers KML Reference](https://developers.google.com/kml/documentation/kmlreference)
+- 2) [Google developers KML Reference](https://developers.google.com/kml/documentation/kmlreference)
 
 ## Packages
 
@@ -28,19 +28,21 @@ The **scalakml** library consists of 4 major packages:
 
 Add the following dependency to build.sbt:
 
-    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.1"
+    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.2"
 
 To compile and generate a jar file from the source:
 
     sbt package
 
-The jar file (scalakml_2.11-1.2-SNAPSHOT.jar) will be in the "./target/scala-2.11" directory.
+The jar file (scalakml_2.12-1.2.jar) will be in the "./target/scala-2.12" directory.
 
 ## Dependencies
 
 **scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes needed for the AddressDetails. 
 
 **scalakml** also depends on the [Scala XML library](https://github.com/scala/scala-xml).
+
+Version 1.2 requires scala_2.12.1
 
 See also build.sbt.
 
@@ -87,5 +89,4 @@ Stable.
 The gx: extension has what is in the official kml22gx.xsd schema,
 it does not include some of the gx: elements from Google listed in reference 2.
 
-Using scala 2.11.8 and java 8 
 

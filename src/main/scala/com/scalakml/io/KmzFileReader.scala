@@ -62,9 +62,9 @@ class KmzFileReader(kmlExtractor: Option[KmlExtractor] = Some(KmlFromXml),
     if (!file.getName.toLowerCase.endsWith(".kmz")) Seq.empty
     else {
       val rootKmz = new java.util.zip.ZipFile(file)
-      (rootKmz.entries.
+      rootKmz.entries.
         filter(_.getName.toLowerCase.endsWith(".kml")).
-        collect { case kmlFile => loadKml(rootKmz.getInputStream(kmlFile)) } toSeq)
+        collect { case kmlFile => loadKml(rootKmz.getInputStream(kmlFile)) } toSeq
     }
   }
 

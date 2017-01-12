@@ -5,13 +5,13 @@ organization := "com.github.workingDog"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
-crossScalaVersions := Seq("2.11.8")
+crossScalaVersions := Seq("2.12.1")
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.6",
-  "com.github.workingDog" %% "scalaxal" % "1.0"
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
+  "com.github.workingDog" %% "scalaxal" % "1.1"
 )
 
 homepage := Some(url("https://github.com/workingDog/scalakml"))
