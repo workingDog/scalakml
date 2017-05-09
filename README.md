@@ -32,21 +32,19 @@ The **scalakml** library consists of 4 major packages:
 
 Add the following dependency to build.sbt:
 
-    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.2"
+    libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.3"
 
 To compile and generate a jar file from the source:
 
     sbt package
 
-The jar file (scalakml_2.12-1.3-SNAPSHOT.jar) will be in the "./target/scala-2.12" directory.
+The jar file (scalakml_2.12-1.4-SNAPSHOT.jar) will be in the "./target/scala-2.12" directory.
 
 ## Dependencies
 
 **scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes needed for the AddressDetails. 
 
 **scalakml** also depends on the [Scala XML library](https://github.com/scala/scala-xml).
-
-Version 1.2 and above, require scala_2.12.1
 
 See also build.sbt.
 

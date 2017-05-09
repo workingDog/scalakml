@@ -1,7 +1,10 @@
 Change Log
 ==========
 
-## changes in 1.3-SNAPSHOT
+## changes in 1.4-SNAPSHOT
+
+## changes in 1.3
+* added the missing orientation field to makeModel() in KmlFromXml
 
 ## changes in 1.2
 * publishing for scala_2.12.1

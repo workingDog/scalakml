@@ -937,6 +937,7 @@ object KmlFromXml extends KmlExtractor {
       id = getString(nodeSeq \ "@id"), targetId = getString(nodeSeq \ "@targetId"),
       altitudeMode = getString(nodeSeq \ "altitudeMode") map(AltitudeMode.fromString(_)),
       location = makeLocation(nodeSeq \ "Location"),
+      orientation = makeOrientation(nodeSeq \ "Orientation"),
       scale = makeScale(nodeSeq \ "Scale"),
       link = makeLink(nodeSeq),
       resourceMap = makeResourceMap(nodeSeq \ "ResourceMap")))
