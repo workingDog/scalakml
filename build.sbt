@@ -7,7 +7,7 @@ version := (version in ThisBuild).value
 
 scalaVersion := "2.12.6"
 
-crossScalaVersions := Seq("2.12.2")
+crossScalaVersions := Seq("2.12.6")
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.1.0"
 
