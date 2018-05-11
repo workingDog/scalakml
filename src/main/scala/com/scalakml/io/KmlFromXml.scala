@@ -33,7 +33,7 @@ package com.scalakml.io
 import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
-import com.scalaxal.io.XalFromXml._
+//import com.scalaxal.io.XalFromXml._
 import scala.language.postfixOps
 import scala.language.implicitConversions
 import scala.collection.mutable
@@ -445,7 +445,7 @@ object KmlFromXml extends KmlExtractor {
       atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
       atomLink = makeAtomLink(nodeSeq \ "link"),
       address = getString(nodeSeq \ "address"),
-      addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
+      addressDetails = getString(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
       phoneNumber = getString(nodeSeq \ "phoneNumber"),
       extendedData = makeExtendedData(nodeSeq \ "ExtendedData"),
       description = getString(nodeSeq \ "description"),

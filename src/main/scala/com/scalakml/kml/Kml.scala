@@ -31,7 +31,7 @@
 package com.scalakml.kml
 
 import com.scalakml.atom._
-import com.scalaxal.xAL.AddressDetails
+//import com.scalaxal.xAL.AddressDetails
 import com.scalakml.gx.LatLonQuad
 import scala.collection.mutable
 
@@ -980,7 +980,7 @@ case class FeaturePart(
   atomAuthor: Option[com.scalakml.atom.Author] = None,
   atomLink: Option[com.scalakml.atom.Link] = None,
   address: Option[String] = None,
-  addressDetails: Option[AddressDetails] = None, // <---- from com.scalaxal.xAL.xAL
+  addressDetails: Option[String] = None, // <---- from com.scalaxal.xAL.xAL
   phoneNumber: Option[String] = None,
   extendedData: Option[ExtendedData] = None,
   description: Option[String] = None,
@@ -997,7 +997,7 @@ case class FeaturePart(
   def this(name: String, visibility: Boolean) = this(Option(name), Option(visibility))
 
   def this(name: String, visibility: Boolean, open: Boolean, atomAuthor: com.scalakml.atom.Author, atomLink: com.scalakml.atom.Link,
-           address: String, addressDetails: AddressDetails, phoneNumber:String, extendedData: ExtendedData,
+           address: String, addressDetails: String, phoneNumber:String, extendedData: ExtendedData,
            description: String, snippet: Snippet, abstractView: AbstractView, timePrimitive: TimePrimitive,
            styleUrl: String, styleSelector: Seq[StyleSelector], region: Region) =
     this(Option(name), Option(visibility), Option(open), Option(atomAuthor), Option(atomLink), Option(address),
@@ -2312,7 +2312,7 @@ object Coordinate {
     else {
       val lon = if (lonLatAlt.isDefinedAt(0)) getOptionDouble(lonLatAlt(0)) else None
       val lat = if (lonLatAlt.isDefinedAt(1)) getOptionDouble(lonLatAlt(1)) else None
-      var alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
+      val alt = if (lonLatAlt.isDefinedAt(2)) getOptionDouble(lonLatAlt(2)) else None
       if (!lon.isDefined || !lat.isDefined) None
       else {
         if (alt.isDefined) Option(Coordinate(lon, lat, alt)) else Option(Coordinate(lon, lat))

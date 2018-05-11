@@ -3,7 +3,7 @@ package com.scalakml
 import java.io.Writer
 
 import com.scalakml.kml._
-import com.scalaxal.xAL.{AddressLine, AddressLines, Address, AddressDetails}
+//import com.scalaxal.xAL.{AddressLine, AddressLines, Address, AddressDetails}
 
 import scala.language.implicitConversions
 
@@ -14,11 +14,11 @@ import scala.language.implicitConversions
 object KmlImplicits {
 
 
-  implicit def StringToAddressDetails(value: String): AddressDetails =
-    new AddressDetails(addressDetailsType = new AddressLines(Seq.empty :+ new AddressLine(value)))
-
-  implicit def StringToAddressDetailsOp(value: String): Option[AddressDetails] =
-    Option(new AddressDetails(addressDetailsType = Option(new AddressLines(Seq.empty :+ new AddressLine(value)))))
+//  implicit def StringToAddressDetails(value: String): AddressDetails =
+//    new AddressDetails(addressDetailsType = new AddressLines(Seq.empty :+ new AddressLine(value)))
+//
+//  implicit def StringToAddressDetailsOp(value: String): Option[AddressDetails] =
+//    Option(new AddressDetails(addressDetailsType = Option(new AddressLines(Seq.empty :+ new AddressLine(value)))))
 
   // ------------------X to Option[X]-------------------------------------------------------------------------
 

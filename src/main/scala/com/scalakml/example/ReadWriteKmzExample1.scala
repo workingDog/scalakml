@@ -17,7 +17,7 @@ object ReadWriteKmzExample1 {
 
     val pretty = new PrettyPrinter(80, 3)
     //read a kmz file into a sequence of kml objects
-    val kmlSeq = new KmzFileReader().getKmlFromKmzFile("./kml-files/Sydney-oz.kmz")
+    val kmlSeq = new KmzFileReader().getKmlFromKmzFile("./kml-files/KML_Samples.kmz")
     // setup a writer to write to System.out
     val writer = new KmlPrintWriter()
     // write each kml object to System.out
@@ -32,7 +32,7 @@ object ReadWriteKmzExample1 {
     // create a kmz file writer
     val pWriter = new KmzPrintWriter("./kml-files/test.kmz")
     // add a resource file to the kmz file
-    pWriter.addResourceFile("test_picture","./kml-files/testPicture.png")
+  //  pWriter.addResourceFile("test_picture","./kml-files/testPicture.png")
     // write all kml objects (including the resource files) to a kmz file, each kml object is in a separate kml file
     pWriter.writeAllToKmz(kmlMap, pretty)
 

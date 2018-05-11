@@ -33,7 +33,6 @@ package com.scalakml.io
 import java.io._
 import xml.{dtd, XML, PrettyPrinter}
 import java.util.zip.{ZipEntry, ZipOutputStream}
-import scala.Some
 import scala.language.postfixOps
 
 /**
@@ -113,7 +112,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param kmlMap the Map of file names (keys) and kml objects (values)
    * @param pretty the optional pretty printer to use
    */
-  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, Option[A]], pretty: PrettyPrinter = null) {
+  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, A], pretty: PrettyPrinter = null) {
     if ((kmzFileName.isDefined) && (kmzFile.isDefined)) {
       xmlExtractor match {
         case Some(extractor) => {

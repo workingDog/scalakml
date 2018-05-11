@@ -29,8 +29,6 @@
  */
 package com.scalakml.atom
 
-import java.net.URI
-
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
  *

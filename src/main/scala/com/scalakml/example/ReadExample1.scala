@@ -3,7 +3,7 @@ package com.scalakml.example
 
 import com.scalakml.io.KmlFileReader
 import com.scalakml.kml.{Placemark, Point}
-import com.scalaxal.io.{XalFileReader, XalPrintWriter}
+//import com.scalaxal.io.{XalFileReader, XalPrintWriter}
 
 import scala.xml.PrettyPrinter
 

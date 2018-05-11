@@ -3,6 +3,9 @@ Change Log
 
 ## changes in 1.4-SNAPSHOT
 
+* updated the dependency, scala, sbt
+* removed the dependency on scalaxal
+
 ## changes in 1.3
 * added the missing orientation field to makeModel() in KmlFromXml
 

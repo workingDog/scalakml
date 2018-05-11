@@ -32,11 +32,14 @@ package com.scalakml.io
 
 import com.scalakml.kml._
 import org.xml.sax.InputSource
+
 import scala.xml.XML._
-import java.io.{ File, FileDescriptor }
+import java.io.{File, FileDescriptor}
+
 import scala.xml.Source._
 import scala.language.postfixOps
-import scala.xml.XML
+import scala.xml.{NodeSeq, XML}
+import scala.collection.JavaConverters._
 
 /**
  * @author Ringo Wathelet

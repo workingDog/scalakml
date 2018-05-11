@@ -33,6 +33,7 @@ package com.scalakml.io
 import com.scalakml.kml._
 import java.io.{ File }
 import scala.language.postfixOps
+import scala.collection.JavaConverters._
 
 /**
  * @author Ringo Wathelet
@@ -58,11 +59,10 @@ class KmzFileReader(kmlExtractor: Option[KmlExtractor] = Some(KmlFromXml),
    * @return a sequence of Kml root element options, one for each of the input file entries
    */
   def getKmlFromKmzFile(file: File): Seq[Option[Kml]] = {
-    import scala.collection.JavaConversions._
     if (!file.getName.toLowerCase.endsWith(".kmz")) Seq.empty
     else {
       val rootKmz = new java.util.zip.ZipFile(file)
-      rootKmz.entries.
+      rootKmz.entries.asScala.
         filter(_.getName.toLowerCase.endsWith(".kml")).
         collect { case kmlFile => loadKml(rootKmz.getInputStream(kmlFile)) } toSeq
     }
