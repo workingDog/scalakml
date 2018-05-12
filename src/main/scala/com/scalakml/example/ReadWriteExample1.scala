@@ -4,7 +4,7 @@ import com.scalakml.io.{KmlFileReader, KmlPrintWriter}
 
 import xml.{PrettyPrinter, XML}
 import com.scalakml.io._
-//import com.scalaxal.io.{XalFileReader, XalPrintWriter}
+import com.scalaxal.io.{XalFileReader, XalPrintWriter}
 
 /**
  * author: Ringo Wathelet
@@ -21,7 +21,7 @@ object ReadWriteExample1 {
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/KML_Samples.kml")
 
     // write the kml to an output file.
-//    if (kml.isDefined) new KmlPrintWriter("./kml-files/KML_Samples.kml").write(kml, new PrettyPrinter(80, 3))
+//    if (kml.isDefined) new KmlPrintWriter("./kml-files/KML_Samplesx.kml").write(kml, new PrettyPrinter(80, 3))
 
     // write the kml to System.out
     if (kml.isDefined) new KmlPrintWriter().write(kml, new PrettyPrinter(80, 3))

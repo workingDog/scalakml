@@ -31,7 +31,7 @@
 package com.scalakml.kml
 
 import com.scalakml.atom._
-//import com.scalaxal.xAL.AddressDetails
+import com.scalaxal.xAL.AddressDetails
 import com.scalakml.gx.LatLonQuad
 import scala.collection.mutable
 
@@ -980,7 +980,7 @@ case class FeaturePart(
   atomAuthor: Option[com.scalakml.atom.Author] = None,
   atomLink: Option[com.scalakml.atom.Link] = None,
   address: Option[String] = None,
-  addressDetails: Option[String] = None, // <---- from com.scalaxal.xAL.xAL
+  addressDetails: Option[AddressDetails] = None, // <---- from com.scalaxal.xAL.xAL
   phoneNumber: Option[String] = None,
   extendedData: Option[ExtendedData] = None,
   description: Option[String] = None,
@@ -997,11 +997,12 @@ case class FeaturePart(
   def this(name: String, visibility: Boolean) = this(Option(name), Option(visibility))
 
   def this(name: String, visibility: Boolean, open: Boolean, atomAuthor: com.scalakml.atom.Author, atomLink: com.scalakml.atom.Link,
-           address: String, addressDetails: String, phoneNumber:String, extendedData: ExtendedData,
+           address: String, addressDetails: AddressDetails, phoneNumber:String, extendedData: ExtendedData,
            description: String, snippet: Snippet, abstractView: AbstractView, timePrimitive: TimePrimitive,
            styleUrl: String, styleSelector: Seq[StyleSelector], region: Region) =
     this(Option(name), Option(visibility), Option(open), Option(atomAuthor), Option(atomLink), Option(address),
-      Option(addressDetails),Option(phoneNumber), Option(extendedData), Option(description), Option(snippet),
+      Option(addressDetails),
+      Option(phoneNumber), Option(extendedData), Option(description), Option(snippet),
       Option(abstractView), Option(timePrimitive), Option(styleUrl),
       styleSelector, Option(region))
 

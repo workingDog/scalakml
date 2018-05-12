@@ -20,13 +20,18 @@ object ReadExample1 {
     // read a kml file into a kml root object.
     // Note the default extractor (as shown) can be replaced by your own KmlExtractor
     // see KmlExtractor trait in KmlFileReader
-    val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-oz.kml")
+    val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-ozzzz.kml")
     // get the placemark
     val placemark = kml.get.feature.get.asInstanceOf[Placemark]
+
+    val address = placemark.featurePart.addressDetails
+    println("address: " + address)
+
+
     // get the placemark point
-    val point = placemark.geometry.get.asInstanceOf[Point]
+  //  val point = placemark.geometry.get.asInstanceOf[Point]
     // print the point coordinates
-    println("coordinate: " + point.coordinates)
+  //  println("coordinate: " + point.coordinates)
 
     println("\n....ReadExample1 done...")
 

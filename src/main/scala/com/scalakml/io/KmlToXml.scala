@@ -35,8 +35,8 @@ import scala.collection.mutable.MutableList
 import xml._
 import com.scalakml.gx._
 import com.scalakml.atom.Author
-//import com.scalaxal.xAL.AddressDetails
-//import com.scalaxal.io.XalToXml
+import com.scalaxal.xAL.AddressDetails
+import com.scalaxal.io.XalToXml
 import com.scalakml.kml.Document
 import scala.language.implicitConversions
 import scala.language.postfixOps
@@ -127,14 +127,14 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
-//  implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
-//    def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
-//      addressDetailsOption match {
-//        case Some(addressDetails) => XalToXml(addressDetails)
-//        case None => NodeSeq.Empty
-//      }
-//    }
-//  }
+  implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
+    def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
+      addressDetailsOption match {
+        case Some(addressDetails) => XalToXml(addressDetails)
+        case None => NodeSeq.Empty
+      }
+    }
+  }
 
   implicit object UpdateToXml extends KmlToXml[Option[Update]] {
     def toXml(updateOption: Option[Update]): NodeSeq = {
@@ -1074,7 +1074,7 @@ object KmlToXml extends XmlExtractor {
         list += getXmlFrom(featurePart.get.atomAuthor)
         list += getXmlFrom(featurePart.get.atomLink)
         list += getNodeFromFieldName("address", featurePart)
-        list += getNodeFromFieldName("addressDetails", featurePart)
+        list += getXmlFrom(featurePart.get.addressDetails)
         list += getNodeFromFieldName("phoneNumber", featurePart)
         list += getNodeFromFieldName("description", featurePart)
         list += getXmlFrom(featurePart.get.extendedData)
