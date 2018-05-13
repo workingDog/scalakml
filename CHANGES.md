@@ -3,6 +3,7 @@ Change Log
 
 ## changes in 1.5-SNAPSHOT
 
+* put back examples 
 
 ## changes in 1.4
 
