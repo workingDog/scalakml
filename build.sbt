@@ -24,4 +24,3 @@ scalacOptions ++= Seq(
   "-unchecked", // Enable additional warnings where generated code depends on assumptions.
   "-Xlint" // Enable recommended additional warnings.
 )
-

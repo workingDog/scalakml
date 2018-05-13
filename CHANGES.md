@@ -1,7 +1,10 @@
 Change Log
 ==========
 
-## changes in 1.4-SNAPSHOT
+## changes in 1.5-SNAPSHOT
+
+
+## changes in 1.4
 
 * updated the dependencies, scala, sbt 
 
