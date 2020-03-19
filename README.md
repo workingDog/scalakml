@@ -44,7 +44,7 @@ The jar file (scalakml_2.13-1.6-SNAPSHOT.jar) will be in the "./target/scala-2.1
 
 **scalakml** depends on the [Scala XML library](https://github.com/scala/scala-xml).
 
-Removed the dependency on [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes needed for the AddressDetails. This means AddressDetails is now just a String. 
+Removed the dependency on [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes representing the AddressDetails. This means AddressDetails is now just a String. 
 
 See also build.sbt. Using Scala 2.13.
 
@@ -84,7 +84,7 @@ To generate the scaladoc, type:
       }
     }
 
-See [scalakml-example](https://github.com/workingDog/scalakml-example) for basic examples use of the library.
+See [scalakml-example](https://github.com/workingDog/scalakml-example) for basic examples of using **scalakml** library.
 
 ## Status
 
