@@ -1,12 +1,9 @@
 package com.scalakml.example
 
-import com.scalakml.io.KmlPrintWriter
 import com.scalakml.kml._
-import com.scalakml.kml.FeaturePart
 import com.scalakml.kml.Point
 import com.scalakml.kml.Placemark
 import com.scalakml.io.KmlPrintWriter
-import scala.Some
 import xml.PrettyPrinter
 
 /**
@@ -16,7 +13,7 @@ import xml.PrettyPrinter
  */
 
 object WriteExample2 {
-  def main(args: Array[String])  {
+  def main(args: Array[String]): Unit = {
     println("....WriteExample2 start...\n")
     // create a Point at a location
     val point = new Point(new Coordinate(151.21037, -33.8526))

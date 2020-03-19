@@ -14,7 +14,7 @@ import com.scalakml.KmlImplicits._
   */
 object WriteExample5 {
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     // create a string writer, into which the data will be written
     val stringer = new StringWriter()
     // create a point

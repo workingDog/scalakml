@@ -31,15 +31,13 @@
 package com.scalakml.io
 
 import com.scalakml.kml._
-import scala.collection.mutable.MutableList
 import xml._
 import com.scalakml.gx._
 import com.scalakml.atom.Author
-import com.scalaxal.xAL.AddressDetails
-import com.scalaxal.io.XalToXml
 import com.scalakml.kml.Document
 import scala.language.implicitConversions
 import scala.language.postfixOps
+import scala.collection.mutable.ListBuffer
 
 /**
  * @author Ringo Wathelet
@@ -127,22 +125,19 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
-  implicit object AddressDetailsToXml extends KmlToXml[Option[AddressDetails]] {
-    def toXml(addressDetailsOption: Option[AddressDetails]): NodeSeq = {
-      addressDetailsOption match {
-        case Some(addressDetails) => XalToXml(addressDetails)
-        case None => NodeSeq.Empty
-      }
-    }
-  }
+//  implicit object AddressDetailsToXml extends KmlToXml[Option[String]] {
+//    def toXml(addressDetailsOption: Option[String]): NodeSeq = {
+//      addressDetailsOption match {
+//        case Some(addressDetails) => getXmlFrom(addressDetails)  // XalToXml(addressDetails)
+//        case None => NodeSeq.Empty
+//      }
+//    }
+//  }
 
-  implicit object UpdateToXml extends KmlToXml[Option[Update]] {
-    def toXml(updateOption: Option[Update]): NodeSeq = {
-      updateOption match {
-        case Some(update) => <Update>
-          {getNodeFromFieldName("targetHref", updateOption)}
-          {getXmlSeqFrom(Option(update.updateOption))}
-        </Update>
+  implicit object AddressDetailsToXml extends KmlToXml[Option[String]] {
+    def toXml(addressDetailsOption: Option[String]): NodeSeq = {
+      addressDetailsOption match {
+        case Some(addressDetails) => <AddressDetails> { addressDetails } </AddressDetails>
         case None => NodeSeq.Empty
       }
     }
@@ -246,6 +241,20 @@ object KmlToXml extends XmlExtractor {
             <Change>
               {for (kmlObject <- change.objectChangeSet) yield getXmlFrom(Option(kmlObject.asInstanceOf[KmlObject]))}
             </Change>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
+  implicit object UpdateToXml extends KmlToXml[Option[Update]] {
+    def toXml(updateOption: Option[Update]): NodeSeq = {
+      updateOption match {
+        case Some(update) =>
+          <Update>
+            <targetHref> {update.targetHref} </targetHref>
+            {getXmlSeqFrom(Option(update.updateOption))}
+          </Update>
+
         case None => NodeSeq.Empty
       }
     }
@@ -387,6 +396,18 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  implicit object ItemIconToXml extends KmlToXml[Option[ItemIcon]] {
+    def toXml(itemIconOption: Option[ItemIcon]): NodeSeq = {
+      itemIconOption match {
+        case Some(itemIcon) => <ItemIcon id={if (itemIcon.id.isDefined) itemIcon.id.get else null} targetId={if (itemIcon.targetId.isDefined) itemIcon.targetId.get else null}>
+          {getNodeFromFieldName("href", itemIconOption)}
+          {if (itemIcon.state != Nil) { <state> {for (x <- itemIcon.state) yield x.toString + " "} </state> }}
+        </ItemIcon>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
   implicit object ListStyleToXml extends KmlToXml[Option[ListStyle]] {
     def toXml(listStyleOption: Option[ListStyle]): NodeSeq = {
       listStyleOption match {
@@ -405,18 +426,6 @@ object KmlToXml extends XmlExtractor {
     def toXml(iconStateOption: Option[ItemIconState]): NodeSeq = {
       iconStateOption match {
         case Some(iconState) => <state> {iconState} </state>
-        case None => NodeSeq.Empty
-      }
-    }
-  }
-
-  implicit object ItemIconToXml extends KmlToXml[Option[ItemIcon]] {
-    def toXml(itemIconOption: Option[ItemIcon]): NodeSeq = {
-      itemIconOption match {
-        case Some(itemIcon) => <ItemIcon id={if (itemIcon.id.isDefined) itemIcon.id.get else null} targetId={if (itemIcon.targetId.isDefined) itemIcon.targetId.get else null}>
-          {getNodeFromFieldName("href", itemIconOption)}
-          {if (itemIcon.state != Nil) { <state> {for (x <- itemIcon.state) yield x.toString + " "} </state> }}
-        </ItemIcon>
         case None => NodeSeq.Empty
       }
     }
@@ -653,17 +662,6 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
-  implicit object LatLonQuadToXml extends KmlToXml[Option[LatLonQuad]] {
-    def toXml(latLonQuadOption: Option[LatLonQuad]): NodeSeq = {
-      latLonQuadOption match {
-        case Some(latLonQuad) => <gx:LatLonQuad id={if (latLonQuad.id.isDefined) latLonQuad.id.get else null} targetId={if (latLonQuad.targetId.isDefined) latLonQuad.targetId.get else null}>
-          {getXmlFrom(latLonQuad.coordinates)}
-        </gx:LatLonQuad>
-        case None => NodeSeq.Empty
-      }
-    }
-  }
-
   implicit object GroundOverlayToXml extends KmlToXml[Option[GroundOverlay]] {
     def toXml(overlayOption: Option[GroundOverlay]): NodeSeq = {
       overlayOption match {
@@ -869,6 +867,17 @@ object KmlToXml extends XmlExtractor {
     }
   }
 
+  implicit object LatLonQuadToXml extends KmlToXml[Option[LatLonQuad]] {
+    def toXml(latLonQuadOption: Option[LatLonQuad]): NodeSeq = {
+      latLonQuadOption match {
+        case Some(latLonQuad) => <gx:LatLonQuad id={if (latLonQuad.id.isDefined) latLonQuad.id.get else null} targetId={if (latLonQuad.targetId.isDefined) latLonQuad.targetId.get else null}>
+          {getXmlFrom(latLonQuad.coordinates)}
+        </gx:LatLonQuad>
+        case None => NodeSeq.Empty
+      }
+    }
+  }
+
   implicit object HexColorToXml extends KmlToXml[Option[HexColor]] {
     def toXml(colorOption: Option[HexColor]): NodeSeq = {
       colorOption match {
@@ -1008,7 +1017,7 @@ object KmlToXml extends XmlExtractor {
       styleSet match {
         case Some(styles) => styles collect {
           case x => getXmlFrom(Option(x.asInstanceOf[StyleSelector]))
-        } filter (x => (x != null) && (x != None)) toSeq
+        } filter (x => (x != null)) toSeq // to(mutable.Seq)
         case None => Seq.empty
       }
     }
@@ -1019,7 +1028,7 @@ object KmlToXml extends XmlExtractor {
       pairSet match {
         case Some(pSet) => pSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[Pair]))
-        } filter (x => (x != null) && (x != None)) toSeq
+        } filter (x => (x != null)) toSeq // to(mutable.Seq)
         case None => Seq.empty
       }
     }
@@ -1034,7 +1043,7 @@ object KmlToXml extends XmlExtractor {
       updateOptionSet match {
         case Some(uSet) => (uSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[UpdateOption]))
-        } filter (x => (x != null) && (x != None)) toSeq)
+        } filter (x => (x != null)) )   // to(mutable.Seq))
         case None => Seq.empty
       }
     }
@@ -1045,7 +1054,7 @@ object KmlToXml extends XmlExtractor {
       itemIconSet match {
         case Some(iSet) => iSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[ItemIcon]))
-        } filter (x => (x != null) && (x != None)) toSeq
+        } filter (x => (x != null)) toSeq //to(mutable.Seq)
         case None => Seq.empty
       }
     }
@@ -1056,7 +1065,7 @@ object KmlToXml extends XmlExtractor {
       itemIconStateSet match {
         case Some(iSet) => iSet collect {
           case x => getXmlFrom(Option(x.asInstanceOf[ItemIconState]))
-        } filter (x => (x != null) && (x != None)) toSeq
+        } filter (x => (x != null)) toSeq // to(mutable.Seq)
         case None => Seq.empty
       }
     }
@@ -1064,9 +1073,9 @@ object KmlToXml extends XmlExtractor {
 
   implicit object FeaturePartToXml extends KmlToXmlSeq[Option[FeaturePart]] {
     def toXml(featurePart: Option[FeaturePart]): Seq[NodeSeq] = {
-      if (!featurePart.isDefined || (featurePart.get == null)) Seq.empty
+      if (featurePart.isEmpty || (featurePart.get == null)) Seq.empty
       else {
-        val list = new MutableList[NodeSeq]()
+        val list = new ListBuffer[NodeSeq]()
 
         list += getNodeFromFieldName("name", featurePart)
         list += getNodeFromFieldName("visibility", featurePart)

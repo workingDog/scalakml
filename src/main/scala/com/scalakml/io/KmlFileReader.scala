@@ -39,7 +39,7 @@ import java.io.{File, FileDescriptor}
 import scala.xml.Source._
 import scala.language.postfixOps
 import scala.xml.{NodeSeq, XML}
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * @author Ringo Wathelet

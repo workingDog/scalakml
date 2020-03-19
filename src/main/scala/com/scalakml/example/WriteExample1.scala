@@ -15,7 +15,7 @@ import com.scalakml.kml.Placemark
  */
 
 object WriteExample1 {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     println("....WriteExample1 start...\n")
 
     // create a Point at a location

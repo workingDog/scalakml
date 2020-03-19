@@ -33,7 +33,7 @@ package com.scalakml.io
 import com.scalakml.kml._
 import java.io.{ File }
 import scala.language.postfixOps
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * @author Ringo Wathelet

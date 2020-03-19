@@ -10,7 +10,7 @@ import xml.PrettyPrinter
  */
 
 object ReadKmzExample1 {
-  def main(args: Array[String])  {
+  def main(args: Array[String]): Unit = {
     println("....ReadKmzExample1 start...\n")
 
     val pretty = new PrettyPrinter(80, 3)

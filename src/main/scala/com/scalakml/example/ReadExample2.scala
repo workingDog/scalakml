@@ -1,7 +1,6 @@
 package com.scalakml.example
 
-import com.scalakml.io.{KmlPrintWriter, KmlFileReader}
-import xml.PrettyPrinter
+import com.scalakml.io.{KmlFileReader}
 import com.scalakml.kml.{Point, Placemark}
 
 /**
@@ -11,7 +10,7 @@ import com.scalakml.kml.{Point, Placemark}
  */
 
 object ReadExample2 {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     println("....ReadExample2 start...\n")
     // read a kml file into a kml root object
     val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-oz.kml")

@@ -2,9 +2,8 @@ package com.scalakml.example
 
 import com.scalakml.io.{KmlFileReader, KmlPrintWriter}
 
-import xml.{PrettyPrinter, XML}
+import xml.{PrettyPrinter}
 import com.scalakml.io._
-import com.scalaxal.io.{XalFileReader, XalPrintWriter}
 
 /**
  * author: Ringo Wathelet
@@ -14,7 +13,7 @@ import com.scalaxal.io.{XalFileReader, XalPrintWriter}
 
 object ReadWriteExample1 {
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     println("....ReadWriteExample1 start...\n")
 
     // read a kml file into a kml root object

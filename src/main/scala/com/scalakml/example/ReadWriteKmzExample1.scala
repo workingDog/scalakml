@@ -1,7 +1,7 @@
 package com.scalakml.example
 
 import com.scalakml.io.{KmzPrintWriter, KmzFileReader, KmlPrintWriter}
-import xml.{Null, PrettyPrinter}
+import xml.{PrettyPrinter}
 import com.scalakml.kml.Kml
 import util.Random
 
@@ -12,7 +12,7 @@ import util.Random
  */
 
 object ReadWriteKmzExample1 {
-  def main(args: Array[String])  {
+  def main(args: Array[String]): Unit = {
     println("....ReadWriteKmzExample1 start...\n")
 
     val pretty = new PrettyPrinter(80, 3)

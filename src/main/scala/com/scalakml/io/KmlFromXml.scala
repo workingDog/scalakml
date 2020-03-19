@@ -33,10 +33,8 @@ package com.scalakml.io
 import com.scalakml.gx._
 import com.scalakml.kml._
 import scala.xml._
-import com.scalaxal.io.XalFromXml._
 import scala.language.postfixOps
 import scala.language.implicitConversions
-import scala.collection.mutable
 
 /**
  * @author Ringo Wathelet
@@ -66,7 +64,6 @@ object KmlFromXml extends KmlExtractor {
   import GeometryTypes._
   import ContainerTypes._
   import KmlObjectTypes._
-  import UpdateOptionTypes._
   import TourPrimitiveTypes._
 
 
@@ -157,7 +154,7 @@ object KmlFromXml extends KmlExtractor {
   def makeUpdateOptions(nodeSeq: NodeSeq): Seq[UpdateOption] = {
     if (nodeSeq.isEmpty) Seq.empty
     else {
-      val theSeq = UpdateOptionTypes.values collect {
+      val theSeq = UpdateOptionTypes.values.unsorted collect {
         case x =>
           x match {
             case UpdateOptionTypes.Delete => makeDelete(nodeSeq \ x.toString)
@@ -197,11 +194,13 @@ object KmlFromXml extends KmlExtractor {
 
   def makeContainerSet(nodeSeq: NodeSeq): Seq[Container] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      ContainerTypes.values.flatMap(x => makeContainers(nodeSeq \ x.toString, x)).toSeq.flatten
+    else {
+      ContainerTypes.values.unsorted.flatMap(x => makeContainers(nodeSeq \ x.toString, x)).toSeq.flatten
+    }
   }
 
   /**
+   *
    * Creates all features of the given featureType
    * @see FeatureTypes
    *
@@ -244,13 +243,16 @@ object KmlFromXml extends KmlExtractor {
    */
   def makeFeatureSet(nodeSeq: NodeSeq): Seq[Feature] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      FeatureTypes.values.flatMap(x => makeFeatures(nodeSeq \ x.toString, x)).toSeq.flatten
+    else {
+      FeatureTypes.values.unsorted.flatMap(x => makeFeatures(nodeSeq \ x.toString, x)).toSeq.flatten
+    }
   }
 
   def makeKmlObjectSet(nodeSeq: NodeSeq): Seq[KmlObject] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else KmlObjectTypes.values.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten
+    else {
+      KmlObjectTypes.values.unsorted.flatMap(x => makeKmlObjects(nodeSeq \ x.toString, x)).toSeq.flatten
+    }
   }
 
   def makeKmlObjects(nodeSeq: NodeSeq, kmlObjectType: KmlObjectTypes): Seq[Option[KmlObject]] = {
@@ -445,7 +447,7 @@ object KmlFromXml extends KmlExtractor {
       atomAuthor = makeAtomAuthor(nodeSeq \ "author"),
       atomLink = makeAtomLink(nodeSeq \ "link"),
       address = getString(nodeSeq \ "address"),
-      addressDetails = makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
+      addressDetails = getString(nodeSeq \ "address"), // makeAddressDetails(nodeSeq \ "AddressDetails"), // <---- from com.scalaxal.io.XalFromXml
       phoneNumber = getString(nodeSeq \ "phoneNumber"),
       extendedData = makeExtendedData(nodeSeq \ "ExtendedData"),
       description = getString(nodeSeq \ "description"),
@@ -1002,8 +1004,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeGeometrySet(nodeSeq: NodeSeq): Seq[Geometry] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      GeometryTypes.values.flatMap(x => makeGeometries(nodeSeq \ x.toString, x)).toSeq.flatten
+    else {
+      GeometryTypes.values.unsorted.flatMap(x => makeGeometries(nodeSeq \ x.toString, x)).toSeq.flatten
+    }
   }
 
   def makeGeometries(nodeSeq: NodeSeq, geometryTypes: GeometryTypes): Seq[Option[Geometry]] = {
@@ -1113,8 +1116,9 @@ object KmlFromXml extends KmlExtractor {
 
   def makeTourPrimitiveSet(nodeSeq: NodeSeq): Seq[TourPrimitive] = {
     if (nodeSeq.isEmpty) Seq.empty
-    else
-      TourPrimitiveTypes.values.flatMap(x => makeTourPrimitives(nodeSeq \ x.toString, x)).toSeq.flatten
+    else {
+      TourPrimitiveTypes.values.unsorted.flatMap(x => makeTourPrimitives(nodeSeq \ x.toString, x)).toSeq.flatten
+    }
   }
 
   def makeTourPrimitives(nodeSeq: NodeSeq, tourPrimitiveType: TourPrimitiveTypes): Seq[Option[TourPrimitive]] = {

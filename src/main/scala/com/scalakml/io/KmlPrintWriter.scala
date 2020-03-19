@@ -101,7 +101,7 @@ class KmlPrintWriter(writer: Option[Writer] = Some(new PrintWriter(System.out)),
 
           writer.get.flush()
 
-        case None => Unit
+        case None => ()
       }
     }
   }

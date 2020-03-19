@@ -1,11 +1,9 @@
 package com.scalakml.example
 
-
 import com.scalakml.io.KmlFileReader
-import com.scalakml.kml.{Placemark, Point}
-//import com.scalaxal.io.{XalFileReader, XalPrintWriter}
+import com.scalakml.kml.{Placemark}
 
-import scala.xml.PrettyPrinter
+//import scala.xml.PrettyPrinter
 
 /**
  * Author: Ringo Wathelet
@@ -14,13 +12,13 @@ import scala.xml.PrettyPrinter
  */
 
 object ReadExample1 {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     println("....ReadExample1 start...\n")
 
     // read a kml file into a kml root object.
     // Note the default extractor (as shown) can be replaced by your own KmlExtractor
     // see KmlExtractor trait in KmlFileReader
-    val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-ozzzz.kml")
+    val kml = new KmlFileReader().getKmlFromFile("./kml-files/Sydney-oz.kml")
     // get the placemark
     val placemark = kml.get.feature.get.asInstanceOf[Placemark]
 

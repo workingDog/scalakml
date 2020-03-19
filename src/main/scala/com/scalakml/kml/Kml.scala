@@ -31,9 +31,8 @@
 package com.scalakml.kml
 
 import com.scalakml.atom._
-import com.scalaxal.xAL.AddressDetails
+//import com.scalaxal.xAL.AddressDetails
 import com.scalakml.gx.LatLonQuad
-import scala.collection.mutable
 
 /**
  * package of classes and constructs for the Google KML Version 2.2 model
@@ -980,7 +979,7 @@ case class FeaturePart(
   atomAuthor: Option[com.scalakml.atom.Author] = None,
   atomLink: Option[com.scalakml.atom.Link] = None,
   address: Option[String] = None,
-  addressDetails: Option[AddressDetails] = None, // <---- from com.scalaxal.xAL.xAL
+  addressDetails: Option[String] = None, // <---- from com.scalaxal.xAL.xAL
   phoneNumber: Option[String] = None,
   extendedData: Option[ExtendedData] = None,
   description: Option[String] = None,
@@ -997,7 +996,7 @@ case class FeaturePart(
   def this(name: String, visibility: Boolean) = this(Option(name), Option(visibility))
 
   def this(name: String, visibility: Boolean, open: Boolean, atomAuthor: com.scalakml.atom.Author, atomLink: com.scalakml.atom.Link,
-           address: String, addressDetails: AddressDetails, phoneNumber:String, extendedData: ExtendedData,
+           address: String, addressDetails: String, phoneNumber:String, extendedData: ExtendedData,
            description: String, snippet: Snippet, abstractView: AbstractView, timePrimitive: TimePrimitive,
            styleUrl: String, styleSelector: Seq[StyleSelector], region: Region) =
     this(Option(name), Option(visibility), Option(open), Option(atomAuthor), Option(atomLink), Option(address),

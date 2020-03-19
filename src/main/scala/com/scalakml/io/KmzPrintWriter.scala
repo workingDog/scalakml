@@ -71,7 +71,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param filenameInKmzFile the name the resource file will have in the kmz file
    * @param resourceFilename the name of the file containing the resource
    */
-  def addResourceFile(filenameInKmzFile: String, resourceFilename: String) {
+  def addResourceFile(filenameInKmzFile: String, resourceFilename: String): Unit = {
     resourcesFiles += (filenameInKmzFile -> new FileInputStream(resourceFilename))
   }
 
@@ -91,13 +91,13 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param kml the kml object to write to the kmz file
    * @param pretty the optional pretty printer to use
    */
-  def writeToKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null) {
+  def writeToKmz[A: KmlToXml](kml: A, pretty: PrettyPrinter = null): Unit = {
     kmzFileName match {
       case Some(fileName) => {
         val baseName = if (!fileName.isEmpty && (fileName.length > 4)) fileName.substring(0, fileName.length - 4) else fileName
         writeAllToKmz(Map(baseName + ".kml" -> kml), pretty)
       }
-      case None => Unit
+      case None => ()
     }
   }
 
@@ -112,7 +112,7 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
    * @param kmlMap the Map of file names (keys) and kml objects (values)
    * @param pretty the optional pretty printer to use
    */
-  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, A], pretty: PrettyPrinter = null) {
+  def writeAllToKmz[A: KmlToXml](kmlMap: Map[String, A] = Map.empty[String, A], pretty: PrettyPrinter = null): Unit = {
     if ((kmzFileName.isDefined) && (kmzFile.isDefined)) {
       xmlExtractor match {
         case Some(extractor) => {
@@ -134,18 +134,18 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
           addResourceFilesToKmz()
           kmzFile.get.close()
         }
-        case None => Unit
+        case None => ()
       }
     }
   }
 
-  private def addResourceFilesToKmz() {
+  private def addResourceFilesToKmz(): Unit = {
     kmzFile match {
       case Some(zip) => {
         for (file <- resourcesFiles) {
           zip.putNextEntry(new ZipEntry(file._1))
           try {
-            zip.write(Stream.continually(file._2.read).takeWhile(-1 !=).map(_.toByte).toArray)
+            zip.write(LazyList.continually(file._2.read).takeWhile(-1 !=).map(_.toByte).toArray)
           }
           finally {
             file._2.close()
@@ -153,28 +153,28 @@ class KmzPrintWriter(kmzFileName: Option[String] = None,
           zip.closeEntry()
         }
       }
-      case None => Unit
+      case None => ()
     }
   }
 
-  private def addToKmz(kmlFileName: String, kmlStream: ByteArrayOutputStream) {
+  private def addToKmz(kmlFileName: String, kmlStream: ByteArrayOutputStream): Unit = {
     kmzFile match {
       case Some(zip) => {
         try {
           zip.putNextEntry(new ZipEntry(kmlFileName))
           val in = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(kmlStream.toByteArray())))
           try {
-            zip.write(Stream.continually(in.read).takeWhile(-1 !=).map(_.toByte).toArray)
+            zip.write(LazyList.continually(in.read).takeWhile(-1 !=).map(_.toByte).toArray)
           }
           finally {
             in.close()
           }
           zip.closeEntry()
         } catch {
-          case e: Exception => Unit
+          case e: Exception => ()
         }
       }
-      case None => Unit
+      case None => ()
     }
   }
 

@@ -1,9 +1,14 @@
 Change Log
 ==========
 
-## changes in 1.5-SNAPSHOT
+## changes in 1.6-SNAPSHOT
 
+
+## changes in 1.5
+
+* removed the scalaxal dependency. This means AddressDetails is just a String.
 * put back examples 
+* using scala_2.13.1
 
 ## changes in 1.4
 

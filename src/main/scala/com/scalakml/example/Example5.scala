@@ -18,7 +18,7 @@ import com.scalakml.kml._
   */
 
 object Example5 {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     println("....Example5 start...\n")
 
     // create a writer to write to default System.out
