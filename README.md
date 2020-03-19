@@ -49,6 +49,10 @@ The jar file (scalakml_2.13-1.6-SNAPSHOT.jar) will be in the "./target/scala-2.1
 
 See also build.sbt.
 
+## Note
+
+Removed the scalaxal dependency. This means AddressDetails is now just a String. 
+
 ## Documentation
 
 See reference 1 and 2 for the full documentation of kml.
