@@ -30,4 +30,8 @@ sonatypeProfileName := "com.github.workingDog"
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
 releaseTagName := (version in ThisBuild).value
 
-
+// must do this
+//credentials += Credentials("Sonatype Nexus Repository Manager",
+//  "oss.sonatype.org",
+//  "workingDog",
+//  "the password here, not the passphrase")
