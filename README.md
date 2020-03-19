@@ -30,7 +30,6 @@ The **scalakml** library consists of 4 major packages:
 
 ## Installation
 
-Using Scala 2.13.
 Add the following dependency to build.sbt:
 
     libraryDependencies += "com.github.workingDog" %% "scalakml" % "1.5"
@@ -43,15 +42,11 @@ The jar file (scalakml_2.13-1.6-SNAPSHOT.jar) will be in the "./target/scala-2.1
 
 ## Dependencies
 
-**scalakml** depends on a companion library called [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes needed for the AddressDetails. 
+**scalakml** depends on the [Scala XML library](https://github.com/scala/scala-xml).
 
-**scalakml** also depends on the [Scala XML library](https://github.com/scala/scala-xml).
+Removed the dependency on [scalaxal](https://github.com/workingDog/scalaxal), that has the extensible Address Language (xAL) classes needed for the AddressDetails. This means AddressDetails is now just a String. 
 
-See also build.sbt.
-
-## Note
-
-Removed the scalaxal dependency. This means AddressDetails is now just a String. 
+See also build.sbt. Using Scala 2.13.
 
 ## Documentation
 
@@ -88,6 +83,8 @@ To generate the scaladoc, type:
         new KmlPrintWriter().write(kml, new PrettyPrinter(80, 3))
       }
     }
+
+See [scalakml-example](https://github.com/workingDog/scalakml-example) for basic examples use of the library.
 
 ## Status
 
